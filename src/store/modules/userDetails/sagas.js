@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { storeAllUserData, storeReferralCode, storeAppUseCase, storePayrentInfo
+import { storeAllUserData, storeAppUseCase, storePayrentInfo
 } from "./actions";
 import { HITUSER, HITREFERALCODE, HITAPPUSECASE, HITPAYRENTINFO, HITPAYRENTINFOAPI,EKYC
 } from '../types'
@@ -26,31 +26,13 @@ function* getReferal(action) {
         const data = yield call(getUserGeneralDetails, action.payload);
         if (data.data.error) {
 
-        } else {
-            yield put(storeReferralCode(data.data.data));
         }
     } catch (e) {
         console.log(e);
     }
 }
 
-function* getUseCase(action) {
-    try {
-        yield put(storeAppUseCase({ useCase: action.payload.useCase }));
-    } catch (e) {
-        yield put(storeAppUseCase({ useCase: 'apply-loan' }));
-    }
-}
-
 
 export function* watchUserData() {
     yield takeEvery(HITUSER, getData);
-}
-
-export function* watchReferalCode() {
-    yield takeEvery(HITREFERALCODE, getReferal);
-}
-
-export function* watchUserUseCase() {
-    yield takeEvery(HITAPPUSECASE, getUseCase);
 }
