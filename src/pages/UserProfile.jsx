@@ -41,14 +41,14 @@ function UserProfile() {
                 </div>
                 <div className='heading-equal mt5 mb20'>
                     <div className='img-text-align mt10'>
-                        <div class="left-img"> <img src='../images/played.png' alt='Games Played' /></div>
+                        <div className="left-img"> <img src='../images/played.png' alt='Games Played' /></div>
                         <div className="right-text" >
                             <div className='font13'>Games Played</div>
                             <div className='mt5 font13'><strong>0.00</strong></div>
                         </div>
                     </div>
                     <div className='img-text-align mt10'>
-                        <div class="left-img"> <img src='../images/win-chips.png' alt='Games Played' /></div>
+                        <div className="left-img"> <img src='../images/win-chips.png' alt='Games Played' /></div>
                         <div className="right-text" >
                             <div className='font13'>Chips Won</div>
                             <div className='mt5 font13'><strong>0.00</strong></div>
@@ -57,14 +57,14 @@ function UserProfile() {
                 </div>
                 <div className='heading-equal mt5 mb20'>
                     <div className='img-text-align mt10'>
-                        <div class="left-img"> <img src='../images/refferal.png' alt='Games Played' /></div>
+                        <div className="left-img"> <img src='../images/refferal.png' alt='Games Played' /></div>
                         <div className="right-text" >
                             <div className='font13'>Referral Earning</div>
                             <div className='mt5 font13'><strong>0.00</strong></div>
                         </div>
                     </div>
                     <div className='img-text-align mt10'>
-                        <div class="left-img"> <img src='../images/panelty.png' alt='Games Played' /></div>
+                        <div className="left-img"> <img src='../images/panelty.png' alt='Games Played' /></div>
                         <div className="right-text" >
                             <div className='font13'>Penalty</div>
                             <div className='mt5 font13'><strong>0.00</strong></div>

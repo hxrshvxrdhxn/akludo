@@ -15,17 +15,17 @@ function Home() {
                 <div className="home-card-item">
                     <a href='/ludo-classic'><img src='../images/classic-ludo.png' alt='Classic Ludo' /></a>
                 </div>
-                <div className="home-card-item">
+                <div className="home-card-item comingsoon">
+                    <div className='tag'>Coming Soon</div>
                     <img src='../images/ludo-super-start.png' alt='Classic Ludo' />
                 </div>
-                <div className="home-card-item">
+                <div className="home-card-item comingsoon">
+                    <div className='tag'>Coming Soon</div>
                     <img src='../images/ludo-club.png' alt='Classic Ludo' />
                 </div>
-                <div className="home-card-item">
+                <div className="home-card-item comingsoon">
+                    <div className='tag'>Coming Soon</div>
                     <img src='../images/ludo-plus.png' alt='Classic Ludo' />
-                </div>
-                <div className="home-card-item">
-                    <img src='../images/ludo-superstar.png' alt='Classic Ludo' />
                 </div>
             </div>
         </>

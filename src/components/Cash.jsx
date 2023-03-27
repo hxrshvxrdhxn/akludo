@@ -6,7 +6,7 @@ const handleClick = (e) => {
 function Cash() {
     return (
         <div className='cash-box'>
-            <a className='wallet-txt' href='/deposite'> 500 </a>
+            <a className='wallet-txt' href='/deposit'> 500 </a>
         </div>
     )
 }

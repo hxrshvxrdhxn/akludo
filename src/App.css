@@ -18,7 +18,7 @@ h6 {
 }
 
 .logo {
-  margin: 10px 0 0 20px;
+  padding: 10px 0 0 10px;
 }
 
 /* Header start */
@@ -96,7 +96,7 @@ header {
 .home-card-item {
   padding: 0 10px;
   margin-bottom: 15px;
-  opacity: 0.5;
+  position: relative;
 
 }
 
@@ -104,9 +104,29 @@ header {
   border-radius: 6px;
 }
 
+.comingsoon.home-card-item img {
+  opacity: 0.3;
+}
+
 .home-card-item:nth-child(1) {
   opacity: 1;
 }
+
+.comingsoon .tag{
+  font-weight: 600;
+  font-size: 11px;
+  color: #fff;
+  line-height: 25px;
+  padding: 0 20px;
+  height: 25px;
+  position: absolute;
+  background-color: #ff1818;
+  transform: rotateZ(336deg) translateY(3px);
+  clip-path: polygon(9% 0, 80% 0, 120% 116%, 0 100%);
+  top: 10px;
+  left: 0;
+}
+
 
 .btn-exclamination {
   background: #fff url('../public/images/exclamination.png') no-repeat 7px 5px;
@@ -226,11 +246,10 @@ header {
  */
 #menu {
   position: absolute;
-  width: 300px;
-  margin: -57px 0 0 -50px;
-  padding: 50px;
-  padding-top: 125px;
-
+  width: 320px;
+  margin: -57px 0 0 -22px;
+  padding: 20px;
+  padding-top: 80px;
   background: #FAFAFC;
   list-style-type: none;
   -webkit-font-smoothing: antialiased;
@@ -242,11 +261,13 @@ header {
   transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
   height: 100vh;
   box-sizing: border-box;
+  box-shadow: 0 0 30px 0 #f2f2f2;
 }
 
 #menu li {
-  padding: 10px 0;
-  font-size: 22px;
+  padding: 15px 0;
+  font-size: 16px;
+  border-bottom: 1px solid #ddd;
 }
 
 /*
@@ -254,6 +275,14 @@ header {
  */
 #menuToggle input:checked~ul {
   transform: none;
+}
+.topBurger{
+  min-height: 60px;;
+}
+.topBurger h2{
+  float: left;
+  padding-top: 20px;
+  font-weight: 500;
 }
 
 .card {
@@ -393,19 +422,20 @@ header {
 }
 
 .btn-play {
-  background: #fff url('../public/images/play.png') no-repeat 6px 3px;
-  line-height: 16px;
+  background: #fff url('../public/images/play.png') no-repeat 8px 7px;
+  line-height: 25px;
   border: 0;
-  padding: 2px 10px 1px 25px;
+  padding: 2px 15px 1px 30px;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
   border-radius: 2px;
   font-weight: 600;
   font-size: 10px;
   color: #0AB111;
-  height: 20px;
+  height: 25px;
   box-sizing: border-box;
   margin-top: 2px;
 }
+
 
 .btn-edit {
   background: #fff url('../public/images/edit-icon.png') no-repeat 7px 6px;
@@ -529,7 +559,7 @@ ul.listPayOpt {
   flex-flow: row wrap;
   justify-content: space-between;
   font-size: 12px;
-  padding: 5px;
+  padding: 5px 5px 7px;
   margin: 0;
   line-height: 24px;
 }

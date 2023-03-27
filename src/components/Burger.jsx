@@ -1,4 +1,5 @@
 import React from 'react'
+import Profile from './Profile';
 
 
 function Burger() {
@@ -11,14 +12,17 @@ function Burger() {
                 <span></span>
 
                 <ul id="menu">
-                    <a href="/"><li>Home</li></a>
-                    <a href="#"><li>About</li></a>
-                    <a href="#"><li>Info</li></a>
-                    <a href="#"><li>Contact</li></a>
-                    <a href="https://erikterwan.com/" target="_blank"><li>Show me more</li></a>
+                    <li><div className='topBurger'><h2>Hey, Sunil Kumar</h2></div></li>
+                    <li><a href="#">Play</a></li>
+                    <li><a href="#">Wallet</a></li>
+                    <li> <a href="#">History</a></li>
+                    <li><a href='#'>Refer & Earn</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li> <a href="#">Legal Terms</a></li>
                 </ul>
             </div>
-        </nav>
+        </nav >
     )
 }
 export default Burger

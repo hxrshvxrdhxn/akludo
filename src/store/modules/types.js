@@ -1,0 +1,9 @@
+export const RECEIVE_API_DATA = "RECEIVE_API_DATA";
+export const REQUEST_API_DATA = "REQUEST_API_DATA";
+export const LOGOUT = 'LOGOUT'
+export const LOGIN = 'LOGIN'
+export const HITLOGOUT = 'HITLOGOUT'
+export const USER_DATA = 'USER_DATA'
+export const HITUSER = 'HITUSER'
+export const LOGINERROR = 'LOGINERROR'
+export const EKYC = 'EKYC'

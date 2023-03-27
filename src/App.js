@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/ludo-classic" element={<GameListing />} />
           <Route path="/withdraw" element={<Withdraw />} />
-          <Route path="/deposite" element={<AddMoney />} />
+          <Route path="/deposit" element={<AddMoney />} />
           <Route path="/pay-option" element={<ChoosePayOption />} />
           <Route path="/earn" element={<Earn />} />
           <Route path="/user-profile" element={<UserProfile />} />

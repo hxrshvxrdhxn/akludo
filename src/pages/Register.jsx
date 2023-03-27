@@ -1,7 +1,27 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 
 function Register() {
+    const [register, setRegister] = useState({ phone: '', otp: '' })
+
+    const handler = (e) => {
+        console.log(e.target.value)
+        setRegister({ ...register, [e.target.name]: e.target.value })
+
+    }
+
+    const submitRegister = (e) => {
+        e.preventDefault();
+        axios.post("https://jsonplaceholder.typicode.com/posts", register)
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     return (
         <>
             <Header />
@@ -9,20 +29,19 @@ function Register() {
                 <div className='head-card'>
                     <h3>Register</h3>
                 </div>
-                <div className='label-input mt10'><label>Phone</label></div>
-                <div className='small-body section-center'>
-                    <input placeholder='Enter Phone number' className='input-white' name='amount' />
-                </div>
-                <div className='label-input'><label>Otp</label></div>
-                <div className='small-body section-center'>
-                    <input placeholder='Enter Otp' className='input-white' name='amount' />
-                </div>
-
-                <div className='text-center mt20'>
-                    <button className='btn-green'>Register</button>
-                    <br />
-                    <br />
-                </div>
+                <form onSubmit={submitRegister}>
+                    <div className='label-input mt10'><label>Phone</label></div>
+                    <div className='small-body section-center'>
+                        <input placeholder='Enter Phone number' onChange={handler} className='input-white' name='phone' />
+                    </div>
+                    <div className='label-input'><label>Otp</label></div>
+                    <div className='small-body section-center'>
+                        <input placeholder='Enter Otp' onChange={handler} className='input-white' name='otp' />
+                    </div>
+                    <div className='text-center mt20 mb20'>
+                        <button className='btn-green' type='submit'>Register</button>
+                    </div>
+                </form>
             </div>
         </>
     )
