@@ -9,6 +9,11 @@ import Earn from './pages/Earn';
 import UserProfile from './pages/UserProfile';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Counter from './store/Counter';
+import Otp from './pages/Otp';
+import ResetPassword from './pages/ResetPassword';
+import NewPassword from './pages/NewPassword';
+import OtpResetPassword from './pages/OtpResetPassword';
 
 
 function App() {
@@ -17,6 +22,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/counter" element={<Counter />} />
           <Route path="/ludo-classic" element={<GameListing />} />
           <Route path="/withdraw" element={<Withdraw />} />
           <Route path="/deposit" element={<AddMoney />} />
@@ -25,6 +31,10 @@ function App() {
           <Route path="/user-profile" element={<UserProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/otp' element={<Otp />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/new-password' element={<NewPassword />} />
+          <Route path='/otp-reset-password' element={<OtpResetPassword />} />
         </Routes>
       </BrowserRouter>
     </>

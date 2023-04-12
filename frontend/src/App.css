@@ -112,7 +112,7 @@ header {
   opacity: 1;
 }
 
-.comingsoon .tag{
+.comingsoon .tag {
   font-weight: 600;
   font-size: 11px;
   color: #fff;
@@ -121,10 +121,10 @@ header {
   height: 25px;
   position: absolute;
   background-color: #ff1818;
-  transform: rotateZ(336deg) translateY(3px);
-  clip-path: polygon(9% 0, 80% 0, 120% 116%, 0 100%);
-  top: 10px;
-  left: 0;
+  transform: rotateZ(325deg) translateY(0);
+  clip-path: polygon(15% 0, 72% 0%, 100% 100%, 0 100%);
+  top: 12px;
+  left: -8px;
 }
 
 
@@ -276,10 +276,13 @@ header {
 #menuToggle input:checked~ul {
   transform: none;
 }
-.topBurger{
-  min-height: 60px;;
+
+.topBurger {
+  min-height: 60px;
+  ;
 }
-.topBurger h2{
+
+.topBurger h2 {
   float: left;
   padding-top: 20px;
   font-weight: 500;
@@ -407,6 +410,11 @@ header {
 .text-label {
   font-size: 10px;
   clear: both;
+}
+
+.reset-password {
+  font-size: 11px;
+  text-decoration: none;
 }
 
 .profile-small {
@@ -594,6 +602,10 @@ ul.listPayOpt {
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 /* old css */
