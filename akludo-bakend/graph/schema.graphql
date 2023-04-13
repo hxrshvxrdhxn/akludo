@@ -1,0 +1,509 @@
+# DAILYSWIPES APIS GRAPH SCHEMA
+
+"Controls acces level for permissions allotted"
+enum EnumAccessLevel {
+    "no permission"
+    NONE
+    "can read any resource entry."
+    READ_ALL
+    "Can create this resource"
+    CREATE
+    "Read only entries created by user"
+    READ
+    "Read only entries authorized in role hirearchy"
+    READ_HIERARCHY
+    "Modify all entries which are allowed by READ/READ_ALL Permissions"
+    MODIFY
+    "Destroy only created by me"
+    DESTROY
+    "Destroy any, which are allowed by READ/READ_ALL Permissions"
+    DESTROY_ALL
+}
+
+"Defines status of the user"
+enum EnumUserStatus {
+    "User is fully functional"
+    ENABLED
+    "User is disabled and can not log in."
+    DISABLED
+    "User is added by system to create symmetry, not yet enrolled."
+    PSEUDO
+}
+
+"Specifies where file is stored"
+enum EnumFileStorage {
+    "On Amazon S3"
+    S3
+    "Local in Server"
+    LOCAL
+    "In any URL"
+    REMOTE_URL
+}
+
+"File Size Units"
+enum EnumSizeUnit {
+    B
+    KB
+    MB
+    GB
+    TB
+}
+
+
+"Gender of human individual"
+enum EnumGender {
+    MALE
+    FEMALE
+    OTHER
+}
+
+"Defines type of config value."
+enum EnumConfigType {
+    BOOLEAN
+    TEXT
+    LARGE_TEXT
+    DATETIME
+    NUMBER
+    SELECT
+}
+
+"Types of social platforms"
+enum EnumSocialProfilePlatform {
+    FACEBOOK
+    TWITTER
+    GITHUB
+    APPLE
+    GOOGLE
+    MICROSOFT
+}
+
+"Game status"
+enum EnumGameStatus {
+    AVAILABLE
+    DISABLED
+    DEPRECATED
+}
+
+"Ledger entry type"
+enum EnumTransactionType {
+    TRANSFER
+    TOP_UP
+    WITHDRAW
+    HOLD
+}
+
+"Cghallenge status"
+enum EnumChallengeStatus {
+    PENDING
+    CREATED
+    STARTED
+    COMPLETE
+    CANCELLED
+}
+
+"Bank transaction status"
+enum EnumBankTransactionStatus {
+    SUCCESS
+    FAILED
+    PENDING
+    PROCESSING
+}
+
+"Defines the language available in system"
+type Language {
+    id:String
+    locale: String
+    name: String
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+"Defines a role in the system"
+type Role {
+    id:String
+    "Name of Role"
+    name:String
+    "If sub role, define parent role"
+    parent: Role
+    "Inherit other roles"
+    inherit: [Role]
+    "Permissions this role has"
+    permissions: [Permission]
+    "Restrictions role has"
+    restrictions: [Restriction]
+    userPermissions:[String]
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+"Defines a system resource uniquely"
+type Resource {
+    id:String
+    description: String
+    "Unique resource identifier"
+    urn: String
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+"Defines access for resources. Can take wildcard '*'"
+type Permission {
+    "Defines teh resource role has access to"
+    resource: Resource
+    "Defines permission level for access"
+    accessLevel: EnumAccessLevel
+}
+
+"To explicitly banning from an urn."
+type Restriction {
+    "Defines the resource role is baned from"
+    resource: Resource
+}
+
+"Defines a file stored in system"
+type StoredFile {
+    "Where the file is stored"
+    storage: EnumFileStorage
+    "URI for the file. Full link in case of remote URL"
+    uri: String
+    "File name"
+    name: String
+    "File type"
+    mime: String
+    "Size of file"
+    size: Float
+    "Unit the size is in"
+    sizeUnit: EnumSizeUnit
+}
+
+"Defines email data"
+type Email {
+    "The email id"
+    address: String
+    "Is email verified"
+    isVerified: Boolean
+    "If primary address then this is true."
+    isPrimary: Boolean
+    "Date this email was added"
+    addedAtDate: String
+    "Date this email was verified"
+    verifiedAtDate: String
+    "Date this email was made primary"
+    madePrimaryAtDate: String
+}
+
+"Defines phone number data"
+type PhoneNumber {
+    "The phone number"
+    number: String
+    "Country cpde phone belongs to"
+    countryCode: String
+    "Is number verified"
+    isVerified: Boolean
+    "If primary number then this is true."
+    isPrimary: Boolean
+    "Date this number was added"
+    addedAtDate: String
+    "Date this number was verified"
+    verifiedAtDate: String
+    "Date this number was made primary"
+    madePrimaryAtDate: String
+}
+
+
+"Defines an User"
+type User {
+    id: String
+    "name of the user"
+    name: String
+    "Gender of the user"
+    gender: EnumGender
+    "User email ids"
+    emails: [Email]
+    "User phone numbers"
+    phones: [PhoneNumber]
+    "Password for native auth"
+    naiveAuthPass: String
+    "User Status"
+    status: EnumUserStatus
+    "User settings"
+    options: UserOptions
+    "Profile picture"
+    picture: StoredFile
+    "social profile"
+    socialProfiles: [SocialProfile]
+    "User's wallet"
+    wallet: Wallet
+    "When no planOrder attached this is the default Role."
+    defaultRole: Role
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+"Country master"
+type Country {
+    id: String
+    name: String
+    code: String
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+"Defines a social profile for user"
+type SocialProfile {
+    "Which platform"
+    platform: EnumSocialProfilePlatform
+    "Weather if use it for Oauth login or not."
+    oauth: Boolean
+    "Id of profile in social platform"
+    profileId: String
+    "Human friendly handle"
+    handle: String
+    "Url to profile"
+    url: String
+    "Secret token. This is hidden in API, can not be retrieved."
+    token: String
+    "Secret refresh token. This is hidden in API, can not be retrieved."
+    refreshToken: String
+}
+
+"User settings"
+type UserOptions {
+    sendNotifications: Boolean
+    country: Country
+    defaultLanguage: Language
+}
+
+"Defines history of changes in model"
+type UpdateHistory {
+    id: String
+    model: String!
+    changelog: String!
+    createdAt: String!
+    updatedAt: String!
+    createdBy: User!
+    updatedBy: User!
+}
+
+"config store for dynamic configs"
+type Config {
+    id: String
+    name: String
+    configType: EnumConfigType
+    value: String
+    selectOptions: [String]
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+type Game {
+    id: String
+    name: String
+    image: StoredFile
+    status: EnumGameStatus
+    description: String
+    urn: String
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+type Wallet {
+    id: String
+    user: User
+    bal: Float
+    ledger: [Ledger]
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+type Ledger {
+    id: String
+    fromUser: User
+    toUser: User
+    amount: Float
+    txType: EnumTransactionType
+    linkedBankTransaction: BankTransaction
+    linkedChallenge: Challenge
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+type BankTransaction {
+    id: String
+    status: EnumBankTransactionStatus
+    gateway: String
+    gatewayMethod: String
+    amount: Float
+    txType: EnumTransactionType
+    meta: String
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+type Challenge {
+    id: String
+    challenger: User
+    contender: User
+    amount: Float
+    game: Game
+    roomCode: String
+    winner: User
+    status: EnumChallengeStatus
+    meta: String
+    createdAt: String
+    updatedAt: String
+    createdBy: User
+    updatedBy: User
+}
+
+# node
+type HealthCheck {
+    isWorking: Boolean
+}
+
+type OtpResponse {
+    ctx: String
+    success: Boolean
+}
+
+type WithAuth {
+    listAuthResponse(criteria: String, limit: Int, offset: Int): [AuthResponse]
+    getAuthResponse(id: String!): AuthResponse
+
+    listLanguage(criteria: String, limit: Int, offset: Int): [Language]
+    getLanguage(id: String!): Language
+
+    listUser(criteria: String, limit: Int, offset: Int): [User]
+    getUser(id: String!): User
+
+    listCountry(criteria: String, limit: Int, offset: Int): [Country]
+    getCountry(id: String!): Country
+
+    listWallet(criteria: String, limit: Int, offset: Int): [Wallet]
+    getWallet(id: String!): Wallet
+
+    listLedger(criteria: String, limit: Int, offset: Int): [Ledger]
+    getLedger(id: String!): Ledger
+
+    listBankTransaction(criteria: String, limit: Int, offset: Int): [BankTransaction]
+    getBankTransaction(id: String!): BankTransaction
+
+    listChallenge(criteria: String, limit: Int, offset: Int): [Challenge]
+    getChallenge(id: String!): Challenge
+
+    listGame(criteria: String, limit: Int, offset: Int): [Game]
+    getGame(id: String!): Game
+
+    listRole(criteria: String, limit: Int, offset: Int): [Role]
+    getRole(id: String!): Role
+
+    listResource(criteria: String, limit: Int, offset: Int): [Resource]
+    getResource(id: String!): Resource
+
+    listUpdateHistory(criteria: String, limit: Int, offset: Int): [UpdateHistory]
+    getUpdateHistory(id: String!): UpdateHistory
+
+    listConfig(criteria: String, limit: Int, offset: Int): [Config]
+    getConfig(id: String!): Config
+
+}
+
+type MutateWithAuth {
+    del: DeleteEntityMutation
+    update: UpdateEntityMutation
+    fabricate: FabricateEntityMutation
+}
+
+type DeleteEntityMutation {
+    ###D START###
+    ###D END###
+    test: Boolean
+}
+
+type UpdateEntityMutation {
+    updateAuthResponse(success: Boolean, token: String, id: String): AuthResponse
+    updateLanguage(id: String, locale: String, name: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Language
+    updateUser(id: String, name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
+    updateCountry(id: String, name: String, code: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Country
+    updateWallet(id: String, user: String, bal: Float, ledger: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Wallet
+    updateLedger(id: String, fromUser: String, toUser: String, amount: Float, txType: EnumTransactionType, linkedBankTransaction: String, linkedChallenge: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Ledger
+    updateBankTransaction(id: String, status: EnumBankTransactionStatus, gateway: String, gatewayMethod: String, amount: Float, txType: EnumTransactionType, meta: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): BankTransaction
+    updateChallenge(id: String, challenger: String, contender: String, amount: Float, game: String, roomCode: String, winner: String, status: EnumChallengeStatus, meta: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Challenge
+    updateGame(id: String, name: String, image: StoredFileInput, status: EnumGameStatus, description: String, urn: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Game
+    updateRole(id: String, name: String, parent: String, inherit: [String], permissions: [PermissionInput], restrictions: [RestrictionInput], userPermissions: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Role
+    updateResource(id: String, description: String, urn: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Resource
+    updateUpdateHistory(id: String, model: String, changelog: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): UpdateHistory
+    updateConfig(id: String, name: String, configType: EnumConfigType, value: String, selectOptions: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Config
+}
+
+type KvPair {
+    val: String
+    key: String
+}
+
+type FabricateEntityMutation {
+    createAuthResponse(success: Boolean, token: String): AuthResponse
+    createLanguage(locale: String, name: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Language
+    createUser(name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
+    createCountry(name: String, code: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Country
+    createWallet(user: String, bal: Float, ledger: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Wallet
+    createLedger(fromUser: String, toUser: String, amount: Float, txType: EnumTransactionType, linkedBankTransaction: String, linkedChallenge: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Ledger
+    createBankTransaction(status: EnumBankTransactionStatus, gateway: String, gatewayMethod: String, amount: Float, txType: EnumTransactionType, meta: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): BankTransaction
+    createChallenge(challenger: String, contender: String, amount: Float, game: String, roomCode: String, winner: String, status: EnumChallengeStatus, meta: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Challenge
+    createGame(name: String, image: StoredFileInput, status: EnumGameStatus, description: String, urn: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Game
+    createRole(name: String, parent: String, inherit: [String], permissions: [PermissionInput], restrictions: [RestrictionInput], userPermissions: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Role
+    createResource(description: String, urn: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Resource
+    createUpdateHistory(model: String, changelog: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): UpdateHistory
+    createConfig(name: String, configType: EnumConfigType, value: String, selectOptions: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Config
+}
+
+type Query {
+    constant(value: String!): String
+    withAuth(token: String!): WithAuth
+    health: HealthCheck
+    enumOptions(name: String!): [KvPair]
+    login(username: String, password: String): AuthResponse
+    logout: AuthResponse
+    sendOtp(mobile:String):OtpResponse
+    verifyOtp(otp:String, ctx:String): AuthResponse
+}
+
+type AuthResponse {
+    success: Boolean
+    token: String
+    id: String
+}
+
+type Mutation {
+    mutationWithAuth(token: String!): MutateWithAuth
+}
+
+input EmailInput{address: String, isVerified: Boolean, isPrimary: Boolean, addedAtDate: String, verifiedAtDate: String, madePrimaryAtDate: String}
+input PhoneNumberInput{number: String, countryCode: String, isVerified: Boolean, isPrimary: Boolean, addedAtDate: String, verifiedAtDate: String, madePrimaryAtDate: String}
+input UserOptionsInput{sendNotifications: Boolean, country: String, defaultLanguage: String}
+input StoredFileInput{storage: EnumFileStorage, uri: String, name: String, mime: String, size: Float, sizeUnit: EnumSizeUnit}
+input SocialProfileInput{platform: EnumSocialProfilePlatform, oauth: Boolean, profileId: String, handle: String, url: String, token: String, refreshToken: String}
+input PermissionInput{resource: String, accessLevel: EnumAccessLevel}
+input RestrictionInput{resource: String}
+input KvPairInput{val: String, key: String}
+input OtpResponseInput{ctx: String, success: Boolean}
