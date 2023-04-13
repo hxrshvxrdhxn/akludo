@@ -37,7 +37,7 @@ function NewPassword() {
                 <form onSubmit={submitForm}>
                     <div className='label-input mt10'><label>New Password</label></div>
                     <div className='small-body section-center'>
-                        <input placeholder='Must be at least 8 characters.' onChange={handler} className='input-white' name='password' />
+                        <input placeholder='Must be at least 8 characters.' type="password" onChange={handler} className='input-white' name='password' />
                     </div>
                     <div className='label-input'><label>Confirm Password</label></div>
                     <div className='small-body section-center'>

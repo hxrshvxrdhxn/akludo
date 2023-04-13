@@ -51,10 +51,17 @@ function Register(props) {
                     <div className='small-body section-center'>
                         <input placeholder='Enter Phone number' onChange={handler} className='input-white' name='phone' />
                     </div>
+
                     {showResults ? <> <div className='label-input'><label>OTP</label></div>
                         <div className='small-body section-center'>
                             <input placeholder='Enter OTP' onChange={handler} className='input-white' name='otp' />
                         </div></> : null}
+
+                    {showResults ? <>   <div className='label-input mt10'><label>Refar Code (Optional)</label></div>
+                        <div className='small-body section-center'>
+                            <input placeholder='Refer code' onChange={handler} className='input-white' name='referCode' />
+                        </div></> : null}
+                    <p className='label-input'>By continuing, you agree to our <a href="/terms">Legal Terms</a> and you are legal age should be 18 years</p>
                     {showResults ? <div className='text-center mt20 mb20'>
                         <button className='btn-green' type='submit'>VERIFY</button>
                     </div> : <div className='text-center mt20'>
