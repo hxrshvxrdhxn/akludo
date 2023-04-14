@@ -128,6 +128,7 @@ exports = module.exports = class ResolverRoot {
             });
             await user.save();
         }
+        console.log('user', user);
         if (user.status !== EnumUserStatus.ENABLED) throw new Error('User is not enabled.');
         req.loginUser({
             _id: user._id,
