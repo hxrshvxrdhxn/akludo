@@ -21,7 +21,7 @@ fi
 ########################
 echo "[DEPLOY] Deployment initiated... $DEPLOY_BRANCH | $NODE_ENV";
 cd
-cd cd akludo
+cd akludo
 
 ########################
 # Fetch latest code from git
