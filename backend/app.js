@@ -103,13 +103,13 @@ new class App {
         } // vue app
         this.app.use(express.static('public'));
         // handle SPA routes, if not found on static, then only this middleware will run.
-        // this.app.use((req, res, next) => {
-        //     if(req.url.search(/api\//i) === -1){
-        //         fs.createReadStream(join(this.appBaseDir, 'public', 'index.html')).pipe(res);
-        //     } else {
-        //         next();
-        //     }
-        // });
+        this.app.use((req, res, next) => {
+            if(req.url.search(/api\//i) === -1){
+                fs.createReadStream(join(this.appBaseDir, 'public', 'index.html')).pipe(res);
+            } else {
+                next();
+            }
+        });
         this.app.use(compression());
     }
 
