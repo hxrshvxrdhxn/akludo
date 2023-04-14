@@ -10,7 +10,7 @@ function ChanllenceList() {
                     <h3>Create a Challenge</h3>
                 </div>
                 <div className='body section-center'>
-                    <input placeholder='Amount' className='input-white' name='amount' /> <button className='btn-green ml10'>SET</button>
+                    <input placeholder='Amount' className='input-white' name='amount' /> <button  className='btn-green ml10'>SET</button>
                 </div>
             </div>
             <div className='card'>

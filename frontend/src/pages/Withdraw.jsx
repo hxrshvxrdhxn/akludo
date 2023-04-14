@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from '../components/Header'
+import { connect } from 'react-redux';
 
 function Withdraw() {
     return (
@@ -37,4 +38,10 @@ only use for play games.</p>
     )
 }
 
-export default Withdraw
+const mapStateToProps = (state) => {
+    return {
+        phone: state.phone
+    };
+}
+
+export default connect(mapStateToProps)(Withdraw);

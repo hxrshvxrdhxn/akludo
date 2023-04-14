@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import axios from "axios";
 import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 
 function Login() {
     const [login, setLogin] = useState({ username: '', password: '' });
@@ -32,9 +34,9 @@ function Login() {
                     <h3>Login</h3>
                 </div>
                 <form onSubmit={submitForm}>
-                    <div className='label-input mt10'><label>Username</label></div>
+                    <div className='label-input mt10'><label>Username/Mobile Number</label></div>
                     <div className='small-body section-center'>
-                        <input placeholder='Username' onChange={handler} className='input-white' name='username' />
+                        <input placeholder='Username or Phone number' onChange={handler} className='input-white' name='username' />
                     </div>
                     <div className='label-input'><label>Password</label></div>
                     <div className='small-body section-center'>
@@ -56,4 +58,10 @@ function Login() {
     )
 }
 
-export default Login
+const mapStateToProps = (state) => {
+    return {
+        phone: state.phone
+    };
+}
+
+export default connect(mapStateToProps)(Login);

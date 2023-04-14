@@ -9,7 +9,6 @@ import Earn from './pages/Earn';
 import UserProfile from './pages/UserProfile';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Counter from './store/Counter';
 import Otp from './pages/Otp';
 import ResetPassword from './pages/ResetPassword';
 import NewPassword from './pages/NewPassword';
@@ -22,7 +21,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/counter" element={<Counter />} />
           <Route path="/ludo-classic" element={<GameListing />} />
           <Route path="/withdraw" element={<Withdraw />} />
           <Route path="/deposit" element={<AddMoney />} />
