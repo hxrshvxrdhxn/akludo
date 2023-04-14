@@ -35,6 +35,7 @@ git pull origin $DEPLOY_BRANCH
 ########################
 # Build
 ########################
+cd backend
 echo "[DEPLOY] Building packages..."
 #./build-web.sh
 npm i --python=/usr/bin/python2.7
@@ -49,7 +50,6 @@ kill $(ps aux | grep $APP_NAME | awk '{print $2}') || true
 # Start new processes
 ########################
 echo "[DEPLOY] Running the application"
-cd backend
 PORT=22001 nohup node start `echo $APP_NAME` >> ~/node.out 2>&1&
 # back to home
 cd
