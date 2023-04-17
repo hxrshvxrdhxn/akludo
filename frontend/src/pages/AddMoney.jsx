@@ -20,7 +20,7 @@ function AddMoney(props) {
     const submitAddMoney = (e) => {
         e.preventDefault();
         props.dispatch({ type: 'ADD_MONEY', money });
-        axios.post("https://jsonplaceholder.typicode.com/posts", money)
+        axios.post("http://akludo.com", money)
             .then(response => {
                 console.log(response)
             })

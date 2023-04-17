@@ -15,7 +15,7 @@ function Login() {
     }
     const submitForm = (e) => {
         e.preventDefault();
-        axios.post("https://jsonplaceholder.typicode.com/posts", login)
+        axios.post("http://akludo.com", login)
             .then(response => {
                 console.log(response)
                 // this.state({ posts: response.data })

@@ -16,7 +16,7 @@ function OtpResetPasword(props) {
     const submitRegister = (e) => {
         e.preventDefault();
         //props.dispatch({ type: 'PHONE_NUMBER', phone });
-        axios.post("https://jsonplaceholder.typicode.com/posts", phoneOtp)
+        axios.post("http://akludo.com", phoneOtp)
             .then(response => {
                 console.log(response)
             })
