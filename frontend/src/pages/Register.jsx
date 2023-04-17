@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux';
 import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom';
+import Login from '../services/login.service';
 
 
 function Register(props) {
@@ -15,17 +16,24 @@ function Register(props) {
         setPhone({ ...phone, [e.target.name]: e.target.value })
     }
 
-    const continueBtn = (e) => {
+    const continueBtn = async(e) => {
         e.preventDefault();
         setShowResults(true)
         props.dispatch({ type: 'PHONE_NUMBER', phone });
-        axios.post("https://jsonplaceholder.typicode.com/posts", phone)
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        try{
+            let data =await Login.sendOtp(phone);
+            console.log(data);
+        }catch(c){
+            console.log(c);
+        }
+
+        // axios.post("https://jsonplaceholder.typicode.com/posts", phone)
+        //     .then(response => {
+        //         console.log(response)
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //     })
     }
     const submitRegister = (e) => {
         e.preventDefault();
