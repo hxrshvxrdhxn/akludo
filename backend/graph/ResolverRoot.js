@@ -55,22 +55,21 @@ exports = module.exports = class ResolverRoot {
         // todo change
         if (!username) throw new Error('username is required');
         if (!password) throw new Error('password is required');
-        // const resp = await UserService.list({email: username.toLowerCase(), naiveAuthPass: password.trim()});
-        if (username === 'ankush@ankush.com') {
-            // const user = resp.docs.shift();
-            // log.debug(user);
-            req.loginUser({
-                _id: '640a3dcfe6b88e001fc76984',
-                id: '640a3dcfe6b88e001fc76984',
-                email: username,
-                ts: +new Date()
-            });
-            return {
-                id: '640a3dcfe6b88e001fc76984',
-                success: true,
-                token: req.token
-            }
-        } else throw new Error('Username or password invalid.');
+        const user = await _db.User.findOne({'phones.number': username});
+        if(!user) throw new Error('Invalid user or password!');
+        if(user.naiveAuthPass !== password) throw new Error('Invalid user or password!');
+        req.loginUser({
+            _id: user._id,
+            id: user._id,
+            mobile: username,
+            ts: +new Date()
+        });
+        return {
+            id: user._id,
+            success: true,
+            token: req.token
+        };
+
     }
 
     async logout({}, req) {
