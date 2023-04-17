@@ -14,7 +14,7 @@ function NewPassword() {
     }
     const submitForm = (e) => {
         e.preventDefault();
-        axios.post("https://jsonplaceholder.typicode.com/posts", newPassword)
+        axios.post("http://akludo.com/", newPassword)
             .then(response => {
                 console.log(response)
                 // this.state({ posts: response.data })

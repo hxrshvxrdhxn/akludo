@@ -15,7 +15,7 @@ function ChoosePayOption(props) {
     const AddAmount = (e) => {
         e.preventDefault();
         props.dispatch({ type: 'ADD_AMOUNT', amount });
-        axios.post("https://jsonplaceholder.typicode.com/posts", amount)
+        axios.post("http://akludo.com", amount)
             .then(response => {
                 console.log(response)
             })
