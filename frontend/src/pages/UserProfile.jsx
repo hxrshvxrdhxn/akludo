@@ -1,7 +1,9 @@
 import React from 'react'
 import Header from '../components/Header'
+import { connect } from 'react-redux';
 
-function UserProfile() {
+
+function UserProfile(props) {
     return (
         <>
             <Header />
@@ -16,7 +18,7 @@ function UserProfile() {
                 </div>
                 <div className='label-input'><label>Phone</label></div>
                 <div className='small-body section-center'>
-                    <input placeholder='Phone' className='input-white' name='amount' />
+                    <input placeholder='Phone' className='input-white' name='phone' value={props.phone} />
                 </div>
                 <div className='label-input'><label>Aadhaar Card</label></div>
                 <div className='small-body section-center'>
@@ -76,4 +78,10 @@ function UserProfile() {
     )
 }
 
-export default UserProfile
+const mapStateToProps = (state) => {
+    return {
+        phone: state.phone
+    };
+}
+
+export default connect(mapStateToProps)(UserProfile);

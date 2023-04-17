@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from '../components/Header'
+import { connect } from 'react-redux';
 
 function Earn() {
     return (
@@ -63,4 +64,10 @@ function Earn() {
     )
 }
 
-export default Earn
+const mapStateToProps = (state) => {
+    return {
+        phone: state.phone
+    };
+}
+
+export default connect(mapStateToProps)(Earn);

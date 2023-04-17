@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+
 
 
 function Profile() {
@@ -9,4 +11,11 @@ function Profile() {
         </>
     )
 }
-export default Profile
+
+const mapStateToProps = (state) => {
+    return {
+        phone: state.phone
+    };
+}
+
+export default connect(mapStateToProps)(Profile);
