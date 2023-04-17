@@ -3,10 +3,12 @@ import ApiCoreService from "./api.core.service";
 
 export default class UserService extends ApiCoreService{
 
+    static #user
 
     static async getUser(){
+        if (this.#user) return this.#user;
         try{
-            return await this.graphCall('withAuth.getuser',`
+            this.#user=this.graphCall('withAuth.getuser',`
             {
                 withAuth(token:"auto"){
                   getUser(id:"me"){
@@ -50,10 +52,12 @@ export default class UserService extends ApiCoreService{
                   }
                 }
               }
-            `,{})
+            `,{});
+            return this.#user;
         }catch(c){
             console.log(c);
-            throw new Error('Unable to get user');
+            //throw new Error('Unable to get user');
+            return null
         }
     }
 

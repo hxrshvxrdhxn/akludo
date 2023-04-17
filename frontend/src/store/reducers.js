@@ -18,8 +18,8 @@ function reducer(state = INITIAL_STATE, action) {
       return { money: action.money };
 
     case ADD_AMOUNT:
-      console.log(action.amount)
-      return { amount: action.amount };
+      console.log(action.amount.amount)
+      return { amount: action.amount.amount };
 
     case USER_ID:
       console.log(action.uid)

@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import axios from "axios";
 import Header from '../components/Header'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import Loginn from '../services/login.service';
 
 function Login() {
+    const navigate = useNavigate();
     const [login, setLogin] = useState({ username: '', password: '' });
 
 
@@ -13,16 +14,17 @@ function Login() {
         console.log(e.target.value)
         setLogin({ ...login, [e.target.name]: e.target.value })
     }
-    const submitForm = (e) => {
+    const submitForm = async(e) => {
         e.preventDefault();
-        axios.post("http://akludo.com", login)
-            .then(response => {
-                console.log(response)
-                // this.state({ posts: response.data })
-            })
-            .catch(error => {
-                console.log(error)
-            })
+       try{
+        let data=await Loginn.login(login.username,login.password);
+        console.log(data);
+        if(data.success){
+            navigate('/', { replace: true });
+        }
+       }catch(c){
+        console.log(c);
+       }
 
     }
 
