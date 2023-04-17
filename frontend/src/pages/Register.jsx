@@ -9,43 +9,54 @@ import Login from '../services/login.service';
 function Register(props) {
     const navigate = useNavigate();
     const [phone, setPhone] = useState()
+    const [ctx, setCtx] = useState(null)
+    const [otp, setOtp] = useState()
     const [showResults, setShowResults] = useState(false)
 
     const handler = (e) => {
         console.log(e.target.value)
-        setPhone({ ...phone, [e.target.name]: e.target.value })
+        setPhone(e.target.value)
     }
 
-    const continueBtn = async(e) => {
+    const handlerOtp = (e) => {
+        console.log(e.target.value)
+        setOtp(e.target.value)
+    }
+
+    const continueBtn = async (e) => {
         e.preventDefault();
         setShowResults(true)
         props.dispatch({ type: 'PHONE_NUMBER', phone });
-        try{
-            let data =await Login.sendOtp(phone);
+        console.log(phone)
+        try {
+            let data = await Login.sendOtp(phone);
             console.log(data);
-        }catch(c){
+            if (data && data.ctx) {
+                setCtx(data.ctx)
+            }
+        } catch (c) {
+            console.log(c);
+        }
+    }
+    const submitRegister = async (e) => {
+        e.preventDefault();
+        props.dispatch({ type: 'PHONE_NUMBER', phone });
+        try {
+            if (ctx) {
+                let data = await Login.verifyOtp(otp, ctx);
+                console.log(data);
+                if (data && data.id) {
+                    const uid=data.id;
+                    console.log("UID", uid, data.id)
+                    props.dispatch({ type: 'USER_ID', uid });
+                }
+
+                navigate('/new-password', { replace: true });
+            }
+        } catch (c) {
             console.log(c);
         }
 
-        // axios.post("https://jsonplaceholder.typicode.com/posts", phone)
-        //     .then(response => {
-        //         console.log(response)
-        //     })
-        //     .catch(error => {
-        //         console.log(error)
-        //     })
-    }
-    const submitRegister = (e) => {
-        e.preventDefault();
-        props.dispatch({ type: 'PHONE_NUMBER', phone });
-        axios.post("http://akludo.com", phone)
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-        navigate('/new-password', { replace: true });
     }
     return (
         <>
@@ -62,7 +73,7 @@ function Register(props) {
 
                     {showResults ? <> <div className='label-input'><label>OTP</label></div>
                         <div className='small-body section-center'>
-                            <input placeholder='Enter OTP' onChange={handler} className='input-white' name='otp' />
+                            <input placeholder='Enter OTP' onChange={handlerOtp} className='input-white' name='otp' />
                         </div></> : null}
 
                     {showResults ? <>   <div className='label-input mt10'><label>Refar Code (Optional)</label></div>

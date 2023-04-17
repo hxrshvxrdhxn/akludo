@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import axios from "axios";
+import { connect } from 'react-redux';
 import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom';
+import UserService from '../services/user.service';
+import Login from '../services/login.service';
 
-function NewPassword() {
+function NewPassword(props) {
     const navigate = useNavigate();
     const [newPassword, setNewPassword] = useState({ password: '', confirmPassword: '' });
 
@@ -12,18 +14,24 @@ function NewPassword() {
         console.log(e.target.value)
         setNewPassword({ ...newPassword, [e.target.name]: e.target.value })
     }
-    const submitForm = (e) => {
+    const submitForm = async (e) => {
         e.preventDefault();
-        axios.post("http://akludo.com/", newPassword)
-            .then(response => {
-                console.log(response)
-                // this.state({ posts: response.data })
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        try {
+            console.log('props.userId:', props.userId);
+            let data = await UserService.setUserPassword(props.userId, newPassword.password);
+            console.log(data);
+            if(data&&!!data.phones.length){
+                let logindata = await Login.login(data.phones[0].number,newPassword.password);
+                console.log(logindata);
+            }
+            navigate('/', { replace: true });
+        } catch (c) {
+            console.log(c);
+        }
 
-        navigate('/', { replace: true });
+
+
+
 
     }
 
@@ -52,4 +60,11 @@ function NewPassword() {
     )
 }
 
-export default NewPassword
+
+const mapStateToProps = (state) => {
+    return {
+        userId: state.userId
+    };
+}
+
+export default connect(mapStateToProps)(NewPassword);

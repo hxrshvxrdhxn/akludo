@@ -60,7 +60,7 @@ export default class UserService extends ApiCoreService{
 
     static async setUserPassword(id,password){
         try {
-            return await this.graphCall('mutation.mutationWithAuth.update.updateUser', `
+            return await this.graphCall('mutationWithAuth.update.updateUser', `
             mutation{
                 mutationWithAuth(token:"auto"){
                   update{
