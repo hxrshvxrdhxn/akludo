@@ -31,6 +31,7 @@ class UserService {
         // validate
         if (!id) return null;
         const _id = id;
+        if (id === 'me') id = user._id || user.id;
         id = _db.User.convertToObjectId(id);
         if (!id) throw new Error('Invalid ID passed to fetch User. ' + _id);
 
