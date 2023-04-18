@@ -1,6 +1,7 @@
 
 import { Component, useEffect, useState } from 'react';
 import { Navigate, Route } from 'react-router-dom';
+import UserService from './services/user.service';
 
 function GaurdedAuth({ comp}) {
  
@@ -13,10 +14,23 @@ function GaurdedAuth({ comp}) {
       }
       console.log("not logged in")
       return false;
-    };
+  };
 
+  // to do to check  for password set or not 
+
+  // async function checkPasswordSet(){
+  //     try{
+  //       let data=await UserService.getUser();
+  //       console.log(data);
+  //       console.log(data.naiveAuthPass);
+  //       return true;
+  //     }catch(c){
+  //       console.log(c)
+  //       throw new Error(c);
+  //     }
+  // }
    
-    return(isAuth() ?  comp : <Navigate to="/login" replace />);
+    return (isAuth() ?  comp : <Navigate to="/login" replace />);
   
   
   }

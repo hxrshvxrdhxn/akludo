@@ -18,7 +18,7 @@ function NewPassword(props) {
         e.preventDefault();
         try {
             console.log('props.userId:', props.userId);
-            let data = await UserService.setUserPassword(props.userId, newPassword.password);
+            let data = await UserService.updateUser({id:props.userId,password:newPassword.password});
             console.log(data);
             if(data&&!!data.phones.length){
                 let logindata = await Login.login(data.phones[0].number,newPassword.password);
