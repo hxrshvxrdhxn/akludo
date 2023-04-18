@@ -22,7 +22,7 @@ function reducer(state = INITIAL_STATE, action) {
       return { amount: action.amount.amount };
 
     case USER_ID:
-      console.log(action.uid)
+      console.log("user Id:",action.uid)
       return { userId: action.uid };
 
 

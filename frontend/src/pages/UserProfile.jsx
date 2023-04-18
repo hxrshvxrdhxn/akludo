@@ -17,10 +17,7 @@ function UserProfile(props) {
     const submitProfile = async (e) => {
         e.preventDefault();
         try {
-            console.log('Update Profile', updateProfile);
-            //let data = await UserService.setUserPassword(props.userId);
-
-            let data = await UserService.getUser()
+            let data = await UserService.updateUser({id:"643ce3a3f1aa6f9140a5bbf0",name:updateProfile.username});
             console.log(data);
         } catch (c) {
             console.log(c);
@@ -105,7 +102,8 @@ function UserProfile(props) {
 
 const mapStateToProps = (state) => {
     return {
-        phone: state.phone
+        phone: state.phone,
+        userId: state.userId
     };
 }
 
