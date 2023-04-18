@@ -13,6 +13,8 @@ import Otp from './pages/Otp';
 import ResetPassword from './pages/ResetPassword';
 import NewPassword from './pages/NewPassword';
 import OtpResetPassword from './pages/OtpResetPassword';
+import { useEffect, useState } from 'react';
+import GaurdedAuth from './GaurdedAuth';
 
 
 function App() {
@@ -21,18 +23,18 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/ludo-classic" element={<GameListing />} />
-          <Route path="/withdraw" element={<Withdraw />} />
-          <Route path="/deposit" element={<AddMoney />} />
-          <Route path="/pay-option" element={<ChoosePayOption />} />
-          <Route path="/earn" element={<Earn />} />
-          <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/ludo-classic" element={<GaurdedAuth comp={<GameListing/>} />} />
+          <Route path="/withdraw" element={<GaurdedAuth comp={<Withdraw />} />} />
+          <Route path="/deposit" element={<GaurdedAuth comp={<AddMoney />}  />} />
+          <Route path="/pay-option" element={<GaurdedAuth comp={<ChoosePayOption />}  />} />
+          <Route path="/earn" element={<GaurdedAuth comp={<Earn />}  />} />
+          <Route path="/user-profile"  element={<GaurdedAuth comp={<UserProfile />}  />} />
           <Route path="/login" element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/otp' element={<Otp />} />
-          <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/otp' element={<GaurdedAuth comp={<Otp />}  />} />
+          <Route path='/reset-password' element={<GaurdedAuth comp={<ResetPassword />}  />} />
           <Route path='/new-password' element={<NewPassword />} />
-          <Route path='/otp-reset-password' element={<OtpResetPassword />} />
+          <Route path='/otp-reset-password' element={<GaurdedAuth comp={<OtpResetPassword />}   />} />
         </Routes>
       </BrowserRouter>
     </>
