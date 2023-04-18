@@ -5,7 +5,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Loginn from '../services/login.service';
 
-function Login() {
+function Login(props) {
     const navigate = useNavigate();
     const [login, setLogin] = useState({ username: '', password: '' });
 
@@ -14,17 +14,19 @@ function Login() {
         console.log(e.target.value)
         setLogin({ ...login, [e.target.name]: e.target.value })
     }
-    const submitForm = async(e) => {
+    const submitForm = async (e) => {
         e.preventDefault();
-       try{
-        let data=await Loginn.login(login.username,login.password);
-        console.log(data);
-        if(data.success){
-            navigate('/', { replace: true });
+        try {
+            let data = await Loginn.login(login.username, login.password);
+            console.log(data);
+            let phone = login.username
+            if (data.success) {
+                props.dispatch({ type: 'PHONE_NUMBER', phone });
+                navigate('/', { replace: true });
+            }
+        } catch (c) {
+            console.log(c);
         }
-       }catch(c){
-        console.log(c);
-       }
 
     }
 
