@@ -556,6 +556,19 @@ ul.listPayOpt {
   color: #0AB111;
 }
 
+.errorMsg {
+  color: red;
+  font-size: 11px;
+  position: relative;
+  top: -10px;
+  margin-left: 10px;
+}
+
+.error {
+  color: red;
+  border: 1px solid red;
+}
+
 .challenge-list {
   list-style: none;
   margin: 0;

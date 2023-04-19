@@ -98,7 +98,7 @@ export default class UserService extends ApiCoreService {
         mutation{
           mutationWithAuth(token:"auto"){
             update{
-              updateUser(id:"${user.id}", naiveAuthPass:${user.password ? '"' + user.password + '"' : '""'},  name:${user.name ? '"' + user.name + '"' : "''"}, gender:${user.gender ? user.gender : 'MALE'}, emails:{address:${user.email && user.email.address ? '"' + user.email.address + '"' : "''"}, isVerified:${user.isVerified ? user.isVerified : false}, status:${user.status ? user.status : 'Enabled'}){
+              updateUser(id:"${user.id}", naiveAuthPass:${user.password ? '"' + user.password + '"' : ""},  name:${user.name ? '"' + user.name + '"' : "''"}, gender:${user.gender ? user.gender : 'MALE'}, emails:{address:${user.email && user.email.address ? '"' + user.email.address + '"' : "'"}, isVerified:${user.isVerified ? user.isVerified : false}, status:${user.status ? user.status : 'Enabled'}){
                 id
                 name
                 phones {
