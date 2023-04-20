@@ -13,17 +13,16 @@ import Otp from './pages/Otp';
 import ResetPassword from './pages/ResetPassword';
 import NewPassword from './pages/NewPassword';
 import OtpResetPassword from './pages/OtpResetPassword';
-import { useEffect, useState } from 'react';
 import GaurdedAuth from './GaurdedAuth';
 
 
-function App() {
+function App() { 
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/ludo-classic" element={<GaurdedAuth comp={<GameListing/>} />} />
+          <Route path="/ludo-classic" element={<GaurdedAuth comp={<GameListing />} />} />
           <Route path="/withdraw" element={<GaurdedAuth comp={<Withdraw />} />} />
           <Route path="/deposit" element={<GaurdedAuth comp={<AddMoney />}  />} />
           <Route path="/pay-option" element={<GaurdedAuth comp={<ChoosePayOption />}  />} />

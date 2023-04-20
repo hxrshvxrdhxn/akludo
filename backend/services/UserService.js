@@ -129,7 +129,7 @@ class UserService {
         const obj = dto.toObject();
         const validationResult = new UserValidator(obj, origDbObj, false).validate();
         if (!validationResult.isValid) {
-            throw new Error('Validation Failure for User: ' + validationResult.errorString);
+            throw new Error(': ' + validationResult.errorString);
         }
 
         // update
