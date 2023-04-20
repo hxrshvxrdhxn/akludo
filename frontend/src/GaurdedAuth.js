@@ -3,7 +3,7 @@ import { Navigate, Route, useNavigate } from "react-router-dom";
 import UserService from "./services/user.service";
 import useAuth from "./context/AuthContext";
 
-function GaurdedAuth({ comp, user}) {
+function GaurdedAuth({ comp}) {
   // const { auth } = useAuth();
   // console.log(auth);
   const navigate=useNavigate();
@@ -33,7 +33,7 @@ function GaurdedAuth({ comp, user}) {
   //   renderComp();
   // },[Auth,Password]);
 
- console.log(comp,Auth,Password,user);
+ console.log(Auth,Password);
 
   useEffect(()=>{
       isAuth();

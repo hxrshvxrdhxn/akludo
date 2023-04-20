@@ -1,25 +1,47 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { connect } from 'react-redux';
 import UserService from '../services/user.service';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function UserProfile(props) {
 
-    const [updateProfile, setUpdateProfile] = useState({ username: '', phone: props.phone, email: '', aadhaar: '' });
-
+    const [updateProfile, setUpdateProfile] = useState({ username: '', phone: props.phone?props.phone:'', email: '', aadhaar: '' });
+    const [user,Setuser]=useState({});
     const handler = (e) => {
         console.log(e.target.value)
         setUpdateProfile({ ...updateProfile, [e.target.name]: e.target.value })
     }
 
+    useEffect(()=>{
+        async function test(){
+            try{
+                let user=await UserService.getUser();
+                console.log(user);
+                Setuser(user);
+                setUpdateProfile({username:user.name?user.name:updateProfile.username,phone:user.phones&&user.phones.length?user.phones[0].number:updateProfile.phone,email:user.emails&&user.emails.length?user.emails[0].id:updateProfile.email,aadhaar:''});
+            }catch(c){
+                console.log(c);
+                toast.error(c.message); 
+                throw new Error(c)
+            }
+        }
+        test();
+    },[]);
+
 
     const submitProfile = async (e) => {
         e.preventDefault();
         try {
-            let data = await UserService.updateUser({id:"643ce3a3f1aa6f9140a5bbf0",name:updateProfile.username});
-            console.log(data);
+            console.log(updateProfile);
+            if (user.id){
+                let data = await UserService.updateUser({id:user.id,name:updateProfile.username});   ///to do email and aadhar card
+                console.log(data);
+            }
         } catch (c) {
+            console.log(c);
+            toast.error(c.message); 
             console.log(c);
         }
     }
@@ -31,24 +53,25 @@ function UserProfile(props) {
                 <div className='head-card'>
                     <h3>Profile</h3>
                 </div>
+                <ToastContainer />
                 <form onSubmit={submitProfile}>
                     <div className='label-input mt10'><label>Username</label></div>
                     <div className='small-body section-center'>
-                        <input placeholder='Username' onChange={handler} className='input-white' name='username' />
+                        <input placeholder='Username' onChange={handler} className='input-white' name='username' value={updateProfile.name}/>
                         <button className='btn-edit ml10'>EDIT</button>
                     </div>
                     <div className='label-input'><label>Phone</label></div>
                     <div className='small-body section-center'>
-                        <input placeholder='Phone' onChange={handler} className='input-white' name='phone' disabled value={props.phone} />
+                        <input placeholder='Phone' onChange={handler} className='input-white' name='phone' disabled value={updateProfile.phone} />
                     </div>
-                    <div className='label-input'><label>Aadhaar Card</label></div>
+                    <div className='label-input'><label>Aadhaar Card{props.phone}</label></div>
                     <div className='small-body section-center'>
                         <input placeholder='Aadhaar Card' onChange={handler} className='input-white' name='aadhaar' />
                     </div>
                     <div className='label-input'><label>Email Address</label></div>
                     <div className='small-body section-center'>
 
-                        <input placeholder='Email Address' onChange={handler} className='input-white' name='email' />
+                        <input placeholder='Email Address' onChange={handler} className='input-white' name='email' value={updateProfile.email} />
                     </div>
                     <div className='text-center mt20'>
                         <button className='btn-green'>UPDATE</button>

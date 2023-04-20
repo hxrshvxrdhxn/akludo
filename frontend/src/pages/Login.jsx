@@ -8,8 +8,8 @@ import { ToastContainer, toast } from 'react-toastify';
 
 function Login(props) {
     const navigate = useNavigate();
-    const [phoneError, setPhoneError] = useState()
-    const [passwordError, setPasswordError] = useState()
+    const [phoneError, setPhoneError] = useState();
+    const [passwordError, setPasswordError] = useState();
 
     const [login, setLogin] = useState({ username: '', password: '' });
 
@@ -67,7 +67,7 @@ function Login(props) {
             }
         } catch (c) {
             console.log(c);
-
+            toast.error(c.message);
         }
 
     }

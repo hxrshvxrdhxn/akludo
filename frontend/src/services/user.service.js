@@ -17,6 +17,15 @@ export default class UserService extends ApiCoreService {
                     emails{
                       address
                     }
+                    phones {
+                      number
+                      countryCode
+                      isVerified
+                      isPrimary
+                      addedAtDate
+                      verifiedAtDate
+                      madePrimaryAtDate
+                    }
                     naiveAuthPass
                     status
                     picture{
