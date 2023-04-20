@@ -35,7 +35,7 @@ function UserProfile(props) {
                     <div className='label-input mt10'><label>Username</label></div>
                     <div className='small-body section-center'>
                         <input placeholder='Username' onChange={handler} className='input-white' name='username' />
-                        <button className='btn-edit ml10'>EDIT</button>
+                        <button className='btn-edit ml10' type='button'>EDIT</button>
                     </div>
                     <div className='label-input'><label>Phone</label></div>
                     <div className='small-body section-center'>
@@ -51,7 +51,7 @@ function UserProfile(props) {
                         <input placeholder='Email Address' onChange={handler} className='input-white' name='email' />
                     </div>
                     <div className='text-center mt20'>
-                        <button className='btn-green'>UPDATE</button>
+                        <button className='btn-green' type='submit'>UPDATE</button>
                         <br />
                         <br />
                     </div>
