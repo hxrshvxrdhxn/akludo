@@ -1,12 +1,12 @@
 import { Component, useEffect, useState } from "react";
-import { Navigate, Route } from "react-router-dom";
+import { Navigate, Route, useNavigate } from "react-router-dom";
 import UserService from "./services/user.service";
 import useAuth from "./context/AuthContext";
 
 function GaurdedAuth({ comp, user}) {
   // const { auth } = useAuth();
   // console.log(auth);
-
+  const navigate=useNavigate();
   const [Auth,setAuth]=useState(null);
   const [Password,setPassword]=useState(null);
   // useEffect(()=>{
@@ -51,6 +51,8 @@ function GaurdedAuth({ comp, user}) {
       } else {
         return <Navigate to="/login" replace />;
       }   
+    }else if(Auth==false ){
+      return <Navigate to="/login" replace />;
     }
   }
 
@@ -88,18 +90,21 @@ function GaurdedAuth({ comp, user}) {
 
   async function checkPasswordSet(){
       try{
-        // let data = await UserService.getUser();
-        // console.log(data)
-        if(true){
-          console.log("password set")
-          setPassword(true);
-          return;
-        }
-        console.log("password not set");
-        setPassword(false);
-        return ;
+        if(Auth){
+          let user= await UserService.getUser();
+          console.log(user)
+          if(user && user.naiveAuthPass){
+            console.log("password set")
+            setPassword(true);
+            return;
+          }
+          console.log("password not set");
+          setPassword(false);
+       }
       }catch(c){
-        console.log(c)
+        console.log(c);
+        //show toast and navigate to another route -------
+        navigate('/login');
         throw new Error(c);
       }
   }
