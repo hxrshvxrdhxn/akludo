@@ -57,7 +57,7 @@ function UserProfile(props) {
                 <form onSubmit={submitProfile}>
                     <div className='label-input mt10'><label>Username</label></div>
                     <div className='small-body section-center'>
-                        <input placeholder='Username' onChange={handler} className='input-white' name='username' />
+                        <input placeholder='Username' onChange={handler} className='input-white' name='username' value={updateProfile.username} />
                         <button className='btn-edit ml10' type='button'>EDIT</button>
                     </div>
                     <div className='label-input'><label>Phone</label></div>

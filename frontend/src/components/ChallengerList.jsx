@@ -16,7 +16,7 @@ function ChanllenceList() {
             let user=await UserService.getUser();
             if(user&&user.id){
                 console.log(user.id)
-                const userid={challenger:user.id}
+                const userid={contender:user.id}
                 setChallenge((challenge)=>({...challenge,...userid}));
             }
             let runChallenge=await ChallengeService.listChallengeByStatus('STARTED');
@@ -67,7 +67,7 @@ function ChanllenceList() {
                         
                             {openChallenges&&!!openChallenges.length?openChallenges.map((item)=>{
                             return(<li>
-                            <div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.challenger.name}</div> <div className='green-text'>₹ {item.amount}</div>  <button className='btn-play'>Play</button>
+                            <div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.contender.name}</div> <div className='green-text'>₹ {item.amount}</div>  <button className='btn-play'>Play</button>
                             </li>)
                             }):"LOADING"}
                        
@@ -85,7 +85,7 @@ function ChanllenceList() {
                     <ul className='challenge-list running'>
                     {(runningChallenges&&!!runningChallenges.length)?runningChallenges.map((item)=>{
                             return(<li>
-                            <div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.challenger.name}</div> <div className='green-text'>₹ {item.amount}</div>  <button className='btn-play'>Play</button>
+                            <div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.contender.name}</div> <div className='green-text'>₹ {item.amount}</div><div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.challenger.name}</div> 
                             </li>)
                             }):"LOADING"}
                     </ul>
