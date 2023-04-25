@@ -5,7 +5,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import UserService from '../services/user.service';
 
 function ChanllenceList() {
-    const [amount, setAmount] = useState(100);
     const [openChallenges,setOpenChallenges]=useState({});
     const [runningChallenges,setRunningChallenges]=useState({});
     const [challenge,setChallenge]=useState({challenger:"", amount:0, contender:"", status:'', roomCode:"", game:"" });
@@ -83,11 +82,11 @@ function ChanllenceList() {
                 </div>
                 <div className=''>
                     <ul className='challenge-list running'>
-                    {(runningChallenges&&!!runningChallenges.length)?runningChallenges.map((item)=>{
-                            return(<li>
-                            <div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.contender.name}</div> <div className='green-text'>₹ {item.amount}</div><div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.challenger.name}</div> 
+                        {(runningChallenges && !!runningChallenges.length) ? runningChallenges.map((item) => {
+                            return (<li key={item.contender.id}>
+                                <div className='direction'><img className='profile-small' src='../images/profile.png' alt={item.contender.name} /> {item.contender.name}</div> <div className='green-text direction'><img src='../images/vs.png' alt='vice-versa' /> ₹ {item.amount}</div>  <div className='direction'> <img className='profile-small' src='../images/profile.png' alt={item.challenger.name} />  {item.challenger.name}</div>
                             </li>)
-                            }):"LOADING"}
+                        }) : "LOADING"}
                     </ul>
 
                 </div>
