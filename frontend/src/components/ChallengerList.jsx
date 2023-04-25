@@ -3,6 +3,7 @@ import ChallengeService from '../services/challenge.service';
 import Profile from './Profile';
 import { ToastContainer, toast } from 'react-toastify';
 import UserService from '../services/user.service';
+import { socket } from '../socket';
 
 function ChanllenceList() {
     const [amount, setAmount]=useState()
@@ -13,6 +14,14 @@ function ChanllenceList() {
     useState(()=>{
       async function test(){
         try{
+           // client-side
+              socket.on("connect", () => {
+                console.log('socket:=================>',socket.connected); // true
+              });
+              
+              socket.on("disconnect", () => {
+                console.log(socket.id); // undefined
+              });
             let user=await UserService.getUser();
             if(user&&user.id){
                 console.log(user.id)
@@ -38,6 +47,10 @@ function ChanllenceList() {
             console.log(challenge);
             let chall=await ChallengeService.createChallenge(challenge);
             console.log(chall);
+
+      
+
+
 //````1===----------- to do list & add all challnges via web socket--==---------=--===------------   
         }catch(c){
             console.log(c);
