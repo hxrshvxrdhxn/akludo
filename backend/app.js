@@ -14,6 +14,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const Agenda = require('agenda');
 const cookieParser = require('cookie-parser');
+const socketIo = require('socket.io');
+const MainSocketController = require('./sockets/MainSocketController');
 
 /**
  * Main App Class. Starting point.
@@ -104,7 +106,7 @@ new class App {
         this.app.use(express.static('public'));
         // handle SPA routes, if not found on static, then only this middleware will run.
         this.app.use((req, res, next) => {
-            if(req.url.search(/api\//i) === -1){
+            if (req.url.search(/api\//i) === -1) {
                 fs.createReadStream(join(this.appBaseDir, 'public', 'index.html')).pipe(res);
             } else {
                 next();
@@ -217,6 +219,8 @@ new class App {
 
     async start() {
         let server = http.createServer(this.app);
+        const io = new socketIo.Server(server);
+        new MainSocketController(io);
         server.listen(this.port);
         return new Promise((res, rej) => {
             server.on('listening', () => {
