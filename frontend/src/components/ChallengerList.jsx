@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import UserService from '../services/user.service';
 
 function ChanllenceList() {
+    const [amount, setAmount]=useState()
     const [openChallenges,setOpenChallenges]=useState({});
     const [runningChallenges,setRunningChallenges]=useState({});
     const [challenge,setChallenge]=useState({challenger:"", amount:0, contender:"", status:'', roomCode:"", game:"" });
