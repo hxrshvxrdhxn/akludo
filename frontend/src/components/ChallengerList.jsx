@@ -14,14 +14,6 @@ function ChanllenceList() {
     useState(()=>{
       async function test(){
         try{
-           // client-side
-              socket.on("connect", () => {
-                console.log('socket:=================>',socket.connected); // true
-              });
-              
-              socket.on("disconnect", () => {
-                console.log(socket.id); // undefined
-              });
             let user=await UserService.getUser();
             if(user&&user.id){
                 console.log(user.id)
@@ -49,7 +41,6 @@ function ChanllenceList() {
             console.log(chall);
 
       
-
 
 //````1===----------- to do list & add all challnges via web socket--==---------=--===------------   
         }catch(c){
