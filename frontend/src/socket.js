@@ -2,6 +2,13 @@ import { io } from "socket.io-client";
 
 export const socket = io();
 
-socket.on('connect', sock => {
-    console.log('---------------------------------------- connected', sock);
+socket.on('connect', () => {
+    console.log('---------------------------------------- connected');
+    socket.emit('handshake_hello', 'user_id_umar')
 });
+
+socket.on('handshake_reply', message => {
+console.log('All setup for user:', message);
+});
+
+socket.on('challenge', data => console.log("Got a new update....", data));
