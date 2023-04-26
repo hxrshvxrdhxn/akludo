@@ -12,6 +12,7 @@ const RoleDTO = require('../../util/beans/RoleDTO');
 const ResourceDTO = require('../../util/beans/ResourceDTO');
 const UpdateHistoryDTO = require('../../util/beans/UpdateHistoryDTO');
 const ConfigDTO = require('../../util/beans/ConfigDTO');
+const KYCDTO= require('../../util/beans/KYCDTO');
 // services
 const AuthResponseService = require('../../services/AuthResponseService');
 const LanguageService = require('../../services/LanguageService');
@@ -26,7 +27,7 @@ const RoleService = require('../../services/RoleService');
 const ResourceService = require('../../services/ResourceService');
 const UpdateHistoryService = require('../../services/UpdateHistoryService');
 const ConfigService = require('../../services/ConfigService');
-
+const KYCService = require('../../services/KYCService');
 
 /**
  * UpdateEntityMutationResolver
@@ -50,6 +51,7 @@ class UpdateEntityMutationResolver {
         this.ResourceResolver = require('./ResourceResolver');
         this.UpdateHistoryResolver = require('./UpdateHistoryResolver');
         this.ConfigResolver = require('./ConfigResolver');
+        this.KYCResolver = require('./KYCResolver');
     }
 
 
@@ -77,8 +79,8 @@ class UpdateEntityMutationResolver {
 
 
 
-    async updateUser({id, name, gender, emails, phones, naiveAuthPass, status, options, picture, socialProfiles, wallet, defaultRole, createdAt, updatedAt, createdBy, updatedBy}, {data}) {
-        const dto = new UserDTO({name, gender, emails, phones, naiveAuthPass, status, options, picture, socialProfiles, wallet, defaultRole, createdAt, updatedAt, createdBy, updatedBy});
+    async updateUser({id, name, gender, emails, phones, naiveAuthPass, status, options, picture, socialProfiles, wallet, kyc, defaultRole, createdAt, updatedAt, createdBy, updatedBy}, {data}) {
+        const dto = new UserDTO({name, gender, emails, phones, naiveAuthPass, status, options, picture, socialProfiles, wallet, kyc, defaultRole, createdAt, updatedAt, createdBy, updatedBy});
         const result = await UserService.update(id, dto, this._user); //{updateResult, updatedDbObj}
         if (result && result.updateResult) {
             data.updateResult = result.updateResult;
@@ -205,6 +207,18 @@ class UpdateEntityMutationResolver {
             data.updateResult_Config = result.updateResult;
             return new this.ConfigResolver(result.updatedDbObj, this._user);
         } else throw new Error('Unable to update');
+    }
+
+    async updateKYC({id, document, fileType, user, profilePhoto, phone, email, isKYCApproved,createdAt, updatedAt, createdBy, updatedBy},{data}){
+        console.log("attributes:-",{id, document, fileType, user, profilePhoto, phone, email, isKYCApproved,createdAt, updatedAt, createdBy, updatedBy})
+        const dto = new KYCDTO({id, document, fileType, user, profilePhoto, phone, email, isKYCApproved,createdAt, updatedAt, createdBy, updatedBy});  // a dto to 
+        const result = await KYCService.update(id, dto, this._user); //{updateResult, updatedDbObj}
+        console.log(result);
+        if (result && result.updateResult) {
+            data.updateResult = result.updateResult;
+            data.updateResult_Config = result.updateResult;
+            return new this.KYCResolver(result.updatedDbObj, this._user);
+        } else throw new Error('Unable to update');  
     }
 }
 

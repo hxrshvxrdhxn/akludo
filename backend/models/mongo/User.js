@@ -64,6 +64,7 @@ class User extends MongoDbModel {
                 refreshToken: String
             }],
             wallet: {type: mongoose.Schema.Types.ObjectId, ref: 'Wallet'},
+            kyc:{type:mongoose.Schema.Types.ObjectId,ref:'KYC'},
             defaultRole: {type: mongoose.Schema.Types.ObjectId, ref: 'Role'},
             createdAt: Number,
             updatedAt: Number,

@@ -37,6 +37,7 @@ class UserService {
 
         // fetch
         const foundUser = await _db.User.findOne({_id: id});
+        console.log(foundUser);
         return await UserInterceptor.afterUserFind(id, foundUser, user);
     }
 

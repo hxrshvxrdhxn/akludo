@@ -66,6 +66,7 @@ User.add({
         }
     },
     wallet: {type: Types.Relationship, ref: 'Wallet', initial: true, required: false, index: false},
+    kyc: {type:Types.Relationship, ref:'KYC', initial: true, required: false, index:false },
     defaultRole: {type: Types.Relationship, ref: 'Role', initial: true, required: false, index: false}
 });
 

@@ -121,7 +121,8 @@ exports = module.exports = class ResolverRoot {
                     sendNotifications: true
                 },
                 socialProfiles: [],
-                // wallet: (await (new _db.Wallet({})).save())._id, TODO attach wallet
+                wallet: (await (new _db.Wallet({})).save())._id,
+                kyc:(await (new _db.KYC({})).save())._id,                
                 createdAt: +new Date(),
                 updatedAt: +new Date()
             });
