@@ -66,7 +66,7 @@ class MainSocketController {
 
     sendMessageToAll(messageObj, eventName) {
         log.trace('Sending socket message to all...', messageObj);
-        this.#io.to('all').emit(eventName || message.type, JSON.stringify(messageObj));
+        this.#io.to('all').emit(eventName || messageObj.type, JSON.stringify(messageObj));
     }
 
     sendMessageToUser(userId, messageObj, eventName) {
