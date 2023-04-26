@@ -65,6 +65,7 @@ class MainSocketController {
     }
 
     sendMessageToAll(messageObj) {
+        log.trace('Sending socket message to all...', messageObj);
         this.#io.to('all', JSON.stringify(messageObj));
     }
 
