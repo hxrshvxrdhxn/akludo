@@ -64,13 +64,13 @@ class MainSocketController {
         this.#listeners[eventName][addCtx] = null;
     }
 
-    sendMessageToAll(messageObj) {
+    sendMessageToAll(messageObj, eventName) {
         log.trace('Sending socket message to all...', messageObj);
-        this.#io.to('all', JSON.stringify(messageObj));
+        this.#io.to('all').emit(eventName || message.type, JSON.stringify(messageObj));
     }
 
-    sendMessageToUser(userId, messageObj) {
-        this.#io.to(userId, JSON.stringify(messageObj));
+    sendMessageToUser(userId, messageObj, eventName) {
+        this.#io.to(userId).emit(eventName || 'direct_message', JSON.stringify(messageObj));
     }
 
     static get bean() {
