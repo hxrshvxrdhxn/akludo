@@ -38,8 +38,14 @@ function ChanllenceList() {
         try{
             console.log(challenge);
             let chall=await ChallengeService.createChallenge(challenge);
-            console.log(chall);
-
+            console.log("chall======>",chall);
+            socket.on("connect", () => {
+                console.log("socket============>",socket.id); // x8WIv7-mJelg7on_ALbx
+              });
+              
+              socket.on("disconnect", () => {
+                console.log(socket.id); // undefined
+              });
       
 
 //````1===----------- to do list & add all challnges via web socket--==---------=--===------------   
@@ -48,7 +54,17 @@ function ChanllenceList() {
             toast.error(c.message);
             throw new Error(c);
         }
-    }
+        }  
+       
+        console.log("Umar===========>");
+    // client-side
+    socket.on("connect", () => {
+        console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+    });
+    
+    socket.on("disconnect", () => {
+        console.log(socket.id); // undefined
+    });
 
     return (
         <>
