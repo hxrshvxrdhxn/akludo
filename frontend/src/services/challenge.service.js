@@ -118,4 +118,40 @@ export default class ChallengeService extends ApiCoreService{
         }
     }
 
+    static async updateStatus(id,status){
+      try {
+        return await this.graphCall('mutationWithAuth.update.updateChallenge', `
+        mutation{
+          mutationWithAuth(token:"auto"){
+            update{
+              updateChallenge(id:"${id}" status:${status}){
+                id
+                amount
+                game {
+                  id
+                }
+                contender{
+                  id
+                  name
+                  phones{
+                    number
+                  }
+                }
+                challenger{
+                  id
+                  name
+                  phones{
+                    number
+                  }
+                }
+                roomCode
+              }
+            }
+          }
+        }`,{});
+    }catch(c){
+        console.log(c);
+        throw new Error('Unable to update Challenge');
+    }
+    }
 }

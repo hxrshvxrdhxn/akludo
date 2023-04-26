@@ -34,6 +34,19 @@ function ChanllenceList() {
       test();
     },[]);
 
+    async function playGame(item){
+        console.log(item);
+        try{
+            let data=await ChallengeService.updateStatus(item.id?item.id:"","PENDING");
+            console.log(data);
+            window.location.reload();
+        }catch(c){
+            console.log(c);
+            toast.error(c.message);
+            throw new Error(c);
+        }
+    }
+
     async function createChallenge(){       
         try{
             console.log(challenge);
@@ -45,7 +58,7 @@ function ChanllenceList() {
             toast.error(c.message);
             throw new Error(c);
         }
-        }  
+    }  
        
         console.log("Umar===========>");
 
@@ -70,7 +83,7 @@ function ChanllenceList() {
                         
                             {openChallenges&&!!openChallenges.length?openChallenges.map((item)=>{
                             return(<li>
-                            <div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.contender.name}</div> <div className='green-text'>₹ {item.amount}</div>  <button className='btn-play'>Play</button>
+                            <div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.contender.name}</div> <div className='green-text'>₹ {item.amount}</div>  <button className='btn-play' onClick={()=>{playGame(item)}}>Play</button>
                             </li>)
                             }):"LOADING"}
                        

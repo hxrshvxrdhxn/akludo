@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     '^/api',
     createProxyMiddleware({
-      target: 'https://akludo.com',
+      target: 'https://akludo.com',  //https:localhost:3000
       changeOrigin: true,
     })
   );
