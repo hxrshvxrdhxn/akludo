@@ -47,7 +47,7 @@ export default class ChallengeService extends ApiCoreService{
                 }
               }`,{});
         }catch(c){
-            console.log(c);
+            //console.log(c);
             throw new Error('Unable to list Challenge');
         }
     }
@@ -84,7 +84,7 @@ export default class ChallengeService extends ApiCoreService{
         }
         `,{});
     }catch(c){
-        console.log(c);
+        //console.log(c);
         throw new Error('Unable to list Challenge');
     }
     }
@@ -113,7 +113,7 @@ export default class ChallengeService extends ApiCoreService{
                 }
               }`,{});
         }catch(c){
-            console.log(c);
+            //console.log(c);
             throw new Error('Unable to create Challenge');
         }
     }
@@ -150,7 +150,7 @@ export default class ChallengeService extends ApiCoreService{
           }
         }`,{});
     }catch(c){
-        console.log(c);
+       //console.log(c);
         throw new Error('Unable to update Challenge');
     }
     }
