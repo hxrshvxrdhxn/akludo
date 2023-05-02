@@ -1,33 +1,58 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import Header from '../components/Header'
 import { connect } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-
+import TransactionService from '../services/transaction.service';
+import LedgerService from '../services/ledger.service';
+import WalletService from '../services/wallet.service';
 
 function AddMoney(props) {
     const navigate = useNavigate();
     const [money, setMoney] = useState({ money: props.money });
-
+    const [transaction,setTransaction]=useState({status:'SUCCESS',gateway:'upi',gatewayMethod:'Razorpay',amount:money.money,txType:'TOP_UP'})
+    const [ledger,setLedger]=useState({fromUser:"64476ae2ccbeff3c46116058",toUser:"64476ae2ccbeff3c46116058",amount:money.money,txType:'TOP_UP'});
     const setValue = (e) => {
         setMoney({ [e.target.name]: e.target.value })
+        setTransaction({...transaction,amount:parseInt(e.target.value)});
+        setLedger({...ledger,amount:parseInt(e.target.value)});
     }
 
     const clickHandler = (e) => {
         setMoney({ [e.target.name]: e.target.value })
+        setTransaction({...transaction,amount:parseInt(e.target.value)});
+        setLedger({...ledger,amount:parseInt(e.target.value)});
     }
 
-    const submitAddMoney = (e) => {
+    const submitAddMoney = async(e) => {
         e.preventDefault();
         props.dispatch({ type: 'ADD_MONEY', money });
-        axios.post("http://akludo.com", money)
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-        navigate('/pay-option', { replace: true });
+        try{
+            //first create a transaction and then 
+            
+            let trans=await TransactionService.createTransaction(transaction);
+            console.log(trans);
+            setTransaction({...transaction,transactionId:trans.id});
+            console.log(ledger);
+            // create a  ledger
+            if(trans.id){
+                let led=await LedgerService.createLedger(ledger,trans.id);
+                //console.log(led);
+                //get the wallet using userid
+                let wallet=await WalletService.getWallet();
+                //console.log(wallet);
+                //updating wallet
+                if(led.id&&wallet[0].id){
+                    let updatedwallet=await WalletService.updateBalanceOrLedger(wallet[0].id,led.amount,JSON.stringify(led.id),'DEPOSIT');
+                    console.log(updatedwallet);
+                }
+            }
+            
+
+        }catch(c){
+            console.log(c.message);
+        }
+        //navigate('/pay-option', { replace: true });
     }
 
 
