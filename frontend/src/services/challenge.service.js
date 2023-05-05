@@ -58,7 +58,7 @@ export default class ChallengeService extends ApiCoreService{
         return await this.graphCall('withAuth.listChallenge', `
         {
           withAuth(token:"auto"){
-            listChallenge(criteria:"{\\"status\\":\\"${status}\\"}"){
+            listChallenge(criteria:"{\\"status\\":\\"${status}\\"}" limit:100){
               id
               challenger{
                 id

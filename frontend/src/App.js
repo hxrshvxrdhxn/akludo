@@ -15,6 +15,7 @@ import NewPassword from './pages/NewPassword';
 import OtpResetPassword from './pages/OtpResetPassword';
 import GaurdedAuth from './GaurdedAuth';
 import 'react-toastify/dist/ReactToastify.css';
+import { socket } from './socket'
 
 
 function App() { 

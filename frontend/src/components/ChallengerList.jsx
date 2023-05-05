@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ChallengeService from '../services/challenge.service';
-import Profile from './Profile';
+import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import UserService from '../services/user.service';
 import { socket } from '../socket';
 
-function ChanllenceList() {
-    const [openChallenges, setOpenChallenges] = useState({});
-    const [runningChallenges, setRunningChallenges] = useState({});
+function ChanllenceList(props) {
+    const [openChallenges, setOpenChallenges] = useState([]);
+    const [runningChallenges, setRunningChallenges] = useState([]);
     const [challenge, setChallenge] = useState({ challenger: "", amount: 0, contender: "", status: '', roomCode: "", game: "" });
 
-    useState(() => {
+
+    useEffect(() => {
+        console.log("first")
         async function test() {
             try {
                 let user = await UserService.getUser();
@@ -38,7 +40,6 @@ function ChanllenceList() {
         try {
             let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
             console.log(data);
-            window.location.reload();
         } catch (c) {
             console.log(c);
             toast.error(c.message);
@@ -67,7 +68,21 @@ function ChanllenceList() {
                 toast.error('Please enter amount should be Greater then ₹50');
                 return false
             } else {
-                let chall = await ChallengeService.createChallenge(challenge);
+                await ChallengeService.createChallenge(challenge);
+                console.log("challenge", challenge)
+                console.log("before openChallenges", openChallenges)
+               // openChallenges.push(challenge);
+                props.dispatch({ type: 'CHALLENGE_OPEN', openChallenges });
+
+                // socket.on('challenge', challenge => {
+                //     console.log("challenge Update Socket before", openChallenges)
+                //     challenge.push({ id: "644a6951afb67ba1239cac94", challenger: { id: '643e502e746d5ecbaa4936b8', name: '8743911233' }, contender: { id: '643ce3a3f1aa6f9140a5bbf0', name: 'Umarpahat' }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
+                //     props.dispatch({ type: 'CHALLENGE_OPEN', openChallenges });
+                //     console.log("challenge Update Socket after", openChallenges)
+
+                // });
+
+                console.log("after openChallenges", openChallenges)
                 e.target.reset();
             }
             //````1===----------- to do list & add all challnges via web socket--==---------=--===------------   
@@ -78,7 +93,22 @@ function ChanllenceList() {
         }
     }
 
-    console.log("Umar===========>");
+    useEffect(() => {
+        async function umar(e) {
+            e.preventDefault();
+            await ChallengeService.umar(challenge);
+            socket.on("challenge", (openChallenges) => {
+                console.log("Umar Socket before")
+
+                //openChallenges.push({ id: "644a6951afb67ba1239cac94", challenger: { id: '643e502e746d5ecbaa4936b8', name: '8743911233' }, contender: { id: '643ce3a3f1aa6f9140a5bbf0', name: 'Umarpahat' }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
+                props.dispatch({ type: 'CHALLENGE_OPEN', openChallenges });
+                console.log("inner Update Socket before", openChallenges)
+
+                console.log("Umar Socket after")
+            });
+        }
+
+    }, [socket])
 
     return (
         <>
@@ -101,12 +131,11 @@ function ChanllenceList() {
                 <div className=''>
                     <ul className='challenge-list'>
 
-                        {openChallenges && !!openChallenges.length ? openChallenges.map((item) => {
-                            return (<li>
-                                <div> <img className='profile-small' src='../images/profile.png' alt='Sunil Kumar' /> {item.contender.name}</div> <div className='green-text'>₹ {item.amount}</div>  <button className='btn-play' onClick={() => { playGame(item) }}>Play</button>
+                        {openChallenges && !!openChallenges.length ? openChallenges?.map((item) => {
+                            return (<li key={item?.id}>
+                                <div> <img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text'>₹ {item.amount}</div>  <button className='btn-play' onClick={() => { playGame(item) }}>Play</button>
                             </li>)
-                        }) : "LOADING"}
-
+                        }) : <div className='text-center white-bg'><img src='../images/loader.gif' /></div>}
 
                     </ul>
 
@@ -119,11 +148,11 @@ function ChanllenceList() {
                 </div>
                 <div className=''>
                     <ul className='challenge-list running'>
-                        {(runningChallenges && !!runningChallenges.length) ? runningChallenges.map((item) => {
-                            return (<li>
-                                <div className='direction'><img className='profile-small' src='../images/profile.png' alt={item.contender.name} /> {item.contender.name}</div> <div className='green-text direction'><img src='../images/vs.png' alt='vice-versa' /> ₹ {item.amount}</div>  <div className='direction'> <img className='profile-small' src='../images/profile.png' alt={item.challenger.name} />  {item.challenger.name}</div>
+                        {(runningChallenges && !!runningChallenges.length) ? runningChallenges?.map((item) => {
+                            return (<li key={item?.id}>
+                                <div className='direction'><img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text direction'><img src='../images/vs.png' alt='vice-versa' /> ₹ {item?.amount}</div>  <div className='direction'> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} />  {item?.challenger?.name}</div>
                             </li>)
-                        }) : "LOADING"}
+                        }) : <div className='text-center white-bg'><img src='../images/loader.gif' /></div>}
                     </ul>
 
                 </div>
@@ -132,4 +161,11 @@ function ChanllenceList() {
     )
 }
 
-export default ChanllenceList
+const mapStateToProps = (state) => {
+    return {
+        challenge: state.challenge,
+        openChallenges: state.openChallenges
+    };
+}
+
+export default connect(mapStateToProps)(ChanllenceList);
