@@ -101,14 +101,14 @@ exports = module.exports = class ResolverRoot {
         }
         if (otp !== '000000' && parsed.otp !== otp) throw new Error('Invalid OTP supplied.');
         if (+new Date() - parsed.ts > 60000 * 3) throw new Error('OTP is expired.');
-
         let user = await _db.User.findOne({'phones.number': parsed.mobile});
         if (!user) {
+            var countusers=await _db.User.count({})
             var userId = new mongoose.Types.ObjectId();
             console.log("USER--id",userId);
             user = new _db.User({
                 _id:userId,
-                name: parsed.mobile,
+                name: ('User@'+333+parseInt(countusers)),
                 gender: EnumGender.OTHER,
                 emails: [],
                 phones: [{
