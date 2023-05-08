@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import UserService from '../services/user.service';
 import { socket } from '../socket';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 function ChanllenceList(props) {
     const [openChallenges, setOpenChallenges] = useState([]);
@@ -78,8 +80,6 @@ function ChanllenceList(props) {
                     openChallenges.push({ id: challenge.id, challenger: { id: challenge.challenger.id, name: challenge.challenger }, contender: { id: user.id, name: challenge.contender.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
                     props.dispatch({ type: 'CHALLENGE_OPEN', openChallenges });
                     console.log("after openChallenges------>", openChallenges)
-                    let runChallenge = await ChallengeService.listChallengeByStatus('STARTED');
-                    setRunningChallenges(runChallenge);
                     let openChallenge = await ChallengeService.listChallengeByStatus('CREATED');
                     setOpenChallenges(openChallenge);
                     e.target.reset();
@@ -109,7 +109,38 @@ function ChanllenceList(props) {
 
     // }, [socket])
     const ChallegeListItem = ({ item }) => (<>
-        <div> <img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text'>₹ {item.amount}</div>  <button className='btn-play' onClick={() => { playGame(item) }}>Play</button>
+        <div> <img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text'>₹ {item.amount}</div>
+        <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
+        {close => (<div className="modal">
+        <button className="close" onClick={close}>
+          &times;
+        </button>
+        <div className="header">Title </div>
+        <div className="content">
+  content 
+        </div>
+        <div className="actions">
+          <Popup
+            trigger={<button className="button"> Trigger </button>}
+            position="top center"
+            nested
+          >
+            <span>
+              Pop over
+            </span>
+          </Popup>
+          <button
+            className="button"
+            onClick={() => {
+              console.log('modal closed ');
+              close();
+            }}
+          >
+            close modal
+          </button>
+        </div>
+      </div>)}
+        </Popup>
     </>)
 
     return (
@@ -133,8 +164,8 @@ function ChanllenceList(props) {
                 <div className=''>
                     <ul className='challenge-list'>
 
-                        {openChallenges && !!openChallenges.length ? openChallenges?.map((item,i) => {
-                            return (<li key={i}  className='newItem'>
+                        {openChallenges && !!openChallenges.length ? openChallenges?.map((item, i) => {
+                            return (<li key={i} className='newItem'>
                                 <ChallegeListItem item={item} />
                             </li>)
                         }) : <div className='text-center white-bg'><img src='../images/loader.gif' /></div>}
