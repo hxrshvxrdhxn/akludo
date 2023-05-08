@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../components/Header'
 import { connect } from 'react-redux';
 
-function Earn() {
+function Refer() {
     return (
         <>
             <Header />
@@ -70,4 +70,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps)(Earn);
+export default connect(mapStateToProps)(Refer);

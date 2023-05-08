@@ -5,7 +5,6 @@ import GameListing from "./pages/GameListing";
 import Withdraw from './pages/Withdraw';
 import AddMoney from './pages/AddMoney';
 import ChoosePayOption from './pages/ChoosePayOption';
-import Earn from './pages/Earn';
 import UserProfile from './pages/UserProfile';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -15,6 +14,8 @@ import NewPassword from './pages/NewPassword';
 import OtpResetPassword from './pages/OtpResetPassword';
 import GaurdedAuth from './GaurdedAuth';
 import 'react-toastify/dist/ReactToastify.css';
+import { socket } from './socket'
+import Refer from './pages/Refer';
 
 
 function App() { 
@@ -27,7 +28,7 @@ function App() {
           <Route path="/withdraw" element={<GaurdedAuth comp={<Withdraw />} />} />
           <Route path="/deposit" element={<GaurdedAuth comp={<AddMoney />}  />} />
           <Route path="/pay-option" element={<GaurdedAuth comp={<ChoosePayOption />}  />} />
-          <Route path="/earn" element={<GaurdedAuth comp={<Earn />}  />} />
+          <Route path="/refer" element={<GaurdedAuth comp={<Refer />}  />} />
           <Route path="/user-profile"  element={<GaurdedAuth comp={<UserProfile />}  />} />
           <Route path="/login" element={<Login />} />
           <Route path='/register' element={<Register />} />
