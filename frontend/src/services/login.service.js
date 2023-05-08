@@ -49,4 +49,21 @@ export default class Login extends ApiCoreService{
         }
     }
 
+    static async logout(){
+        try {
+          return await this.graphCall('logout',`
+            {
+              logout{
+                success
+                id
+                token
+              }
+            }`, {}
+          )
+      } catch (c) {
+        console.log(c);
+        throw new Error('Unable to logout');
+      }
+    }
+
 }

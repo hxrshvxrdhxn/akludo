@@ -15,7 +15,6 @@ import NewPassword from './pages/NewPassword';
 import OtpResetPassword from './pages/OtpResetPassword';
 import GaurdedAuth from './GaurdedAuth';
 import 'react-toastify/dist/ReactToastify.css';
-import { socket } from './socket'
 
 
 function App() { 
@@ -33,9 +32,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/otp' element={<GaurdedAuth comp={<Otp />}  />} />
-          <Route path='/reset-password' element={<GaurdedAuth comp={<ResetPassword />}  />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/new-password' element={<NewPassword />} />
-          <Route path='/otp-reset-password' element={<GaurdedAuth comp={<OtpResetPassword />}   />} />
+          <Route path='/otp-reset-password' element={<OtpResetPassword />} />
         </Routes>
       </BrowserRouter>
     </>

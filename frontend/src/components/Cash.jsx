@@ -5,13 +5,10 @@ import WalletService from '../services/wallet.service';
 
 
 
-const handleClick = (e) => {
-    console.log('this is:', e);
-};
 function Cash(props) {
 
     const [wallet,setWallet]=useState({});
-
+    //add check for login if logged then only make api call and display wallet balance-------------- 
     useEffect(()=>{
         async function getWallet(){
             let wallt=await WalletService.getWallet();
