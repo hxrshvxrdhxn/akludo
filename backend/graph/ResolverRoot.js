@@ -5,6 +5,7 @@ const MutationWithAuthResolver = require('./resolvers/MutationWithAuthResolver')
 const {enc, dec} = require('../bootloader/security/StatelessMiddleware');
 const EnumUserStatus = require('../util/enums/EnumUserStatus');
 const EnumGender = require('../util/enums/EnumGender');
+var mongoose = require('mongoose');
 
 
 /**
@@ -103,7 +104,10 @@ exports = module.exports = class ResolverRoot {
 
         let user = await _db.User.findOne({'phones.number': parsed.mobile});
         if (!user) {
+            var userId = new mongoose.Types.ObjectId();
+            console.log("USER--id",userId);
             user = new _db.User({
+                _id:userId,
                 name: parsed.mobile,
                 gender: EnumGender.OTHER,
                 emails: [],
@@ -121,8 +125,8 @@ exports = module.exports = class ResolverRoot {
                     sendNotifications: true
                 },
                 socialProfiles: [],
-                wallet: (await (new _db.Wallet({})).save())._id,
-                kyc:(await (new _db.KYC({})).save())._id,                
+                wallet: (await (new _db.Wallet({user:{_id:userId}})).save())._id,
+                kyc:(await (new _db.KYC({user:{_id:userId}})).save())._id,                
                 createdAt: +new Date(),
                 updatedAt: +new Date()
             });

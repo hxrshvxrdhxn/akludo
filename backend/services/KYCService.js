@@ -13,7 +13,6 @@ const RBACPermissionService = require('./RBACPermissionService');
 class KYCService {
 
     static async findOne(id,user=null){
-        console.log("id",id);
         if (!(await RBACPermissionService.check(id, 'fetch.kyc', user, _db.KYC, null, null))) throw new Error('You do not have permission to do this operation');
         // validate
         if (!id) return null;
@@ -23,7 +22,7 @@ class KYCService {
 
         // fetch
         const foundkyc = await _db.KYC.findOne({_id: id});
-        console.log(foundkyc);
+        console.log("SERVICE FOUND KYC ---------",foundkyc);
         return await KYCInterceptor.afterKYCFind(id, foundkyc, user);
     }
     

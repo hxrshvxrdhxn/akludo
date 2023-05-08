@@ -13,6 +13,7 @@ class UserHook extends Hook {
 
     onUserCreate(newObj) {
         // called when User is created.
+        console.log("user created");
     }
 
     onUserUpdate({oldObj, newObj}) {

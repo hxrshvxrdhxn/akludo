@@ -1,4 +1,4 @@
-const UserService = require('../../services/WalletService');
+const UserService = require('../../services/UserService');
 // const RoleService = require('../../services/RoleService');
 // const KYCService = require('../../services/KYCService');
 
