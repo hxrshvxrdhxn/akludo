@@ -3,28 +3,30 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux';
 import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom';
+import Login from '../services/login.service';
 
 
 function Register(props) {
     const navigate = useNavigate();
-    const [phone, setPhone] = useState()
+    const [phone, setPhone] = useState();
 
     const handler = (e) => {
         console.log(e.target.value)
         setPhone({ [e.target.name]: e.target.value })
     }
 
-    const submitRegister = (e) => {
+    const submitRegister = async(e) => {
         e.preventDefault();
-        props.dispatch({ type: 'PHONE_NUMBER', phone });
-        axios.post("http://akludo.com", phone)
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-        navigate('/otp-reset-password', { replace: true });
+        props.dispatch({ type: 'PHONE_NUMBER', phone});
+        try{
+            let data=await Login.sendOtp(phone);
+            console.log(data);
+            let ctx=data.ctx;
+            console.log(ctx);
+            navigate('/otp-reset-password', { state:{context:ctx},replace: true });
+        }catch(c){
+            console.log(c);
+        }
     }
     return (
         <>
@@ -49,7 +51,7 @@ function Register(props) {
 
 const mapStateToProps = (state) => {
     return {
-        phone: state.phone
+        phone: state.phone,
     };
 }
 
