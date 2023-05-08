@@ -22,6 +22,7 @@ class Validator {
                 }
             });
         }
+        console.log(validationResult)
         return validationResult;
     }
 

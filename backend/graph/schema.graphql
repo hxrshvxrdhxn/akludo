@@ -266,7 +266,7 @@ type KYC {
     "stored file type"
     fileType:EnumDocType
     "User Id"
-    user:String
+    user:User
     "profile photo"
     profilePhoto:StoredFile
     "Document number/id"
@@ -504,7 +504,7 @@ type KvPair {
 type FabricateEntityMutation {
     createAuthResponse(success: Boolean, token: String): AuthResponse
     createLanguage(locale: String, name: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Language
-    createUser(name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
+    createUser(name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String, kyc:String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
     createCountry(name: String, code: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Country
     createWallet(user: String, bal: Float, ledger: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Wallet
     createLedger(fromUser: String, toUser: String, amount: Float, txType: EnumTransactionType, linkedBankTransaction: String, linkedChallenge: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Ledger
