@@ -22,7 +22,7 @@ class Validator {
                 }
             });
         }
-        console.log(validationResult)
+
         return validationResult;
     }
 
@@ -40,7 +40,7 @@ class Validator {
             set error(error) {
                 if (error && error instanceof ValidationResult) {
                     error.errors.forEach(e => this._errors.push(e));
-                } else if (error && error.length) this._errors.push(error);
+                } else if (error && error.length){error.forEach(e=>{if(!e instanceof ValidationResult)this._errors.push(error)})};      //what should i write in the else part 
             }
 
             get isValid() {

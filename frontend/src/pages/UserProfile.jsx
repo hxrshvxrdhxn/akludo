@@ -21,7 +21,7 @@ function UserProfile(props) {
                 let user = await UserService.getUser();
                 console.log(user);
                 Setuser(user);
-                setUpdateProfile({ username: user.name ? user.name : updateProfile.username, phone: user.phones && user.phones.length ? user.phones[0].number : updateProfile.phone, email: user.emails && user.emails.length ? user.emails[0].id : updateProfile.email, aadhaar: '' });
+                setUpdateProfile({ username: user.name ? user.name : updateProfile.username, phone: user.phones && user.phones.length ? user.phones[0].number : updateProfile.phone, email: user.emails && !!user.emails.length ? user.emails[0].address : updateProfile.email });
             } catch (c) {
                 console.log(c);
                 toast.error(c.message);
@@ -37,8 +37,9 @@ function UserProfile(props) {
         try {
             console.log(updateProfile);
             if (user.id) {
-                let data = await UserService.updateUser({ id: user.id, name: updateProfile.username });   ///to do email and aadhar card
+                let data = await UserService.updateUser({ id: user.id, name: updateProfile.username,email:updateProfile.email });   
                 console.log(data);
+                toast.error("user updated")
             }
         } catch (c) {
             console.log(c);

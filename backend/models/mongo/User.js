@@ -65,6 +65,7 @@ class User extends MongoDbModel {
             }],
             wallet: {type: mongoose.Schema.Types.ObjectId, ref: 'Wallet'},
             kyc:{type:mongoose.Schema.Types.ObjectId,ref:'KYC'},
+            referral:{type:mongoose.Schema.Types.ObjectId,ref:'Referral'},
             defaultRole: {type: mongoose.Schema.Types.ObjectId, ref: 'Role'},
             createdAt: Number,
             updatedAt: Number,

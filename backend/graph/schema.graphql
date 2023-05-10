@@ -117,6 +117,11 @@ enum EnumDocType{
     OTHER
 }
 
+enum EnumReferralStatus {
+    ENABLED
+    DISABLED
+}
+
 "Defines the language available in system"
 type Language {
     id:String
@@ -250,6 +255,8 @@ type User {
     wallet: Wallet
     "User's KYC Details"
     kyc:KYC
+    "User's referral Code and referral details"
+    referral: Referral
     "When no planOrder attached this is the default Role."
     defaultRole: Role
     createdAt: String
@@ -277,6 +284,37 @@ type KYC {
     email:Email
     "isverified"
     isKYCApproved:Boolean
+    "updated by"
+    updatedBy:User
+    "updated At"
+    updatedAt:String
+    "created At"
+    createdAt: String
+    "created By"
+    createdBy: User
+}
+
+"Referral Code for User"
+type Referral {
+    id:String,
+    "referredby"
+    referrer:User,
+    "User who used this referral"
+    referred:[User],
+    "referral earning"
+    earning:Float,
+    "referral Rate "
+    rate:Float,
+    "User count"
+    count:Float,
+    "status ask if needed"
+    status:EnumReferralStatus,
+    "referral Code ask if needed or id an be used if needed "
+    code:String,
+    "last used at ask if needed "
+    lastUsed:User,
+    "last Used At ask if needed"
+    lastUsedAt:String,
     "updated by"
     updatedBy:User
     "updated At"
@@ -482,7 +520,7 @@ type DeleteEntityMutation {
 type UpdateEntityMutation {
     updateAuthResponse(success: Boolean, token: String, id: String): AuthResponse
     updateLanguage(id: String, locale: String, name: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Language
-    updateUser(id: String, name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
+    updateUser(id: String, name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String,referral:String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
     updateCountry(id: String, name: String, code: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Country
     updateWallet(id: String, user: String, bal: Float, ledger: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Wallet
     updateLedger(id: String, fromUser: String, toUser: String, amount: Float, txType: EnumTransactionType, linkedBankTransaction: String, linkedChallenge: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Ledger
@@ -494,6 +532,7 @@ type UpdateEntityMutation {
     updateUpdateHistory(id: String, model: String, changelog: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): UpdateHistory
     updateConfig(id: String, name: String, configType: EnumConfigType, value: String, selectOptions: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Config
     updateKYC(id:String, document:StoredFileInput, fileType:EnumDocType, user:String, profilePhoto:StoredFileInput, phone:[PhoneNumberInput], email:[EmailInput], isKYCApproved:Boolean, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String ):KYC
+    updateReferral(id:String,referrer:String,referred:[String],earning:Float,rate:Float,count:Float,status:EnumReferralStatus,code:String,lastUsed:String,lastUsedAt:String,updatedBy:String,updatedAt:String,createdAt: String,createdBy: String):Referral
 }
 
 type KvPair {
@@ -504,7 +543,7 @@ type KvPair {
 type FabricateEntityMutation {
     createAuthResponse(success: Boolean, token: String): AuthResponse
     createLanguage(locale: String, name: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Language
-    createUser(name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String, kyc:String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
+    createUser(name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String, kyc:String,referral:String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
     createCountry(name: String, code: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Country
     createWallet(user: String, bal: Float, ledger: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Wallet
     createLedger(fromUser: String, toUser: String, amount: Float, txType: EnumTransactionType, linkedBankTransaction: String, linkedChallenge: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Ledger
@@ -515,6 +554,7 @@ type FabricateEntityMutation {
     createResource(description: String, urn: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Resource
     createUpdateHistory(model: String, changelog: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): UpdateHistory
     createConfig(name: String, configType: EnumConfigType, value: String, selectOptions: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Config
+    createReferral(referrer:String,referred:[String],earning:Float,rate:Float,count:Float,status:EnumReferralStatus,code:String,lastUsed:String,lastUsedAt:String,updatedBy:String,updatedAt:String,createdAt: String,createdBy: String):Referral
 }
 
 type Query {

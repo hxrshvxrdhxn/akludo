@@ -103,12 +103,12 @@ exports = module.exports = class ResolverRoot {
         if (+new Date() - parsed.ts > 60000 * 3) throw new Error('OTP is expired.');
         let user = await _db.User.findOne({'phones.number': parsed.mobile});
         if (!user) {
-            var countusers=await _db.User.count({})
+            var countusers=parseInt(await _db.User.count({}))+3333
             var userId = new mongoose.Types.ObjectId();
             console.log("USER--id",userId);
             user = new _db.User({
                 _id:userId,
-                name: ('User@'+333+parseInt(countusers)),
+                name: ('User@'+countusers),
                 gender: EnumGender.OTHER,
                 emails: [],
                 phones: [{
@@ -126,7 +126,8 @@ exports = module.exports = class ResolverRoot {
                 },
                 socialProfiles: [],
                 wallet: (await (new _db.Wallet({user:{_id:userId}})).save())._id,
-                kyc:(await (new _db.KYC({user:{_id:userId}})).save())._id,                
+                kyc:(await (new _db.KYC({user:{_id:userId}})).save())._id,    
+                referral:(await (new _db.Referral({referrer:{_id:userId}})).save())._id,            
                 createdAt: +new Date(),
                 updatedAt: +new Date()
             });

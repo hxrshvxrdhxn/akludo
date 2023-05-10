@@ -17,6 +17,7 @@ class UserHook extends Hook {
     }
 
     onUserUpdate({oldObj, newObj}) {
+        //console.log("user updated ", oldObj,newObj);
         // called when User is updated.
     }
 

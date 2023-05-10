@@ -5,6 +5,7 @@ const UserDTO = require('../../util/beans/UserDTO');
 const CountryDTO = require('../../util/beans/CountryDTO');
 const WalletDTO = require('../../util/beans/WalletDTO');
 const LedgerDTO = require('../../util/beans/LedgerDTO');
+const ReferralDTO = require('../../util/beans/ReferralDTO');
 const BankTransactionDTO = require('../../util/beans/BankTransactionDTO');
 const ChallengeDTO = require('../../util/beans/ChallengeDTO');
 const GameDTO = require('../../util/beans/GameDTO');
@@ -20,6 +21,7 @@ const UserService = require('../../services/UserService');
 const CountryService = require('../../services/CountryService');
 const WalletService = require('../../services/WalletService');
 const LedgerService = require('../../services/LedgerService');
+const ReferralService = require('../../services/ReferralService');
 const BankTransactionService = require('../../services/BankTransactionService');
 const ChallengeService = require('../../services/ChallengeService');
 const GameService = require('../../services/GameService');
@@ -49,6 +51,7 @@ class UpdateEntityMutationResolver {
         this.GameResolver = require('./GameResolver');
         this.RoleResolver = require('./RoleResolver');
         this.ResourceResolver = require('./ResourceResolver');
+        this.ReferralResolver = require('./ReferralResolver')
         this.UpdateHistoryResolver = require('./UpdateHistoryResolver');
         this.ConfigResolver = require('./ConfigResolver');
         this.KYCResolver = require('./KYCResolver');
@@ -79,8 +82,8 @@ class UpdateEntityMutationResolver {
 
 
 
-    async updateUser({id, name, gender, emails, phones, naiveAuthPass, status, options, picture, socialProfiles, wallet, kyc, defaultRole, createdAt, updatedAt, createdBy, updatedBy}, {data}) {
-        const dto = new UserDTO({name, gender, emails, phones, naiveAuthPass, status, options, picture, socialProfiles, wallet, kyc, defaultRole, createdAt, updatedAt, createdBy, updatedBy});
+    async updateUser({id, name, gender, emails, phones, naiveAuthPass, status, options, picture, socialProfiles, wallet, kyc, referral, defaultRole, createdAt, updatedAt, createdBy, updatedBy}, {data}) {
+        const dto = new UserDTO({name, gender, emails, phones, naiveAuthPass, status, options, picture, socialProfiles, wallet, referral, kyc, defaultRole, createdAt, updatedAt, createdBy, updatedBy});
         const result = await UserService.update(id, dto, this._user); //{updateResult, updatedDbObj}
         if (result && result.updateResult) {
             data.updateResult = result.updateResult;
@@ -210,15 +213,24 @@ class UpdateEntityMutationResolver {
     }
 
     async updateKYC({id, document, fileType, user, profilePhoto, phone, email, isKYCApproved,createdAt, updatedAt, createdBy, updatedBy},{data}){
-        console.log("attributes:-",{id, document, fileType, user, profilePhoto, phone, email, isKYCApproved,createdAt, updatedAt, createdBy, updatedBy})
         const dto = new KYCDTO({id, document, fileType, user, profilePhoto, phone, email, isKYCApproved,createdAt, updatedAt, createdBy, updatedBy});  // a dto to 
         const result = await KYCService.update(id, dto, this._user); //{updateResult, updatedDbObj}
-        console.log(result);
         if (result && result.updateResult) {
             data.updateResult = result.updateResult;
             data.updateResult_Config = result.updateResult;
             return new this.KYCResolver(result.updatedDbObj, this._user);
         } else throw new Error('Unable to update');  
+    }
+
+    async updateReferral({id, referrer, referred, earning, rate, count, status, lastUsed, lastUsedAt, createdAt, updatedAt, createdBy, updatedBy}, {data}) {
+        const dto = new ReferralDTO({id, referrer, referred, earning, rate, count, status, lastUsed, lastUsedAt, createdAt, updatedAt, createdBy, updatedBy});
+        const result = await ReferralService.update(id, dto, this._user); //{updateResult, updatedDbObj}
+        console.log(result);
+        if (result && result.updateResult) {
+            data.updateResult = result.updateResult;
+            data.updateResult_Referral = result.updateResult;
+            return new this.ReferralResolver(result.updatedDbObj, this._user);
+        } else throw new Error('Unable to update');
     }
 }
 

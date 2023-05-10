@@ -5,6 +5,7 @@ const UserDTO = require('../../util/beans/UserDTO');
 const CountryDTO = require('../../util/beans/CountryDTO');
 const WalletDTO = require('../../util/beans/WalletDTO');
 const LedgerDTO = require('../../util/beans/LedgerDTO');
+const ReferralDTO = require('../../util/beans/ReferralDTO');
 const BankTransactionDTO = require('../../util/beans/BankTransactionDTO');
 const ChallengeDTO = require('../../util/beans/ChallengeDTO');
 const GameDTO = require('../../util/beans/GameDTO');
@@ -19,6 +20,7 @@ const UserService = require('../../services/UserService');
 const CountryService = require('../../services/CountryService');
 const WalletService = require('../../services/WalletService');
 const LedgerService = require('../../services/LedgerService');
+const ReferralService = require('../../services/ReferralService');
 const BankTransactionService = require('../../services/BankTransactionService');
 const ChallengeService = require('../../services/ChallengeService');
 const GameService = require('../../services/GameService');
@@ -42,6 +44,7 @@ class FabricateEntityMutationResolver {
         this.CountryResolver = require('./CountryResolver');
         this.WalletResolver = require('./WalletResolver');
         this.LedgerResolver = require('./LedgerResolver');
+        this.ReferralResolver=require('./ReferralResolver');
         this.BankTransactionResolver = require('./BankTransactionResolver');
         this.ChallengeResolver = require('./ChallengeResolver');
         this.GameResolver = require('./GameResolver');
@@ -77,6 +80,7 @@ class FabricateEntityMutationResolver {
                          socialProfiles,
                          wallet,
                          kyc,
+                         referral,
                          defaultRole,
                          createdAt,
                          updatedAt,
@@ -95,6 +99,7 @@ class FabricateEntityMutationResolver {
             socialProfiles,
             wallet,
             kyc,
+            referral,
             defaultRole,
             createdAt,
             updatedAt,

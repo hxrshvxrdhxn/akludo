@@ -28,6 +28,7 @@ class WithAuthResolver {
         this.CountryResolver = require('./CountryResolver');
         this.WalletResolver = require('./WalletResolver');
         this.LedgerResolver = require('./LedgerResolver');
+        this.ReferralResolver = require('./ReferralResolver');
         this.BankTransactionResolver = require('./BankTransactionResolver');
         this.ChallengeResolver = require('./ChallengeResolver');
         this.GameResolver = require('./GameResolver');
@@ -97,7 +98,8 @@ class WithAuthResolver {
     async getUser({id}) {
         const user = await this._fullUser();
         const doc = await UserService.findOne(id, user);
-        return doc ? new this.UserResolver(doc, user) : null;
+        console.log("this is user resolver:-",new this.UserResolver(doc, user));
+        return doc ? new this.UserResolver(doc, user): null;
     }
 
 

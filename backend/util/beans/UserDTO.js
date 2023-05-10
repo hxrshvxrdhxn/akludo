@@ -4,7 +4,6 @@ class UserDTO extends Bean {
 
     constructor(...args) {
         super(...args);
-        console.log("llllllll   ",this._payload)
         this._payload = args[0] || {};
         this._orig_id = this._payload.id;
         this._orig_name = this._payload.name;
@@ -17,6 +16,7 @@ class UserDTO extends Bean {
         this._orig_picture = this._payload.picture;
         this._orig_socialProfiles = this._payload.socialProfiles;
         this._orig_wallet = this._payload.wallet;
+        this._orig_referral=this._payload.referral;
         this._orig_kyc=this._payload.kyc;
         this._orig_defaultRole = this._payload.defaultRole;
         this._orig_createdAt = this._payload.createdAt;
@@ -121,6 +121,14 @@ class UserDTO extends Bean {
         this._payload.kyc = kyc;
     }
 
+    get referral() {
+        return this._payload.referral;
+    }
+
+    set referral(referral) {
+        this._payload.referral = referral;
+    }
+    
     get defaultRole() {
         return this._payload.defaultRole;
     }

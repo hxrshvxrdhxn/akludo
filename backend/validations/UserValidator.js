@@ -75,6 +75,13 @@ class UserValidator extends Validator {
         }
     }
 
+    Referral(referral) {
+        if (referral) {
+            return _db.User.convertToObjectId(referral) ? false : 'Invalid ID passed for User->refer. Please pass a valid Object id.';
+        } else {
+            return false;
+        }
+    }
 
     defaultRole(defaultRole) {
         if (defaultRole) {

@@ -2,6 +2,7 @@ const WalletService = require('../../services/WalletService');
 const RoleService = require('../../services/RoleService');
 const UserService = require('../../services/UserService');
 const KYCService = require('../../services/KYCService');
+const ReferralService = require('../../services/ReferralService');
 
 /*
 * Resolver for type User
@@ -10,7 +11,7 @@ const KYCService = require('../../services/KYCService');
 class UserResolver {
 
     constructor(data, user) {
-        if (!data) throw new Error('Data is required in resolver');
+        if (!data) throw new Error('Data is required in resolver/The User Id passed does not exist');
         this.data = data;
         this._user = user;
         // Inline imports to avoid cyclic dependency issue
@@ -20,6 +21,7 @@ class UserResolver {
         this.StoredFileResolver = require('./StoredFileResolver');
         this.SocialProfileResolver = require('./SocialProfileResolver');
         this.WalletResolver = require('./WalletResolver');
+        this.ReferralResolver=require('./ReferralResolver');
         this.KYCResolver=require('./KYCResolver');
         this.RoleResolver = require('./RoleResolver');
         this.UserResolver = require('./UserResolver');
@@ -41,11 +43,13 @@ class UserResolver {
 
 
     async emails() {
+        console.log("emails:-",this.data.emails);
         return (this.data.emails || []).map(doc => new this.EmailResolver(doc, this._user));
     }
 
 
     async phones() {
+        console.log("phone:-",this.data.phones)
         return (this.data.phones || []).map(doc => new this.PhoneNumberResolver(doc, this._user));
     }
 
@@ -85,6 +89,12 @@ class UserResolver {
     async kyc(){
         const found = await KYCService.findOne(this.data.kyc, this._user);
         return found ? new this.KYCResolver(found, this._user) : null;
+    }
+
+    async referral(){
+        const found = await ReferralService.findOne(this.data.referral, this._user);
+        console.log("Referral found:-",found);
+        return found ? new this.ReferralResolver(found, this._user) : null;
     }
 
     async defaultRole() {
