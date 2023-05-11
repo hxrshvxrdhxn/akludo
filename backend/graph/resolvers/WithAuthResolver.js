@@ -11,6 +11,7 @@ const RoleService = require('../../services/RoleService');
 const ResourceService = require('../../services/ResourceService');
 const UpdateHistoryService = require('../../services/UpdateHistoryService');
 const ConfigService = require('../../services/ConfigService');
+const ReferralService = require('../../services/ReferralService');
 
 
 /**
@@ -270,6 +271,23 @@ class WithAuthResolver {
         const user = await this._fullUser();
         const doc = await ConfigService.findOne(id, user);
         return doc ? new this.ConfigResolver(doc, user) : null;
+    }
+
+    async listReferral({criteria, limit, offset}, {data}) {
+        return [];
+        // const listResp = await WalletService.list(this._parseCriteria(criteria), limit, offset, await this._fullUser());
+        // //{docs, total, limit, offset}
+        // data[`listWalletTotal`] = data.total = listResp.total;
+        // data[`listWalletLimit`] = data.limit = listResp.limit;
+        // data[`listWalletOffset`] = data.offset = listResp.offset;
+        // const user = await this._fullUser();
+        // return listResp.docs.map(doc => new this.WalletResolver(doc, user));
+    }
+
+    async getReferral({id}) {
+        const user = await this._fullUser();
+        const doc = await ReferralService.findOne(id, user);
+        return doc ? new this.ReferralResolver(doc, user) : null;
     }
 
 }

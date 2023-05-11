@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import UserService from '../services/user.service';
 import { ToastContainer, toast } from 'react-toastify';
 import Profile from '../components/Profile';
+import ReferralService from '../services/referral.service';
 
 
 function UserProfile(props) {
 
-    const [updateProfile, setUpdateProfile] = useState({ username: '', phone: props.phone ? props.phone : '', email: '', aadhaar: '' });
+    const [updateProfile, setUpdateProfile] = useState({ username: '', phone: props.phone ? props.phone : '', email: '',referral:{} });
     const [user, Setuser] = useState({});
     const handler = (e) => {
         console.log(e.target.value)
@@ -21,7 +22,7 @@ function UserProfile(props) {
                 let user = await UserService.getUser();
                 console.log(user);
                 Setuser(user);
-                setUpdateProfile({ username: user.name ? user.name : updateProfile.username, phone: user.phones && user.phones.length ? user.phones[0].number : updateProfile.phone, email: user.emails && !!user.emails.length ? user.emails[0].address : updateProfile.email });
+                setUpdateProfile({ username: user.name ? user.name : updateProfile.username, phone: user.phones && user.phones.length ? user.phones[0].number : updateProfile.phone, email: user.emails && !!user.emails.length ? user.emails[0].address : updateProfile.email, referral:user.referral?user.referral:{} });
             } catch (c) {
                 console.log(c);
                 toast.error(c.message);
@@ -105,7 +106,7 @@ function UserProfile(props) {
                         <div className="left-img"> <img src='../images/refferal.png' alt='Games Played' /></div>
                         <div className="right-text" >
                             <div className='font13'>Referral Earning</div>
-                            <div className='mt5 font13'><strong>0.00</strong></div>
+                            <div className='mt5 font13'><strong>{updateProfile.referral&&updateProfile.referral.earning?updateProfile.referral.earning:'unable to fetch'}</strong></div>
                         </div>
                     </div>
                     <div className='img-text-align mt10'>

@@ -35,6 +35,15 @@ export default class UserService extends ApiCoreService {
                     socialProfiles{
                       url
                     }
+                    referral{
+                      id
+                      referrer{
+                        id       
+                      }
+                      earning
+                      rate
+                      count  
+                    }
                     wallet{
                       id
                       user{

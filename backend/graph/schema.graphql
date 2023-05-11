@@ -503,6 +503,9 @@ type WithAuth {
     listConfig(criteria: String, limit: Int, offset: Int): [Config]
     getConfig(id: String!): Config
 
+    listReferral(criteria:String, limit:Int, offset:Int): [Referral]
+    getReferral(id:String!):Referral
+
 }
 
 type MutateWithAuth {
