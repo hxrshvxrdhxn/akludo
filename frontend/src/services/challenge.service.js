@@ -153,5 +153,35 @@ export default class ChallengeService extends ApiCoreService{
        //console.log(c);
         throw new Error('Unable to update Challenge');
     }
+  }
+
+  static async listAllChallengesByPlayerId(id){
+    try {
+      return await this.graphCall('withAuth.listChallenge', `
+      {
+        withAuth(token:"auto"){
+          listChallenge(limit:1000, criteria:"{\\"$or\\":[{\\"contender\\":\\"${id}\\"},{\\"challenger\\":\\"${id}\\"}]}"){
+            id
+            amount
+            winner{
+              id
+              name
+            }
+            challenger{
+              id
+              name
+            }
+            contender{
+              id
+              name
+            }
+          }
+        }
+      }`,{});
+    }catch(c){
+     //console.log(c);
+      throw new Error('Unable to list Challenges');
     }
+  }
+
 }

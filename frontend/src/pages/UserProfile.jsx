@@ -5,11 +5,14 @@ import UserService from '../services/user.service';
 import { ToastContainer, toast } from 'react-toastify';
 import Profile from '../components/Profile';
 import ReferralService from '../services/referral.service';
+import ChallengeService from '../services/challenge.service';
 
 
 function UserProfile(props) {
 
     const [updateProfile, setUpdateProfile] = useState({ username: '', phone: props.phone ? props.phone : '', email: '',referral:{} });
+    const [history,setHistory] = useState({});
+    const [gamesCount,setgameCount] = useState(0);
     const [user, Setuser] = useState({});
     const handler = (e) => {
         console.log(e.target.value)
@@ -23,6 +26,10 @@ function UserProfile(props) {
                 console.log(user);
                 Setuser(user);
                 setUpdateProfile({ username: user.name ? user.name : updateProfile.username, phone: user.phones && user.phones.length ? user.phones[0].number : updateProfile.phone, email: user.emails && !!user.emails.length ? user.emails[0].address : updateProfile.email, referral:user.referral?user.referral:{} });
+                let history=await ChallengeService.listAllChallengesByPlayerId(user.id);
+                console.log(history);
+                setHistory(history);
+                setgameCount(history.length?history.length:0)
             } catch (c) {
                 console.log(c);
                 toast.error(c.message);
@@ -90,7 +97,7 @@ function UserProfile(props) {
                         <div className="left-img"> <img src='../images/played.png' alt='Games Played' /></div>
                         <div className="right-text" >
                             <div className='font13'>Games Played</div>
-                            <div className='mt5 font13'><strong>0.00</strong></div>
+                            <div className='mt5 font13'><strong>{gamesCount}</strong></div>
                         </div>
                     </div>
                     <div className='img-text-align mt10'>
