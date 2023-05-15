@@ -73,10 +73,12 @@ function GaurdedAuth({ comp}) {
 
   async function isAuth() {
     let name = "_aklpsk";
-    var match = document.cookie.match(
-      RegExp("(?:^|;\\s*)" + name + "=([^;]*)")
-    );
-    if (!document.cookie.indexOf(name) && match[1]) {
+
+    var match = document.cookie.split(';');
+    console.log(match)
+    match=match.filter(item=>item.match(RegExp('(^| )' + name + '=([^;]+)'))).map(item=>item.split('=')).flat();
+    console.log(match);
+    if (match[0].match('_aklpsk') && match[1]) {
       console.log("logged in");
       setAuth(true);
     } else {

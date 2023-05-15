@@ -47,8 +47,6 @@ function AddMoney(props) {
                     console.log(updatedwallet);
                 }
             }
-            
-
         }catch(c){
             console.log(c.message);
         }

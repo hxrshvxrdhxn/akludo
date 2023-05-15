@@ -20,7 +20,7 @@ function Cash(props) {
 
     return (
         <div className='cash-box'>
-            <Link className='wallet-txt' to='/deposit'> {wallet.bal}</Link>
+            <Link className='wallet-txt' to='/deposit'> {wallet.bal?wallet.bal:0.0}</Link>
         </div>
     )
 }
