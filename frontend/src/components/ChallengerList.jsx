@@ -6,8 +6,10 @@ import UserService from '../services/user.service';
 import { socket } from '../socket';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 function ChanllenceList(props) {
+    const navigate = useNavigate();
     const [openChallenges, setOpenChallenges] = useState([]);
     const [runningChallenges, setRunningChallenges] = useState([]);
     const [challenge, setChallenge] = useState({ challenger: "", amount: 0, contender: "", status: '', roomCode: "", game: "" });
@@ -93,6 +95,10 @@ function ChanllenceList(props) {
         }
     }
 
+    const AddToMoney = () => {
+        navigate('/deposit', { replace: true });
+    }
+
     // useEffect(() => {
     //     async function umar(e) {
     //         e.preventDefault();
@@ -111,35 +117,31 @@ function ChanllenceList(props) {
     const ChallegeListItem = ({ item }) => (<>
         <div> <img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text'>₹ {item.amount}</div>
         <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
-        {close => (<div className="modal">
-        <button className="close" onClick={close}>
-          &times;
-        </button>
-        <div className="header">Title </div>
-        <div className="content">
-  content 
-        </div>
-        <div className="actions">
-          <Popup
-            trigger={<button className="button"> Trigger </button>}
-            position="top center"
-            nested
-          >
-            <span>
-              Pop over
-            </span>
-          </Popup>
-          <button
-            className="button"
-            onClick={() => {
-              console.log('modal closed ');
-              close();
-            }}
-          >
-            close modal
-          </button>
-        </div>
-      </div>)}
+            {close => (<div className="modal">
+                <div className="content text-center">
+                    <br /><br />
+                    <h2>Insufficient balance </h2>
+                    <br /><br /><br /><br />
+                </div>
+                <div className="actions">
+                    <button
+                        className="button btn-green"
+                        onClick={() => {
+                            console.log('modal closed ');
+                            close();
+                        }}
+                    >
+                        Close
+                    </button> &nbsp;
+                    <button
+                        className="button btn-green"
+                        onClick={AddToMoney}
+                    >
+                        Add Money
+                    </button>
+                    <br /><br />
+                </div>
+            </div>)}
         </Popup>
     </>)
 

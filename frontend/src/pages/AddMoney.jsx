@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import TransactionService from '../services/transaction.service';
 import LedgerService from '../services/ledger.service';
 import WalletService from '../services/wallet.service';
+import { ToastContainer, toast } from 'react-toastify';
 
 function AddMoney(props) {
     const navigate = useNavigate();
@@ -13,9 +14,12 @@ function AddMoney(props) {
     const [transaction,setTransaction]=useState({status:'SUCCESS',gateway:'upi',gatewayMethod:'Razorpay',amount:money.money,txType:'TOP_UP'})
     const [ledger,setLedger]=useState({fromUser:"64476ae2ccbeff3c46116058",toUser:"64476ae2ccbeff3c46116058",amount:money.money,txType:'TOP_UP'});
     const setValue = (e) => {
+        const regex = /^[0-9\b]+$/;
+        if (e.target.value === "" || regex.test(e.target.value)) {
         setMoney({ [e.target.name]: e.target.value })
         setTransaction({...transaction,amount:parseInt(e.target.value)});
         setLedger({...ledger,amount:parseInt(e.target.value)});
+        }
     }
 
     const clickHandler = (e) => {
@@ -26,10 +30,12 @@ function AddMoney(props) {
 
     const submitAddMoney = async(e) => {
         e.preventDefault();
-        props.dispatch({ type: 'ADD_MONEY', money });
         try{
-            //first create a transaction and then 
-            
+            if (e.target.money[0].value <= 0) {
+                toast.error('Enter amount greater then 0');
+                return false
+            } else {
+            props.dispatch({ type: 'ADD_MONEY', money });
             let trans=await TransactionService.createTransaction(transaction);
             console.log(trans);
             setTransaction({...transaction,transactionId:trans.id});
@@ -47,6 +53,7 @@ function AddMoney(props) {
                     console.log(updatedwallet);
                 }
             }
+        }
             
 
         }catch(c){
@@ -63,9 +70,10 @@ function AddMoney(props) {
                 <div className='head-card'>
                     <h3>Choose amount to add</h3>
                 </div>
+                <ToastContainer />
                 <form onSubmit={submitAddMoney}>
                     <div className='body'>
-                        <input placeholder='₹ Amount' type="number" value={money.money} onChange={setValue} className='input-white' name='money' />
+                        <input placeholder='₹ Amount' type="number"  pattern="[0-9]" value={money.money} onChange={setValue} className='input-white' name='money' />
                         <br />
                         <span className='text-label'>Min: ₹ 50, Max: ₹ 10000</span>
                     </div>
