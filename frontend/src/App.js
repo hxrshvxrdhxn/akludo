@@ -15,6 +15,8 @@ import OtpResetPassword from './pages/OtpResetPassword';
 import GaurdedAuth from './GaurdedAuth';
 import 'react-toastify/dist/ReactToastify.css';
 import Refer from './pages/Refer';
+import GameHistory from './pages/GameHistory';
+import TransactionHistory from './pages/TransactionHistory';
 
 
 function App() { 
@@ -35,6 +37,9 @@ function App() {
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/new-password' element={<NewPassword />} />
           <Route path='/otp-reset-password' element={<OtpResetPassword />} />
+          <Route path='/game-history' element={<GameHistory/>} />
+          <Route path='/transaction-history' element={<TransactionHistory/>} />
+          
         </Routes>
       </BrowserRouter>
     </>

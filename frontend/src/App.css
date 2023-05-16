@@ -556,6 +556,17 @@ ul.listPayOpt {
   color: #0AB111;
 }
 
+.red-txt {
+  color: red;
+}
+
+.downArrow {
+  font-size: 24px;
+  transform: rotate(90deg);
+  position: absolute;
+  color: #0AB111;
+}
+
 .errorMsg {
   color: red;
   font-size: 11px;
@@ -617,6 +628,11 @@ ul.listPayOpt {
   text-align: center;
 }
 
+.text-left {
+  text-align: left;
+}
+
+
 .text-right {
   text-align: right;
 }
@@ -648,9 +664,11 @@ ul.listPayOpt {
   width: 90% !important;
   padding: 10px !important;
 }
-[role=tooltip].popup-content{
+
+[role=tooltip].popup-content {
   width: 200px !important;
 }
+
 .modal {
   font-size: 12px;
 }
