@@ -6,6 +6,7 @@ const {enc, dec} = require('../bootloader/security/StatelessMiddleware');
 const EnumUserStatus = require('../util/enums/EnumUserStatus');
 const EnumGender = require('../util/enums/EnumGender');
 const SMSService = require('../services/SMSService');
+const UserHook = require('../hooks/UserHook');
 
 
 /**
@@ -126,8 +127,8 @@ exports = module.exports = class ResolverRoot {
                 updatedAt: +new Date()
             });
             await user.save();
-            // hit hook user created
-
+            // synchoronously hit hook user created
+            await UserHook._instance.onUserCreate(user);
         }
         console.log('user', user);
         if (user.status !== EnumUserStatus.ENABLED) throw new Error('User is not enabled.');
