@@ -5,6 +5,7 @@ const MutationWithAuthResolver = require('./resolvers/MutationWithAuthResolver')
 const {enc, dec} = require('../bootloader/security/StatelessMiddleware');
 const EnumUserStatus = require('../util/enums/EnumUserStatus');
 const EnumGender = require('../util/enums/EnumGender');
+const SMSService = require('../services/SMSService');
 
 
 /**
@@ -56,8 +57,8 @@ exports = module.exports = class ResolverRoot {
         if (!username) throw new Error('username is required');
         if (!password) throw new Error('password is required');
         const user = await _db.User.findOne({'phones.number': username});
-        if(!user) throw new Error('Invalid user or password!');
-        if(user.naiveAuthPass !== password) throw new Error('Invalid user or password!');
+        if (!user) throw new Error('Invalid user or password!');
+        if (user.naiveAuthPass !== password) throw new Error('Invalid user or password!');
         req.loginUser({
             _id: user._id,
             id: user._id,
@@ -83,7 +84,7 @@ exports = module.exports = class ResolverRoot {
 
     async sendOtp({mobile}, req) {
         const otp = 'xxxxxx'.replace(/x/g, () => (~~(Math.random() * 9)).toString());
-        // todo make otp send call
+        await SMSService.sendOtp(mobile, otp);
         return {
             ctx: enc({mobile, otp, ts: +new Date()}),
             success: true
@@ -98,7 +99,7 @@ exports = module.exports = class ResolverRoot {
             console.log(c);
             throw new Error('Invalid token passed');
         }
-        if (otp !== '000000' && parsed.otp !== otp) throw new Error('Invalid OTP supplied.');
+        if (parsed.otp !== otp) throw new Error('Invalid OTP supplied.');
         if (+new Date() - parsed.ts > 60000 * 3) throw new Error('OTP is expired.');
 
         let user = await _db.User.findOne({'phones.number': parsed.mobile});
@@ -121,7 +122,6 @@ exports = module.exports = class ResolverRoot {
                     sendNotifications: true
                 },
                 socialProfiles: [],
-                // wallet: (await (new _db.Wallet({})).save())._id, TODO attach wallet
                 createdAt: +new Date(),
                 updatedAt: +new Date()
             });
