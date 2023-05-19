@@ -6,8 +6,10 @@ import UserService from '../services/user.service';
 import { socket } from '../socket';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 function ChanllenceList(props) {
+    const navigate = useNavigate();
     const [openChallenges, setOpenChallenges] = useState([]);
     const [runningChallenges, setRunningChallenges] = useState([]);
     const [challenge, setChallenge] = useState({ challenger: "", amount: 0, contender: "", status: '', roomCode: "", game: "" });
@@ -17,8 +19,8 @@ function ChanllenceList(props) {
                 let user = await UserService.getUser();
                 if (user && user.id) {
                     console.log(user.id)
-                    const userid = { contender: user.id }
-                    console.log('challege id', userid)
+                    const userid = { challenger: user.id }
+                    console.log('challenger id', userid)
                     setChallenge((challenge) => ({ ...challenge, ...userid }));
                 }
                 let runChallenge = await ChallengeService.listChallengeByStatus('STARTED');
@@ -36,12 +38,12 @@ function ChanllenceList(props) {
     }, [socket]);
 
     async function playGame(item) {
-        console.log(item);
+        console.log("Item umar ==>",item);
         try {
             let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
-            console.log(data);
+            console.log("Data umar-------->>>>>",data);
         } catch (c) {
-            console.log(c);
+            console.log("Umar:  ",c);
             toast.error(c.message);
             throw new Error(c);
         }
@@ -88,9 +90,13 @@ function ChanllenceList(props) {
             //````1===----------- to do list & add all challnges via web socket--==---------=--===------------   
         } catch (c) {
             console.log(c);
-            toast.error(c.message);
+            toast.error(c.message.split(':')[1]);
             throw new Error(c);
         }
+    }
+
+    const AddToMoney = () => {
+        navigate('/deposit', { replace: true });
     }
 
     // useEffect(() => {
@@ -109,37 +115,42 @@ function ChanllenceList(props) {
 
     // }, [socket])
     const ChallegeListItem = ({ item }) => (<>
-        <div> <img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text'>₹ {item.amount}</div>
+        <div> <img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
         <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
-        {close => (<div className="modal">
-        <button className="close" onClick={close}>
-          &times;
-        </button>
-        <div className="header">Title </div>
-        <div className="content">
-  content 
-        </div>
-        <div className="actions">
-          <Popup
-            trigger={<button className="button"> Trigger </button>}
-            position="top center"
-            nested
-          >
-            <span>
-              Pop over
-            </span>
-          </Popup>
-          <button
-            className="button"
-            onClick={() => {
-              console.log('modal closed ');
-              close();
-            }}
-          >
-            close modal
-          </button>
-        </div>
-      </div>)}
+            {close => (<div className="modal">
+                <div className="content text-center">
+                    <br /><br />
+                    <h2>Insufficient balance </h2>
+                    <br /><br /><br /><br />
+                </div>
+                <div className="actions">
+                <button
+                        className="button btn-green"
+                        onClick={() => {
+                            console.log('ok ');
+                           
+                        }}
+                    >
+                        Close
+                    </button>  &nbsp;
+                    <button
+                        className="button btn-green"
+                        onClick={() => {
+                            console.log('modal closed ');
+                            close();
+                        }}
+                    >
+                        Close
+                    </button> &nbsp;
+                    <button
+                        className="button btn-green"
+                        onClick={AddToMoney}
+                    >
+                        Add Money
+                    </button>
+                    <br /><br />
+                </div>
+            </div>)}
         </Popup>
     </>)
 
@@ -168,7 +179,7 @@ function ChanllenceList(props) {
                             return (<li key={i} className='newItem'>
                                 <ChallegeListItem item={item} />
                             </li>)
-                        }) : <div className='text-center white-bg'><img src='../images/loader.gif' /></div>}
+                        }) : <div className='text-center white-bg padding20'>Hooray, no Challenge here!</div>}
 
                     </ul>
 
@@ -185,7 +196,7 @@ function ChanllenceList(props) {
                             return (<li key={item?.id}>
                                 <div className='direction'><img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text direction'><img src='../images/vs.png' alt='vice-versa' /> ₹ {item?.amount}</div>  <div className='direction'> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} />  {item?.challenger?.name}</div>
                             </li>)
-                        }) : <div className='text-center white-bg'><img src='../images/loader.gif' /></div>}
+                        }) : <div className='text-center white-bg padding20'>Hooray, no Running Challenge here!</div>}
                     </ul>
 
                 </div>

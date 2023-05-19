@@ -239,7 +239,10 @@ header {
 #menuToggle input:checked~span:nth-last-child(2) {
   transform: rotate(-45deg) translate(2px, -2px);
 }
-
+.padding20{
+  padding: 20px;
+  font-size: 12px;
+}
 /*
  * Make this absolute positioned
  * at the top left of the screen
