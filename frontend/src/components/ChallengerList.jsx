@@ -19,8 +19,8 @@ function ChanllenceList(props) {
                 let user = await UserService.getUser();
                 if (user && user.id) {
                     console.log(user.id)
-                    const userid = { contender: user.id }
-                    console.log('challege id', userid)
+                    const userid = { challenger: user.id }
+                    console.log('challenger id', userid)
                     setChallenge((challenge) => ({ ...challenge, ...userid }));
                 }
                 let runChallenge = await ChallengeService.listChallengeByStatus('STARTED');
