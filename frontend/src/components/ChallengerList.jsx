@@ -38,10 +38,10 @@ function ChanllenceList(props) {
     }, [socket]);
 
     async function playGame(item) {
-        console.log(item);
+        console.log("Item umar ==>",item);
         try {
             let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
-            console.log(data);
+            console.log("Data umar-------->>>>>",data);
         } catch (c) {
             console.log(c);
             toast.error(c.message);
@@ -115,7 +115,7 @@ function ChanllenceList(props) {
 
     // }, [socket])
     const ChallegeListItem = ({ item }) => (<>
-        <div> <img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text'>₹ {item.amount}</div>
+        <div> <img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
         <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
             {close => (<div className="modal">
                 <div className="content text-center">
@@ -124,6 +124,15 @@ function ChanllenceList(props) {
                     <br /><br /><br /><br />
                 </div>
                 <div className="actions">
+                <button
+                        className="button btn-green"
+                        onClick={() => {
+                            console.log('ok ');
+                           
+                        }}
+                    >
+                        Close
+                    </button> 
                     <button
                         className="button btn-green"
                         onClick={() => {
@@ -140,6 +149,35 @@ function ChanllenceList(props) {
                         Add Money
                     </button>
                     <br /><br />
+                </div>
+            </div>)}
+        </Popup>
+        <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
+            {open => (<div className="modal">
+                <div className="content text-center">
+                    <br /><br />
+                    <h2>Confirm balance </h2>
+                    <br /><br /><br /><br />
+                </div>
+                <div className="actions">
+                <button
+                        className="button btn-green"
+                        onClick={() => {
+                            console.log('ok ');
+                           
+                        }}
+                    >
+                        Close
+                    </button> 
+                    <button
+                        className="button btn-green"
+                        onClick={() => {
+                            console.log('modal closed ');
+                            open();
+                        }}
+                    >
+                        Close
+                    </button>
                 </div>
             </div>)}
         </Popup>
@@ -170,7 +208,7 @@ function ChanllenceList(props) {
                             return (<li key={i} className='newItem'>
                                 <ChallegeListItem item={item} />
                             </li>)
-                        }) : <div className='text-center white-bg'><img src='../images/loader.gif' /></div>}
+                        }) : <div className='text-center white-bg padding20'>Hooray, no Challenge here!</div>}
 
                     </ul>
 
@@ -187,7 +225,7 @@ function ChanllenceList(props) {
                             return (<li key={item?.id}>
                                 <div className='direction'><img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text direction'><img src='../images/vs.png' alt='vice-versa' /> ₹ {item?.amount}</div>  <div className='direction'> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} />  {item?.challenger?.name}</div>
                             </li>)
-                        }) : <div className='text-center white-bg'><img src='../images/loader.gif' /></div>}
+                        }) : <div className='text-center white-bg padding20'>Hooray, no Running Challenge here!</div>}
                     </ul>
 
                 </div>
