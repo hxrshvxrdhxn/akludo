@@ -10,7 +10,7 @@ function Burger() {
 
     async function handleLogout(){
         try {
-            let data=await Login.logout();
+            let data=await UserService.logout();
             console.log(data);
             navigate('/login', { replace: true });
         } catch (c) {
