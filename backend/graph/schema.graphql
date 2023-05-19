@@ -409,6 +409,22 @@ type Wallet {
     updatedBy: User
 }
 
+# type Order{
+#     id:String
+#     user:User
+#     amount: Float
+#     currency: EnumCurrencyType
+#     expiryTime: String
+#     orderid: String
+#     orderStatus: EnumOrderStatus
+#     orderToken: String
+#     payment: [BankTransaction]
+#     createdAt: String
+#     updatedAt: String
+#     createdBy: User
+#     updatedBy: User
+# }
+
 type Ledger {
     id: String
     fromUser: User

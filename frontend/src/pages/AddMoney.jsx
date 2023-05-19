@@ -42,9 +42,12 @@ function AddMoney(props) {
                 let wallet=await WalletService.getWallet();
                 //console.log(wallet);
                 //updating wallet
-                if(led.id&&wallet[0].id){
-                    let updatedwallet=await WalletService.updateBalanceOrLedger(wallet[0].id,led.amount,JSON.stringify(led.id),'DEPOSIT');
+                if(led&&led.id&&wallet[0].id){
+                    const amount=led.amount+wallet[0].bal;
+                    console.log(amount);
+                    let updatedwallet=await WalletService.updateBalanceOrLedger(wallet[0].id,amount,JSON.stringify(led.id),'DEPOSIT');
                     console.log(updatedwallet);
+                    setMoney({money:0});
                 }
             }
         }catch(c){
