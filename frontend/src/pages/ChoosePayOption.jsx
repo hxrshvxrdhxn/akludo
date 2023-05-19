@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import axios from "axios";
 import Header from '../components/Header'
 import { connect } from 'react-redux';
-import { useHistory } from "react-router-dom";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function ChoosePayOption(props) {
     const navigate = useNavigate();
@@ -15,13 +13,13 @@ function ChoosePayOption(props) {
     const AddAmount = (e) => {
         e.preventDefault();
         props.dispatch({ type: 'ADD_AMOUNT', amount });
-        axios.post("http://akludo.com", amount)
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+       // axios.post("http://akludo.com", amount)
+         //   .then(response => {
+               // console.log(response)
+           // })
+           // .catch(error => {
+            //    console.log(error)
+          //  })
         navigate('/ludo-classic', { replace: true });
     }
 

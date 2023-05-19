@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import Header from '../components/Header'
 import { connect } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import TransactionService from '../services/transaction.service';
 import LedgerService from '../services/ledger.service';
 import WalletService from '../services/wallet.service';
@@ -59,7 +59,7 @@ function AddMoney(props) {
         }catch(c){
             console.log(c.message);
         }
-        //navigate('/pay-option', { replace: true });
+        navigate('/pay-option', { replace: true });
     }
 
 
