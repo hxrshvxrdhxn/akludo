@@ -43,7 +43,7 @@ function ChanllenceList(props) {
             let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
             console.log("Data umar-------->>>>>",data);
         } catch (c) {
-            console.log(c);
+            console.log("Umar:  ",c);
             toast.error(c.message);
             throw new Error(c);
         }
@@ -132,7 +132,7 @@ function ChanllenceList(props) {
                         }}
                     >
                         Close
-                    </button> 
+                    </button>  &nbsp;
                     <button
                         className="button btn-green"
                         onClick={() => {
@@ -149,35 +149,6 @@ function ChanllenceList(props) {
                         Add Money
                     </button>
                     <br /><br />
-                </div>
-            </div>)}
-        </Popup>
-        <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
-            {open => (<div className="modal">
-                <div className="content text-center">
-                    <br /><br />
-                    <h2>Confirm balance </h2>
-                    <br /><br /><br /><br />
-                </div>
-                <div className="actions">
-                <button
-                        className="button btn-green"
-                        onClick={() => {
-                            console.log('ok ');
-                           
-                        }}
-                    >
-                        Close
-                    </button> 
-                    <button
-                        className="button btn-green"
-                        onClick={() => {
-                            console.log('modal closed ');
-                            open();
-                        }}
-                    >
-                        Close
-                    </button>
                 </div>
             </div>)}
         </Popup>
