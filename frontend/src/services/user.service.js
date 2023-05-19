@@ -1,14 +1,14 @@
 import ApiCoreService from "./api.core.service";
 
-
 export default class UserService extends ApiCoreService {
-
-  static #user
+  static #user;
 
   static async getUser() {
     if (this.#user) return this.#user;
     try {
-      this.#user = await this.graphCall('withAuth.getUser', `
+      this.#user = await this.graphCall(
+        "withAuth.getUser",
+        `
             {
                 withAuth(token:"auto"){
                   getUser(id:"me"){
@@ -61,18 +61,21 @@ export default class UserService extends ApiCoreService {
                   }
                 }
               }
-            `, {});
+            `,
+        {}
+      );
       return this.#user;
     } catch (c) {
       console.log(c);
-      throw new Error('Unable to get user');
-
+      throw new Error("Unable to get user");
     }
   }
 
-    static async setUserPassword(id,password){
-        try {
-            return await this.graphCall('mutationWithAuth.update.updateUser', `
+  static async setUserPassword(id, password) {
+    try {
+      return await this.graphCall(
+        "mutationWithAuth.update.updateUser",
+        `
             mutation{
                 mutationWithAuth(token:"auto"){
                   update{
@@ -92,21 +95,29 @@ export default class UserService extends ApiCoreService {
                     }
                   }
                 }
-              }`,{});
-        }catch(c){
-            console.log(c);
-            throw new Error('Unable to update');
-        }
+              }`,
+        {}
+      );
+    } catch (c) {
+      console.log(c);
+      throw new Error("Unable to update");
     }
+  }
 
-    static async updateUser(user){
-      console.log(user);
-      try {
-        return await this.graphCall('mutationWithAuth.update.updateUser',`
+  static async updateUser(user) {
+    console.log(user);
+    try {
+      return await this.graphCall(
+        "mutationWithAuth.update.updateUser",
+        `
         mutation{
           mutationWithAuth(token:"auto"){
             update{
-              updateUser(id:"${user.id}", name:${user.name ? '"' + user.name + '"' : '""'}, gender:${user.gender ? user.gender : 'MALE'}, status:${user.status ? user.status : 'ENABLED'}){
+              updateUser(id:"${user.id}", name:${
+          user.name ? '"' + user.name + '"' : '""'
+        }, gender:${user.gender ? user.gender : "MALE"}, status:${
+          user.status ? user.status : "ENABLED"
+        }){
                 id
                 name
                 phones {
@@ -122,13 +133,39 @@ export default class UserService extends ApiCoreService {
               }
             }
           }
-        }`
-        , {}
-        )
+        }`,
+        {}
+      );
     } catch (c) {
       console.log(c);
-      throw new Error('Unable to update');
+      throw new Error("Unable to update");
     }
   }
 
+  static async logout() {
+    try {
+      this.graphCall(
+        "logout",
+        `
+          {
+            logout{
+              success
+              id
+              token
+            }
+          }`,
+        {}
+      )
+        .then((data) => {
+          this.#user = null;
+          return data;
+        })
+        .catch((e) => {
+          throw new Error(e);
+        });
+    } catch (c) {
+      console.log(c);
+      throw new Error("Unable to logout");
+    }
+  }
 }
