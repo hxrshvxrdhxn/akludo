@@ -15,10 +15,10 @@ class UserHook extends Hook {
         // called when User is created.
         console.log("user created");
         // create wallet
-        const wallet = new _db.Wallet({user: {_id: newObj._id}});
+        const wallet = new _db.Wallet({user: newObj._id});
         await wallet.save();
         // create KYC holder
-        const kyc = await new _db.KYC({user: {_id: newObj._id}});
+        const kyc = await new _db.KYC({user: newObj._id});
         await kyc.save();
         await _db.User.update({_id: newObj._id}, {$set: {wallet: wallet._id, kyc: kyc._id}});
     }
