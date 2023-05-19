@@ -25,7 +25,7 @@ h6 {
 header {
   background: #FAFAFC;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
-  padding-bottom: 10px;
+
   margin-bottom: 20px;
 }
 
@@ -556,6 +556,17 @@ ul.listPayOpt {
   color: #0AB111;
 }
 
+.red-txt {
+  color: red;
+}
+
+.downArrow {
+  font-size: 24px;
+  transform: rotate(90deg);
+  position: absolute;
+  color: #0AB111;
+}
+
 .errorMsg {
   color: red;
   font-size: 11px;
@@ -617,8 +628,83 @@ ul.listPayOpt {
   text-align: center;
 }
 
+.text-left {
+  text-align: left;
+}
+
+
 .text-right {
   text-align: right;
+}
+
+.white-bg {
+  background-color: #fff;
+}
+
+.newItem {
+  opacity: 0;
+  animation: grow 1s ease-in-out forwards;
+  -webkit-animation: grow 1s ease-in-out forwards;
+}
+
+@-webkit-keyframes grow {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes grow {
+  to {
+    opacity: 1;
+  }
+}
+
+.popup-content {
+  border-radius: 6px;
+  width: 90% !important;
+  padding: 10px !important;
+}
+
+[role=tooltip].popup-content {
+  width: 200px !important;
+}
+
+.modal {
+  font-size: 12px;
+}
+
+.modal>.header {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  font-size: 18px;
+  text-align: center;
+  padding: 5px;
+}
+
+.modal>.content {
+  width: 100%;
+  padding: 10px 5px;
+}
+
+.modal>.actions {
+  width: 100%;
+  padding: 10px 5px;
+  margin: auto;
+  text-align: center;
+}
+
+.modal>.close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
 }
 
 /* old css */

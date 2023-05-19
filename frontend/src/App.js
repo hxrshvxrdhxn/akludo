@@ -5,7 +5,6 @@ import GameListing from "./pages/GameListing";
 import Withdraw from './pages/Withdraw';
 import AddMoney from './pages/AddMoney';
 import ChoosePayOption from './pages/ChoosePayOption';
-import Earn from './pages/Earn';
 import UserProfile from './pages/UserProfile';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -15,6 +14,9 @@ import NewPassword from './pages/NewPassword';
 import OtpResetPassword from './pages/OtpResetPassword';
 import GaurdedAuth from './GaurdedAuth';
 import 'react-toastify/dist/ReactToastify.css';
+import Refer from './pages/Refer';
+import GameHistory from './pages/GameHistory';
+import TransactionHistory from './pages/TransactionHistory';
 
 
 function App() { 
@@ -27,14 +29,17 @@ function App() {
           <Route path="/withdraw" element={<GaurdedAuth comp={<Withdraw />} />} />
           <Route path="/deposit" element={<GaurdedAuth comp={<AddMoney />}  />} />
           <Route path="/pay-option" element={<GaurdedAuth comp={<ChoosePayOption />}  />} />
-          <Route path="/earn" element={<GaurdedAuth comp={<Earn />}  />} />
+          <Route path="/refer" element={<GaurdedAuth comp={<Refer />}  />} />
           <Route path="/user-profile"  element={<GaurdedAuth comp={<UserProfile />}  />} />
           <Route path="/login" element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/otp' element={<GaurdedAuth comp={<Otp />}  />} />
-          <Route path='/reset-password' element={<GaurdedAuth comp={<ResetPassword />}  />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/new-password' element={<NewPassword />} />
-          <Route path='/otp-reset-password' element={<GaurdedAuth comp={<OtpResetPassword />}   />} />
+          <Route path='/otp-reset-password' element={<OtpResetPassword />} />
+          <Route path='/game-history' element={<GameHistory/>} />
+          <Route path='/transaction-history' element={<TransactionHistory/>} />
+          
         </Routes>
       </BrowserRouter>
     </>

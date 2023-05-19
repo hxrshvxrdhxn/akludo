@@ -1,33 +1,65 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import Header from '../components/Header'
 import { connect } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-
+import TransactionService from '../services/transaction.service';
+import LedgerService from '../services/ledger.service';
+import WalletService from '../services/wallet.service';
+import { ToastContainer, toast } from 'react-toastify';
 
 function AddMoney(props) {
     const navigate = useNavigate();
     const [money, setMoney] = useState({ money: props.money });
-
+    const [transaction,setTransaction]=useState({status:'SUCCESS',gateway:'upi',gatewayMethod:'Razorpay',amount:money.money,txType:'TOP_UP'})
+    const [ledger,setLedger]=useState({fromUser:"64476ae2ccbeff3c46116058",toUser:"64476ae2ccbeff3c46116058",amount:money.money,txType:'TOP_UP'});
     const setValue = (e) => {
+        const regex = /^[0-9\b]+$/;
+        if (e.target.value === "" || regex.test(e.target.value)) {
         setMoney({ [e.target.name]: e.target.value })
+        setTransaction({...transaction,amount:parseInt(e.target.value)});
+        setLedger({...ledger,amount:parseInt(e.target.value)});
+        }
     }
 
     const clickHandler = (e) => {
         setMoney({ [e.target.name]: e.target.value })
+        setTransaction({...transaction,amount:parseInt(e.target.value)});
+        setLedger({...ledger,amount:parseInt(e.target.value)});
     }
 
-    const submitAddMoney = (e) => {
+    const submitAddMoney = async(e) => {
         e.preventDefault();
-        props.dispatch({ type: 'ADD_MONEY', money });
-        axios.post("http://akludo.com", money)
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-        navigate('/pay-option', { replace: true });
+        try{
+            if (e.target.money[0].value <= 0) {
+                toast.error('Enter amount greater then 0');
+                return false
+            } else {
+            props.dispatch({ type: 'ADD_MONEY', money });
+            let trans=await TransactionService.createTransaction(transaction);
+            console.log(trans);
+            setTransaction({...transaction,transactionId:trans.id});
+            console.log(ledger);
+            // create a  ledger
+            if(trans.id){
+                let led=await LedgerService.createLedger(ledger,trans.id);
+                //console.log(led);
+                //get the wallet using userid
+                let wallet=await WalletService.getWallet();
+                //console.log(wallet);
+                //updating wallet
+                if(led.id&&wallet[0].id){
+                    let updatedwallet=await WalletService.updateBalanceOrLedger(wallet[0].id,led.amount,JSON.stringify(led.id),'DEPOSIT');
+                    console.log(updatedwallet);
+                }
+            }
+        }
+            
+
+        }catch(c){
+            console.log(c.message);
+        }
+        //navigate('/pay-option', { replace: true });
     }
 
 
@@ -38,9 +70,10 @@ function AddMoney(props) {
                 <div className='head-card'>
                     <h3>Choose amount to add</h3>
                 </div>
+                <ToastContainer />
                 <form onSubmit={submitAddMoney}>
                     <div className='body'>
-                        <input placeholder='₹ Amount' type="number" value={money.money} onChange={setValue} className='input-white' name='money' />
+                        <input placeholder='₹ Amount' type="number"  pattern="[0-9]" value={money.money} onChange={setValue} className='input-white' name='money' />
                         <br />
                         <span className='text-label'>Min: ₹ 50, Max: ₹ 10000</span>
                     </div>

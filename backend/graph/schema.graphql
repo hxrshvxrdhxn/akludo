@@ -109,6 +109,14 @@ enum EnumBankTransactionStatus {
     PROCESSING
 }
 
+enum EnumDocType{
+    AADHARCARD
+    PANCARD
+    PASSPORT
+    DRIVINGLICENSE
+    OTHER
+}
+
 "Defines the language available in system"
 type Language {
     id:String
@@ -240,12 +248,43 @@ type User {
     socialProfiles: [SocialProfile]
     "User's wallet"
     wallet: Wallet
+    "User's KYC Details"
+    kyc:KYC
     "When no planOrder attached this is the default Role."
     defaultRole: Role
     createdAt: String
     updatedAt: String
     createdBy: User
     updatedBy: User
+}
+
+"DEFINES KYC FOR A USER "
+type KYC {
+    id:String
+    "Document"
+    document:StoredFile
+    "stored file type"
+    fileType:EnumDocType
+    "User Id"
+    user:User
+    "profile photo"
+    profilePhoto:StoredFile
+    "Document number/id"
+    documentNumber:String
+    "phone number"
+    phone:[PhoneNumber]
+    "email id"
+    email:Email
+    "isverified"
+    isKYCApproved:Boolean
+    "updated by"
+    updatedBy:User
+    "updated At"
+    updatedAt:String
+    "created At"
+    createdAt: String
+    "created By"
+    createdBy: User
 }
 
 "Country master"
@@ -454,6 +493,7 @@ type UpdateEntityMutation {
     updateResource(id: String, description: String, urn: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Resource
     updateUpdateHistory(id: String, model: String, changelog: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): UpdateHistory
     updateConfig(id: String, name: String, configType: EnumConfigType, value: String, selectOptions: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Config
+    updateKYC(id:String, document:StoredFileInput, fileType:EnumDocType, user:String, profilePhoto:StoredFileInput, phone:[PhoneNumberInput], email:[EmailInput], isKYCApproved:Boolean, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String ):KYC
 }
 
 type KvPair {
@@ -464,7 +504,7 @@ type KvPair {
 type FabricateEntityMutation {
     createAuthResponse(success: Boolean, token: String): AuthResponse
     createLanguage(locale: String, name: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Language
-    createUser(name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
+    createUser(name: String, gender: EnumGender, emails: [EmailInput], phones: [PhoneNumberInput], naiveAuthPass: String, status: EnumUserStatus, options: UserOptionsInput, picture: StoredFileInput, socialProfiles: [SocialProfileInput], wallet: String, kyc:String, defaultRole: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): User
     createCountry(name: String, code: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Country
     createWallet(user: String, bal: Float, ledger: [String], createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Wallet
     createLedger(fromUser: String, toUser: String, amount: Float, txType: EnumTransactionType, linkedBankTransaction: String, linkedChallenge: String, createdAt: String, updatedAt: String, createdBy: String, updatedBy: String): Ledger

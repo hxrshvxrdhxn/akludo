@@ -47,7 +47,7 @@ export default class ChallengeService extends ApiCoreService{
                 }
               }`,{});
         }catch(c){
-            console.log(c);
+            //console.log(c);
             throw new Error('Unable to list Challenge');
         }
     }
@@ -58,7 +58,7 @@ export default class ChallengeService extends ApiCoreService{
         return await this.graphCall('withAuth.listChallenge', `
         {
           withAuth(token:"auto"){
-            listChallenge(criteria:"{\\"status\\":\\"${status}\\"}"){
+            listChallenge(criteria:"{\\"status\\":\\"${status}\\"}" limit:100){
               id
               challenger{
                 id
@@ -84,7 +84,7 @@ export default class ChallengeService extends ApiCoreService{
         }
         `,{});
     }catch(c){
-        console.log(c);
+        //console.log(c);
         throw new Error('Unable to list Challenge');
     }
     }
@@ -113,9 +113,45 @@ export default class ChallengeService extends ApiCoreService{
                 }
               }`,{});
         }catch(c){
-            console.log(c);
+            //console.log(c);
             throw new Error('Unable to create Challenge');
         }
     }
 
+    static async updateStatus(id,status){
+      try {
+        return await this.graphCall('mutationWithAuth.update.updateChallenge', `
+        mutation{
+          mutationWithAuth(token:"auto"){
+            update{
+              updateChallenge(id:"${id}" status:${status}){
+                id
+                amount
+                game {
+                  id
+                }
+                contender{
+                  id
+                  name
+                  phones{
+                    number
+                  }
+                }
+                challenger{
+                  id
+                  name
+                  phones{
+                    number
+                  }
+                }
+                roomCode
+              }
+            }
+          }
+        }`,{});
+    }catch(c){
+       //console.log(c);
+        throw new Error('Unable to update Challenge');
+    }
+    }
 }

@@ -105,7 +105,7 @@ exports = module.exports = class ResolverRoot {
         let user = await _db.User.findOne({'phones.number': parsed.mobile});
         if (!user) {
             user = new _db.User({
-                name: parsed.mobile,
+                name: `player${(await _db.User.count()) + 1} ${['Ace', 'Mamba', 'Simba', 'Tiger', 'Lion', 'Leo', 'Cheetah', 'Wolf', 'Fox', 'Cobra', 'Snake'][~~(Math.random() * 10)]}`,
                 gender: EnumGender.OTHER,
                 emails: [],
                 phones: [{
@@ -126,6 +126,8 @@ exports = module.exports = class ResolverRoot {
                 updatedAt: +new Date()
             });
             await user.save();
+            // hit hook user created
+
         }
         console.log('user', user);
         if (user.status !== EnumUserStatus.ENABLED) throw new Error('User is not enabled.');

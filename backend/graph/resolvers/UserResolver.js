@@ -1,6 +1,7 @@
 const WalletService = require('../../services/WalletService');
 const RoleService = require('../../services/RoleService');
 const UserService = require('../../services/UserService');
+const KYCService = require('../../services/KYCService');
 
 /*
 * Resolver for type User
@@ -19,6 +20,7 @@ class UserResolver {
         this.StoredFileResolver = require('./StoredFileResolver');
         this.SocialProfileResolver = require('./SocialProfileResolver');
         this.WalletResolver = require('./WalletResolver');
+        this.KYCResolver=require('./KYCResolver');
         this.RoleResolver = require('./RoleResolver');
         this.UserResolver = require('./UserResolver');
     }
@@ -80,6 +82,10 @@ class UserResolver {
         return found ? new this.WalletResolver(found, this._user) : null;
     }
 
+    async kyc(){
+        const found = await KYCService.findOne(this.data.kyc, this._user);
+        return found ? new this.KYCResolver(found, this._user) : null;
+    }
 
     async defaultRole() {
         const found = await RoleService.findOne(this.data.defaultRole, this._user);
