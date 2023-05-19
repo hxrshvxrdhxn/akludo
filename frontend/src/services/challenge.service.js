@@ -114,7 +114,7 @@ export default class ChallengeService extends ApiCoreService{
               }`,{});
         }catch(c){
             //console.log(c);
-            throw new Error('Unable to create Challenge');
+            throw new Error(c);
         }
     }
 

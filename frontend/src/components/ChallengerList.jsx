@@ -90,7 +90,7 @@ function ChanllenceList(props) {
             //````1===----------- to do list & add all challnges via web socket--==---------=--===------------   
         } catch (c) {
             console.log(c);
-            toast.error(c.message);
+            toast.error(c.message.split(':')[1]);
             throw new Error(c);
         }
     }
