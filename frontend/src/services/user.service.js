@@ -131,4 +131,27 @@ export default class UserService extends ApiCoreService {
     }
   }
 
+    static async logout(){
+
+      try {
+        this.graphCall('logout',`
+          {
+            logout{
+              success
+              id
+              token
+            }
+          }`, {}
+        ).then((data)=>{
+          this.#user=null;
+          return data;
+        }).catch(e=>{
+          throw new Error(e);
+        })
+    } catch (c) {
+      console.log(c);
+      throw new Error('Unable to logout');
+    }
+  }
+
 }
