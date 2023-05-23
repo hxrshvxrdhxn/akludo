@@ -175,7 +175,7 @@ function ChanllenceList(props) {
                 <div className=''>
                     <ul className='challenge-list'>
 
-                        {openChallenges && !!openChallenges.length ? openChallenges?.map((item, i) => {
+                        {openChallenges && !!openChallenges.length ? openChallenges?.slice(0).reverse().map((item, i) => {
                             return (<li key={i} className='newItem'>
                                 <ChallegeListItem item={item} />
                             </li>)

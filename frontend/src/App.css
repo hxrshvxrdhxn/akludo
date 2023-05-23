@@ -644,24 +644,6 @@ ul.listPayOpt {
   background-color: #fff;
 }
 
-.newItem {
-  opacity: 0;
-  animation: grow 1s ease-in-out forwards;
-  -webkit-animation: grow 1s ease-in-out forwards;
-}
-
-@-webkit-keyframes grow {
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes grow {
-  to {
-    opacity: 1;
-  }
-}
-
 .popup-content {
   border-radius: 6px;
   width: 90% !important;
