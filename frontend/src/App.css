@@ -691,6 +691,10 @@ ul.listPayOpt {
   border-radius: 18px;
   border: 1px solid #cfcece;
 }
+.black-text{
+  color: #333;
+  font-weight: bold;
+}
 
 /* old css */
 

@@ -17,6 +17,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Refer from './pages/Refer';
 import GameHistory from './pages/GameHistory';
 import TransactionHistory from './pages/TransactionHistory';
+import Support from './pages/Support';
+import TermsAndCondition from './pages/TermsAndCondition';
 
 
 function App() { 
@@ -37,9 +39,11 @@ function App() {
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/new-password' element={<NewPassword />} />
           <Route path='/otp-reset-password' element={<OtpResetPassword />} />
-          <Route path='/game-history' element={<GameHistory/>} />
-          <Route path='/transaction-history' element={<TransactionHistory/>} />
-          
+          <Route path='/game-history' element={<GameHistory />} />
+          <Route path='/transaction-history' element={<TransactionHistory />} />
+          <Route path='/support' element={<Support />} />
+          <Route path='/terms-condition' element={<TermsAndCondition />} />
+
         </Routes>
       </BrowserRouter>
     </>
