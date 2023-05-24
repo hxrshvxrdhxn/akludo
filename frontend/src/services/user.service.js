@@ -63,6 +63,14 @@ export default class UserService extends ApiCoreService {
                             id
                             name
                           } 
+                          contender{
+                            id
+                            name
+                          }
+                          challenger{
+                            id
+                            name
+                          }
                         }
                       }
                       bal
