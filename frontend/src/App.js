@@ -19,9 +19,13 @@ import GameHistory from './pages/GameHistory';
 import TransactionHistory from './pages/TransactionHistory';
 import Support from './pages/Support';
 import TermsAndCondition from './pages/TermsAndCondition';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import ContactUs from './pages/ContactUs';
+import AboutUs from './pages/AboutUs';
+import RefundPolicy from './pages/RefundPolicy';
 
 
-function App() { 
+function App() {
   return (
     <>
       <BrowserRouter>
@@ -29,13 +33,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/ludo-classic" element={<GaurdedAuth comp={<GameListing />} />} />
           <Route path="/withdraw" element={<GaurdedAuth comp={<Withdraw />} />} />
-          <Route path="/deposit" element={<GaurdedAuth comp={<AddMoney />}  />} />
-          <Route path="/pay-option" element={<GaurdedAuth comp={<ChoosePayOption />}  />} />
-          <Route path="/refer" element={<GaurdedAuth comp={<Refer />}  />} />
-          <Route path="/user-profile"  element={<GaurdedAuth comp={<UserProfile />}  />} />
+          <Route path="/deposit" element={<GaurdedAuth comp={<AddMoney />} />} />
+          <Route path="/pay-option" element={<GaurdedAuth comp={<ChoosePayOption />} />} />
+          <Route path="/refer" element={<GaurdedAuth comp={<Refer />} />} />
+          <Route path="/user-profile" element={<GaurdedAuth comp={<UserProfile />} />} />
           <Route path="/login" element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/otp' element={<GaurdedAuth comp={<Otp />}  />} />
+          <Route path='/otp' element={<GaurdedAuth comp={<Otp />} />} />
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/new-password' element={<NewPassword />} />
           <Route path='/otp-reset-password' element={<OtpResetPassword />} />
@@ -43,6 +47,10 @@ function App() {
           <Route path='/transaction-history' element={<TransactionHistory />} />
           <Route path='/support' element={<Support />} />
           <Route path='/terms-condition' element={<TermsAndCondition />} />
+          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+          <Route path='/refund-policy' element={<RefundPolicy />} />
+          <Route path='/about' element={<AboutUs />} />
+          <Route path='/contact' element={<ContactUs />} />
 
         </Routes>
       </BrowserRouter>

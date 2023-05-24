@@ -2,13 +2,13 @@ import React from 'react'
 import Header from '../components/Header'
 import { connect } from 'react-redux';
 
-function TermsAndCondition() {
+function RefundPolicy() {
     return (
         <>
             <Header />
             <div className='card'>
                 <div className='head-card'>
-                    <h3>Terms & Condition</h3>
+                    <h3>Cancellation/Refund Policy</h3>
                 </div>
 
                 <div className='small-body mt10'>
@@ -17,7 +17,7 @@ function TermsAndCondition() {
                     <div className='font13 mt10'>Hence, We insist that You read these Terms and Privacy Policy and let Us know if You have any questions regarding the same. We will try Our best to answer Your queries.</div>
                 </div>
             </div>
-
+        
         </>
     )
 }
@@ -28,4 +28,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps)(TermsAndCondition);
+export default connect(mapStateToProps)(RefundPolicy);
