@@ -52,6 +52,42 @@ export default class ChallengeService extends ApiCoreService{
         }
     }
 
+    static async gameHistory(id){
+      try {
+        return await this.graphCall('withAuth.listChallenge', `
+        {
+          withAuth(token:"auto"){
+            listChallenge(criteria:"{\\"$or\\":[{\\"challenger\\":\\"${id}\\"},{\\"contender\\":\\"${id}\\"}]}" limit:100){
+              id
+              challenger{
+                id
+                name
+              }
+              contender{
+                id
+                name
+              }
+              amount
+              roomCode
+              game{
+                id
+                name
+              }
+              winner{
+                id
+                name
+              }
+              status
+            }
+          }
+        }
+        `,{});
+    }catch(c){
+        //console.log(c);'Unable to list Challenge'
+        throw new Error(c);
+    }
+    }
+
     static async listChallengeByStatus(status){
       //to do check if valid status-------------
       try {

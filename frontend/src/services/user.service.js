@@ -51,8 +51,19 @@ export default class UserService extends ApiCoreService {
                           id
                             name
                         }
+                        createdAt
                         amount
                         txType
+                        linkedBankTransaction{
+                          id
+                          }
+                        linkedChallenge{
+                          id
+                          winner{
+                            id
+                            name
+                          } 
+                        }
                       }
                       bal
                       
@@ -113,10 +124,8 @@ export default class UserService extends ApiCoreService {
         mutation{
           mutationWithAuth(token:"auto"){
             update{
-              updateUser(id:"${user.id}", name:${
-          user.name ? '"' + user.name + '"' : '""'
-        }, gender:${user.gender ? user.gender : "MALE"}, status:${
-          user.status ? user.status : "ENABLED"
+              updateUser(id:"${user.id}", name:${user.name ? '"' + user.name + '"' : '""'
+        }, gender:${user.gender ? user.gender : "MALE"}, status:${user.status ? user.status : "ENABLED"
         }){
                 id
                 name
