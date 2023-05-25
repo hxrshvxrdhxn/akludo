@@ -11,8 +11,11 @@ class LedgerHook extends Hook {
         this[event](data);
     }
 
-    onLedgerCreate(newObj) {
+    async onLedgerCreate(newObj) {
         // called when Ledger is created.
+        console.log("updating wallet for user with new ledger");
+        await _db.Wallet.updateOne({user:newObj.fromUser},{$push:{ledger:newObj._id}})
+        //update the wallet with a ledger.
     }
 
     onLedgerUpdate({oldObj, newObj}) {

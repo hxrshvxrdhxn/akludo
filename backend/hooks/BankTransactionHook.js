@@ -1,3 +1,5 @@
+const UserService = require('../services/UserService');
+const OrderService = require('../services/paymentgateway/OrderService');
 const Hook = require('./base/Hook');
 
 /**
@@ -11,8 +13,26 @@ class BankTransactionHook extends Hook {
         this[event](data);
     }
 
-    onBankTransactionCreate(newObj) {
+    async onBankTransactionCreate(newObj) {
         // called when BankTransaction is created.
+        //sort the  data
+        let status='PENDING';
+        // now call the cashfree order api 
+        if(newObj.txType=='TOP_UP'){
+            try{
+
+                let user = await _db.User.findOne({_id:newObj.createdBy});
+                let orderData= await OrderService.createOrder(user,newObj) 
+                console.log("payment session Id====-----------------",orderData.payment_session_id);
+               
+            }catch(c){
+                console.log(c);
+                status='FAILED';
+                //_db.BankTransaction.update({_id: id}, {$set: {status:status}});
+                throw new Error('unable to create order');
+            } 
+        }
+       
     }
 
     onBankTransactionUpdate({oldObj, newObj}) {

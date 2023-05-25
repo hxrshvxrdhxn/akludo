@@ -11,32 +11,48 @@ const sdk = require("api")("@cashfreedocs-new/v3#3pbsh2zlhrk1eey");
  * */
 
 class OrderService {
-  static async createOrder(customerDetails, orderMeta) {
-    // to create a order we must authenticate the customer details and create a webhook url
-
-    sdk
+  static async createOrder(customerDetails,transaction) {
+    // authenticating the customer details 
+    console.log(customerDetails);
+    //to creating a env file for saving secret key and urls
+    //calculate order expriy time and add 10 mins to cuuren t=time
+    var curr = new Date (),
+    orderExpiryTime = new Date (curr );
+    orderExpiryTime.setMinutes (curr.getMinutes() + 20);
+    console.log(orderExpiryTime);
+    return new Promise((resolve,reject)=>{
+      sdk
       .createOrder(
         {
           customer_details: {
-          customer_id: "7112AAA812234",
-          customer_email: "johny@cashfree.com",
-          customer_phone: "9908734801"
+          customer_id: customerDetails?._id||"",
+          customer_email: customerDetails?.emails[0]?.address||"",
+          customer_phone: customerDetails?.phones[0]?.number||""
           },
           order_meta: {
-          notify_url: "https://webhook.site/0578a7fd-a0c0-4d47-956c-d02a061e36d3"
+            return_url: "https://2a84-125-63-123-166.ngrok-free.app/deposit?order_id={order_id}",
+            notify_url: "https://2a84-125-63-123-166.ngrok-free.app/api/webhook/cashfree"         //todo create a webhook api
           },
-          order_amount: 1.00,
-          order_currency: "INR"
+          order_amount: parseFloat(transaction.amount)||1.00,
+          order_currency: "INR",
+          order_tags:{
+            transaction_id:transaction._id||""
+          },
+          order_expiry_time: orderExpiryTime.toISOString()
         },
         {
           "x-api-version": "2022-09-01",
           "x-client-id": "TEST388524b8c5ad932008ed997dc3425883",
           "x-client-secret": "TESTb4fc5eb213f445d76c3e3ce9e305c6582ece88be",
         }
-      )
-      .then(({ data }) => console.log(data))
-      .catch((err) => console.error(err));
-  }
+      ).then(async({ data }) =>{ 
+        //console.log(data)
+        console.log("updating bank transaction for metaa-===",await _db.BankTransaction.updateOne({_id:(transaction._id||'')},{$set:{meta:JSON.stringify({sessionId:data.payment_session_id,orderId:data.order_id})}}));
+        resolve(data);
+       })
+      .catch((err) =>{ console.error(err); reject(err)});
+   })  
+}
 
   static async findOne() {}
 

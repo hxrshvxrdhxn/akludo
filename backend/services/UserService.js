@@ -4,6 +4,7 @@ const UserValidator = require('../validations/UserValidator');
 const UserHook = require('../hooks/UserHook');
 const UserInterceptor = require('../interceptors/UserInterceptor');
 const RBACPermissionService = require('./RBACPermissionService');
+const StatelessMiddleware = require('../bootloader/security/StatelessMiddleware');
 
 
 /**

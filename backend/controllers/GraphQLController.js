@@ -12,14 +12,43 @@ const {MAPPER_HELP_STR} = require('../util/Constants');
 /**
  * To handle graphQL routes
  * */
+
+function getStatus(paymentStatus){
+    if(paymentStatus=='SUCCESS') {
+        return "SUCCESS";
+    }else if(paymentStatus=='FAILED'||paymentStatus=='CANCELLED'||paymentStatus=='USER_DROPPED'){
+        return "FAILED";
+    }else if(paymentStatus=='PENDING'||paymentStatus=='INCOMPLETE'||paymentStatus=='FLAGGED'){
+        return "PENDING";
+    }else if(paymentStatus=='INITIALIZED'){
+        return "PROCESSING";
+    }   
+}
 exports = module.exports = class GraphQLController {
 
     constructor(router) {
         // config routes
+        router.post('/api/webhook/cashfree',this.updateTransaction);
         router.get('/api/graph-api', this.graphAPI);
         router.post('/api/graph-api', this.graphAPI);
         log.info('Routed', this.constructor.name);
     }
+
+    
+    
+    async updateTransaction(req,res){
+        console.log("hello--------",req.body);
+        //to do verufy  header--
+        res.sendStatus(200);
+        if(req.body.data){
+            const body=req.body.data;
+            const transactionId=body?.order?.order_tags?.transaction_id||'';
+            let paymentStatus=body?.payment?.payment_status||'PENDING';
+            let paymentMethod=body?.payment?.payment_method?.app?.channel;
+            paymentStatus= getStatus(paymentStatus);
+            console.log("updating bank transaction for status",await _db.BankTransaction.updateOne({_id:transactionId||''},{$set:{status:paymentStatus,gatewayMethod:paymentMethod}}));
+        }
+}
 
     async graphAPI(req, res) {
         let mapper;
