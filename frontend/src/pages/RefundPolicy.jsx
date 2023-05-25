@@ -12,12 +12,14 @@ function RefundPolicy() {
                 </div>
 
                 <div className='small-body mt10'>
-                    <div className='heading'>These terms and conditions of use along with privacy policy</div>
-                    <div className='font13 mt10'>(“Privacy Policy”) forms a legally binding agreement (“Agreement”) between You and us (AkLudo.com).</div>
-                    <div className='font13 mt10'>Hence, We insist that You read these Terms and Privacy Policy and let Us know if You have any questions regarding the same. We will try Our best to answer Your queries.</div>
+                    <div className='font13 mt10'>Thanks for being a patron with AK ENTERPRISES (referred as “Akludo”). If you are not entirely satisfied with your subscription, we are here to help.</div>
+                    <div className='heading mt20'>Refund</div>
+                    <div className='font13 mt10'>Once we receive your Refund request, we will inspect it and notify you on the status of your refund.</div>
+                    <div className='font13 mt10'>If your refund request is approved, we will initiate a refund to your credit card (or original method of payment) within 3 working days. You will receive the credit within a certain amount of days, depending on your card issuer's policies.</div>
+                    <div className='font13 mt10'>In case of unforeseen technical glitch, AK ENTERPRISES would refund subscription upon reviewing the complaint. Final decision lies with the company.</div>
                 </div>
             </div>
-        
+
         </>
     )
 }

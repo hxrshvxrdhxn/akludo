@@ -695,7 +695,9 @@ ul.listPayOpt {
   color: #333;
   font-weight: bold;
 }
-
+.terms-css p{
+  margin-top: 10px;
+}
 /* old css */
 
 
