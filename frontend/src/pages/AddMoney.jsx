@@ -11,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 function AddMoney(props) {
     const navigate = useNavigate();
     const [money, setMoney] = useState({ money: props.money });
-    const [transaction,setTransaction]=useState({status:'SUCCESS',gateway:'upi',gatewayMethod:'Razorpay',amount:money.money,txType:'TOP_UP'})
+    const [transaction,setTransaction]=useState({status:'PENDING',gateway:'Cashfree',gatewayMethod:'',amount:money.money,txType:'TOP_UP'})
     const [ledger,setLedger]=useState({fromUser:"64476ae2ccbeff3c46116058",toUser:"64476ae2ccbeff3c46116058",amount:money.money,txType:'TOP_UP'});
     const setValue = (e) => {
         const regex = /^[0-9\b]+$/;
@@ -39,20 +39,33 @@ function AddMoney(props) {
             let trans=await TransactionService.createTransaction(transaction);
             console.log(trans);
             setTransaction({...transaction,transactionId:trans.id});
-            console.log(ledger);
-            // create a  ledger
-            if(trans.id){
-                let led=await LedgerService.createLedger(ledger,trans.id);
-                //console.log(led);
-                //get the wallet using userid
-                let wallet=await WalletService.getWallet();
-                //console.log(wallet);
-                //updating wallet
-                if(led.id&&wallet[0].id){
-                    let updatedwallet=await WalletService.updateBalanceOrLedger(wallet[0].id,led.amount,JSON.stringify(led.id),'DEPOSIT');
-                    console.log(updatedwallet);
-                }
+            //redirect to payment gateway
+            if(trans.meta){
+                let meta=JSON.parse(trans.meta);
+                console.log(meta); 
+                const cashfree=new window.Cashfree(meta.sessionId);
+                console.log(cashfree);
+                cashfree.redirect();
             }
+            {
+                // create a  ledger
+            // if(trans.id){
+            //     let led=await LedgerService.createLedger(ledger,trans.id);
+            //     //console.log(led);
+            //     //get the wallet using userid
+            //     let wallet=await WalletService.getWallet();
+            //     //console.log(wallet);
+            //     //updating wallet
+            //     if(led&&led.id&&wallet[0].id){
+            //         const amount=led.amount+wallet[0].bal;
+            //         console.log(amount);
+            //         let updatedwallet=await WalletService.updateBalanceOrLedger(wallet[0].id,amount,JSON.stringify(led.id),'DEPOSIT');
+            //         console.log(updatedwallet);
+            //         setMoney({money:0});
+            //     }
+            // }
+            }
+            
         }
             
 

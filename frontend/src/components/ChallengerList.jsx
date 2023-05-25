@@ -115,7 +115,7 @@ function ChanllenceList(props) {
 
     // }, [socket])
     const ChallegeListItem = ({ item }) => (<>
-        <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
+        <div> <img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
         <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
             {close => (<div className="modal">
                 <div className="content text-center">

@@ -78,14 +78,14 @@ function GaurdedAuth({ comp}) {
     console.log(match)
     match=match.filter(item=>item.match(RegExp('(^| )' + name + '=([^;]+)'))).map(item=>item.split('=')).flat();
     console.log(match);
-    if (match[0].match('_aklpsk') && match[1]) {
+    if (match.length && match[0].match('_aklpsk') && match[1]) {
       console.log("logged in");
       setAuth(true);
     } else {
       console.log("not logged in");
       setAuth(false);
     }
-    return
+    return;
   }
 
  // to do to check  for password set or not

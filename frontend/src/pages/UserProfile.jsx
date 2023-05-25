@@ -11,7 +11,7 @@ import ChallengeService from '../services/challenge.service';
 function UserProfile(props) {
 
     const [updateProfile, setUpdateProfile] = useState({ username: '', phone: props.phone ? props.phone : '', email: '',referral:{} });
-    const [history,setHistory] = useState({});
+    //const [history,setHistory] = useState({});
     const [gamesCount,setgameCount] = useState(0);
     const [user, Setuser] = useState({});
     const handler = (e) => {
@@ -28,7 +28,7 @@ function UserProfile(props) {
                 setUpdateProfile({ username: user.name ? user.name : updateProfile.username, phone: user.phones && user.phones.length ? user.phones[0].number : updateProfile.phone, email: user.emails && !!user.emails.length ? user.emails[0].address : updateProfile.email, referral:user.referral?user.referral:{} });
                 let history=await ChallengeService.listAllChallengesByPlayerId(user.id);
                 console.log(history);
-                setHistory(history);
+                //setHistory(history);
                 setgameCount(history.length?history.length:0)
             } catch (c) {
                 console.log(c);

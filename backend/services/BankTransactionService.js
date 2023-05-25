@@ -4,6 +4,8 @@ const BankTransactionValidator = require('../validations/BankTransactionValidato
 const BankTransactionHook = require('../hooks/BankTransactionHook');
 const BankTransactionInterceptor = require('../interceptors/BankTransactionInterceptor');
 const RBACPermissionService = require('./RBACPermissionService');
+const LedgerHook = require('../hooks/LedgerHook');
+const EnumTransactionType = require('../util/enums/EnumTransactionType');
 
 
 /**
@@ -87,8 +89,18 @@ class BankTransactionService {
         // save
         const dbObj = new _db.BankTransaction(obj);
         const saveResp = await dbObj.save();
-        BankTransactionHook.trigger('onBankTransactionCreate', saveResp);
-        return saveResp;
+        await BankTransactionHook._instance.onBankTransactionCreate(saveResp);
+        if(saveResp._id){
+            const ledgerEntry = new _db.Ledger({
+                    linkedBankTransaction: saveResp._id,
+                    fromUser: saveResp.createdBy,
+                    amount: saveResp.amount,
+                    txType: EnumTransactionType.HOLD        
+                });
+            const ledSaveResp= await ledgerEntry.save();        //creating ledger here and calling it here to update
+            LedgerHook.trigger('onLedgerCreate',ledSaveResp);    //wallet otherwise i will have to call this hook inside another hook...
+        }
+        return await _db.BankTransaction.findOne({_id:saveResp._id})            //returning updated object 
     }
 
     static async update(id, dto, user = null) {
