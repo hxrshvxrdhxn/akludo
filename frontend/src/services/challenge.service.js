@@ -47,9 +47,45 @@ export default class ChallengeService extends ApiCoreService{
                 }
               }`,{});
         }catch(c){
-            //console.log(c);
-            throw new Error('Unable to list Challenge');
+            //console.log(c);'Unable to list Challenge'
+            throw new Error(c);
         }
+    }
+
+    static async gameHistory(id){
+      try {
+        return await this.graphCall('withAuth.listChallenge', `
+        {
+          withAuth(token:"auto"){
+            listChallenge(criteria:"{\\"$or\\":[{\\"challenger\\":\\"${id}\\"},{\\"contender\\":\\"${id}\\"}]}" limit:100){
+              id
+              challenger{
+                id
+                name
+              }
+              contender{
+                id
+                name
+              }
+              amount
+              roomCode
+              game{
+                id
+                name
+              }
+              winner{
+                id
+                name
+              }
+              status
+            }
+          }
+        }
+        `,{});
+    }catch(c){
+        //console.log(c);'Unable to list Challenge'
+        throw new Error(c);
+    }
     }
 
     static async listChallengeByStatus(status){
@@ -84,8 +120,8 @@ export default class ChallengeService extends ApiCoreService{
         }
         `,{});
     }catch(c){
-        //console.log(c);
-        throw new Error('Unable to list Challenge');
+        //console.log(c);'Unable to list Challenge'
+        throw new Error(c);
     }
     }
 
@@ -95,7 +131,7 @@ export default class ChallengeService extends ApiCoreService{
             mutation{
                 mutationWithAuth(token:"auto"){
                   fabricate{
-                    createChallenge(challenger:"643e502e746d5ecbaa4936b8" amount:${challenge.amount} contender:"${challenge.contender}" status:CREATED roomCode:"213" game:"64413054d74babfdb353e6b0" ){
+                    createChallenge(challenger:"${challenge.challenger}" amount:${challenge.amount} status:CREATED roomCode:"213" game:"64413054d74babfdb353e6b0" ){
                       id
                       challenger{
                         id
@@ -114,7 +150,7 @@ export default class ChallengeService extends ApiCoreService{
               }`,{});
         }catch(c){
             //console.log(c);
-            throw new Error('Unable to create Challenge');
+            throw new Error(c);
         }
     }
 
@@ -151,7 +187,8 @@ export default class ChallengeService extends ApiCoreService{
         }`,{});
     }catch(c){
        //console.log(c);
-        throw new Error('Unable to update Challenge');
+       //'Unable to update Challenge'
+        throw new Error(c);
     }
   }
 

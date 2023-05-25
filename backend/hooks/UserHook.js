@@ -11,9 +11,16 @@ class UserHook extends Hook {
         this[event](data);
     }
 
-    onUserCreate(newObj) {
+    async onUserCreate(newObj) {
         // called when User is created.
         console.log("user created");
+        // create wallet
+        const wallet = new _db.Wallet({user: newObj._id ,bal:0});
+        await wallet.save();
+        // create KYC holder
+        const kyc = await new _db.KYC({user: newObj._id});
+        await kyc.save();
+        await _db.User.update({_id: newObj._id}, {$set: {wallet: wallet._id, kyc: kyc._id}});
     }
 
     onUserUpdate({oldObj, newObj}) {

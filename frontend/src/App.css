@@ -239,7 +239,10 @@ header {
 #menuToggle input:checked~span:nth-last-child(2) {
   transform: rotate(-45deg) translate(2px, -2px);
 }
-
+.padding20{
+  padding: 20px;
+  font-size: 12px;
+}
 /*
  * Make this absolute positioned
  * at the top left of the screen
@@ -641,24 +644,6 @@ ul.listPayOpt {
   background-color: #fff;
 }
 
-.newItem {
-  opacity: 0;
-  animation: grow 1s ease-in-out forwards;
-  -webkit-animation: grow 1s ease-in-out forwards;
-}
-
-@-webkit-keyframes grow {
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes grow {
-  to {
-    opacity: 1;
-  }
-}
-
 .popup-content {
   border-radius: 6px;
   width: 90% !important;
@@ -705,6 +690,10 @@ ul.listPayOpt {
   background: #ffffff;
   border-radius: 18px;
   border: 1px solid #cfcece;
+}
+.black-text{
+  color: #333;
+  font-weight: bold;
 }
 
 /* old css */

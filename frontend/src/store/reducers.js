@@ -1,8 +1,8 @@
 import { PHONE_NUMBER, ADD_MONEY, ADD_AMOUNT, USER_ID, CHALLENGE_ITEM, CHALLENGE_OPEN } from './actions';
 const INITIAL_STATE = {
   phone: null,
-  money: 0,
-  amount: 0,
+  money: null,
+  amount: null,
   uid: 'me',
   challenge: '',
   openChallenges: ''

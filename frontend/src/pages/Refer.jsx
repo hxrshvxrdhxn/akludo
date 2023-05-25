@@ -45,7 +45,7 @@ function Refer() {
                 <div className='img-text-align mt10'>
                     <div class="left-img"> <img src='../images/winner.png' alt='Net Banking' /></div>
                     <div className="right-text" >
-                        <div className='font13'>When your friend signs up on RK Ludo
+                        <div className='font13'>When your friend signs up on AK ludo
                             from your referral link,</div>
                         <div className='green-txt mt5'>You get1% Commissionon yourreferral's winnings.</div>
                     </div>

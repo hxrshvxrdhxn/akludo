@@ -12,9 +12,11 @@ class ChallengeHook extends Hook {
         this[event](data);
     }
 
-    onChallengeCreate(newObj) {
+    async onChallengeCreate(newObj) {
         // called when Challenge is created.
         MainSocketController.instance.sendMessageToAll({type: 'challenge', data: newObj});
+        // bind transaction
+        if(newObj.meta) await _db.Ledger.update({_id: _db.Ledger.convertToObjectId(newObj.meta)}, {$set: {linkedChallenge: newObj._id}});
     }
 
     onChallengeUpdate({oldObj, newObj}) {

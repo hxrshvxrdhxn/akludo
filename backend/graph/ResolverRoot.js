@@ -5,7 +5,8 @@ const MutationWithAuthResolver = require('./resolvers/MutationWithAuthResolver')
 const {enc, dec} = require('../bootloader/security/StatelessMiddleware');
 const EnumUserStatus = require('../util/enums/EnumUserStatus');
 const EnumGender = require('../util/enums/EnumGender');
-var mongoose = require('mongoose');
+const SMSService = require('../services/SMSService');
+const UserHook = require('../hooks/UserHook');
 
 
 /**
@@ -57,8 +58,8 @@ exports = module.exports = class ResolverRoot {
         if (!username) throw new Error('username is required');
         if (!password) throw new Error('password is required');
         const user = await _db.User.findOne({'phones.number': username});
-        if(!user) throw new Error('Invalid user or password!');
-        if(user.naiveAuthPass !== password) throw new Error('Invalid user or password!');
+        if (!user) throw new Error('Invalid user or password!');
+        if (user.naiveAuthPass !== password) throw new Error('Invalid user or password!');
         req.loginUser({
             _id: user._id,
             id: user._id,
@@ -84,7 +85,7 @@ exports = module.exports = class ResolverRoot {
 
     async sendOtp({mobile}, req) {
         const otp = 'xxxxxx'.replace(/x/g, () => (~~(Math.random() * 9)).toString());
-        // todo make otp send call
+        await SMSService.sendOtp(mobile, otp);
         return {
             ctx: enc({mobile, otp, ts: +new Date()}),
             success: true
@@ -101,14 +102,11 @@ exports = module.exports = class ResolverRoot {
         }
         if (otp !== '000000' && parsed.otp !== otp) throw new Error('Invalid OTP supplied.');
         if (+new Date() - parsed.ts > 60000 * 3) throw new Error('OTP is expired.');
+
         let user = await _db.User.findOne({'phones.number': parsed.mobile});
         if (!user) {
-            var countusers=parseInt(await _db.User.count({}))+3333
-            var userId = new mongoose.Types.ObjectId();
-            console.log("USER--id",userId);
             user = new _db.User({
-                _id:userId,
-                name: ('User@'+countusers),
+                name: `player${(await _db.User.count()) + 1} ${['Ace', 'Mamba', 'Simba', 'Tiger', 'Lion', 'Leo', 'Cheetah', 'Wolf', 'Fox', 'Cobra', 'Snake'][~~(Math.random() * 10)]}`,
                 gender: EnumGender.OTHER,
                 emails: [],
                 phones: [{
@@ -125,13 +123,12 @@ exports = module.exports = class ResolverRoot {
                     sendNotifications: true
                 },
                 socialProfiles: [],
-                wallet: (await (new _db.Wallet({user:{_id:userId}})).save())._id,
-                kyc:(await (new _db.KYC({user:{_id:userId}})).save())._id,    
-                referral:(await (new _db.Referral({referrer:{_id:userId}})).save())._id,            
                 createdAt: +new Date(),
                 updatedAt: +new Date()
             });
             await user.save();
+            // synchoronously hit hook user created
+            await UserHook._instance.onUserCreate(user);
         }
         console.log('user', user);
         if (user.status !== EnumUserStatus.ENABLED) throw new Error('User is not enabled.');
