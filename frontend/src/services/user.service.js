@@ -60,7 +60,6 @@ export default class UserService extends ApiCoreService {
                           id
                             name
                         }
-                        createdAt
                         amount
                         txType
                         linkedBankTransaction{
