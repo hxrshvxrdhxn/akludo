@@ -12,6 +12,7 @@ const ResourceService = require('../../services/ResourceService');
 const UpdateHistoryService = require('../../services/UpdateHistoryService');
 const ConfigService = require('../../services/ConfigService');
 const ReferralService = require('../../services/ReferralService');
+const OrderService = require('../../services/paymentgateway/OrderService');
 
 
 /**
@@ -37,6 +38,7 @@ class WithAuthResolver {
         this.ResourceResolver = require('./ResourceResolver');
         this.UpdateHistoryResolver = require('./UpdateHistoryResolver');
         this.ConfigResolver = require('./ConfigResolver');
+        this.OrderResolver = require('./OrderResolver');
     }
 
     async _fullUser() {
@@ -99,7 +101,7 @@ class WithAuthResolver {
     async getUser({id}) {
         const user = await this._fullUser();
         const doc = await UserService.findOne(id, user);
-        console.log("this is user resolver:-",new this.UserResolver(doc, user));
+        //console.log("this is user resolver:-",new this.UserResolver(doc, user));
         return doc ? new this.UserResolver(doc, user): null;
     }
 
@@ -289,6 +291,16 @@ class WithAuthResolver {
         const doc = await ReferralService.findOne(id, user);
         return doc ? new this.ReferralResolver(doc, user) : null;
     }
+
+    async getOrder({id}){
+        const user = await this._fullUser();
+        const doc=await OrderService.findOrder(id);
+        console.log("this is order :-------",doc);
+        //console.log(new this.OrderResolver(doc,user))
+        return doc ? new this.OrderResolver(doc, user) : null 
+        //return null;
+    }
+
 
 }
 

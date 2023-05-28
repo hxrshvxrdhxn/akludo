@@ -2,30 +2,52 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import Header from '../components/Header'
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import TransactionService from '../services/transaction.service';
 import LedgerService from '../services/ledger.service';
 import WalletService from '../services/wallet.service';
 import { ToastContainer, toast } from 'react-toastify';
 
 function AddMoney(props) {
-    const navigate = useNavigate();
+    const [param] = useSearchParams();
     const [money, setMoney] = useState({ money: props.money });
     const [transaction,setTransaction]=useState({status:'PENDING',gateway:'Cashfree',gatewayMethod:'',amount:money.money,txType:'TOP_UP'})
-    const [ledger,setLedger]=useState({fromUser:"64476ae2ccbeff3c46116058",toUser:"64476ae2ccbeff3c46116058",amount:money.money,txType:'TOP_UP'});
+    
+    useEffect(()=>{
+        (async function UpdateWallet(){
+            const orderId=param.get('order_id');
+            if(orderId){
+                //first get the order using a query and then update the transaction with amount status and payment gateway etc 
+                const orderData=await TransactionService.getOrder(orderId);
+                //i mean verify the transaction again beacuse there can be a case when bank transction is not updated by webhook
+                console.log(orderData);
+                let transactionStatus;
+                if(orderData.orderStatus==='PAID'){     //update the bank transaction status and 
+                    transactionStatus='SUCCESS'
+                    const res=await TransactionService.updateTransactionStatus(orderData?.transaction?.id,transactionStatus);
+                }else if(orderData.orderStatus==='EXPIRED'){
+                    transactionStatus='FAILED'
+                    const res=await TransactionService.updateTransactionStatus(orderData?.transaction?.id,transactionStatus);
+                }
+                //to do update wallet for now on frontend... create a reducer for wallet 
+                
+            } 
+        })();
+    },[]);
+    
+    
+    
     const setValue = (e) => {
         const regex = /^[0-9\b]+$/;
         if (e.target.value === "" || regex.test(e.target.value)) {
         setMoney({ [e.target.name]: e.target.value })
         setTransaction({...transaction,amount:parseInt(e.target.value)});
-        setLedger({...ledger,amount:parseInt(e.target.value)});
-        }
+       }
     }
 
     const clickHandler = (e) => {
         setMoney({ [e.target.name]: e.target.value })
         setTransaction({...transaction,amount:parseInt(e.target.value)});
-        setLedger({...ledger,amount:parseInt(e.target.value)});
     }
 
     const submitAddMoney = async(e) => {
@@ -46,35 +68,13 @@ function AddMoney(props) {
                 const cashfree=new window.Cashfree(meta.sessionId);
                 console.log(cashfree);
                 cashfree.redirect();
+                }    
             }
-            {
-                // create a  ledger
-            // if(trans.id){
-            //     let led=await LedgerService.createLedger(ledger,trans.id);
-            //     //console.log(led);
-            //     //get the wallet using userid
-            //     let wallet=await WalletService.getWallet();
-            //     //console.log(wallet);
-            //     //updating wallet
-            //     if(led&&led.id&&wallet[0].id){
-            //         const amount=led.amount+wallet[0].bal;
-            //         console.log(amount);
-            //         let updatedwallet=await WalletService.updateBalanceOrLedger(wallet[0].id,amount,JSON.stringify(led.id),'DEPOSIT');
-            //         console.log(updatedwallet);
-            //         setMoney({money:0});
-            //     }
-            // }
-            }
-            
-        }
-            
-
         }catch(c){
             console.log(c.message);
         }
-        navigate('/pay-option', { replace: true });
+        //navigate('/pay-option', { replace: true });
     }
-
 
     return (
         <>
@@ -120,3 +120,22 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps)(AddMoney);
+
+
+
+// create a  ledger
+// if(trans.id){
+//     let led=await LedgerService.createLedger(ledger,trans.id);
+//     //console.log(led);
+//     //get the wallet using userid
+//     let wallet=await WalletService.getWallet();
+//     //console.log(wallet);
+//     //updating wallet
+//     if(led&&led.id&&wallet[0].id){
+//         const amount=led.amount+wallet[0].bal;
+//         console.log(amount);
+//         let updatedwallet=await WalletService.updateBalanceOrLedger(wallet[0].id,amount,JSON.stringify(led.id),'DEPOSIT');
+//         console.log(updatedwallet);
+//         setMoney({money:0});
+//     }
+// }

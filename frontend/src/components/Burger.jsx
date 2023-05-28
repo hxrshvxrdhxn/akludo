@@ -27,6 +27,7 @@ function Burger() {
         try {
             let data = await UserService.logout();
             console.log(data);
+            //TO DO check if cookie exist if so clear it again just for sureity
             navigate('/login', { replace: true });
         } catch (c) {
             console.log(c);

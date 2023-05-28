@@ -60,6 +60,7 @@ function Login(props) {
 
         try {
             let data = await Loginn.login(login.username, login.password);
+            console.log(data);
             let phone = login.username
             if (data.success) {
                 props.dispatch({ type: 'PHONE_NUMBER', phone });
