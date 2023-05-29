@@ -11,7 +11,8 @@ import { ToastContainer, toast } from 'react-toastify';
 function AddMoney(props) {
     const [param] = useSearchParams();
     const [money, setMoney] = useState({ money: props.money });
-    const [transaction,setTransaction]=useState({status:'PENDING',gateway:'Cashfree',gatewayMethod:'',amount:money.money,txType:'TOP_UP'})
+    const [transaction,setTransaction]=useState({status:'PENDING',gateway:'Cashfree',gatewayMethod:'',amount:money.money,txType:'TOP_UP'});
+    const [wallet,setWallet]=useState(props.wallet);
     
     useEffect(()=>{
         (async function UpdateWallet(){
@@ -25,13 +26,17 @@ function AddMoney(props) {
                 if(orderData.orderStatus==='PAID'){     //update the bank transaction status and 
                     transactionStatus='SUCCESS'
                     const res=await TransactionService.updateTransactionStatus(orderData?.transaction?.id,transactionStatus);
+                    let wallt=await WalletService.getWallet();
+                    console.log(wallt);
+                    setWallet(wallt[0]);
+                    props.dispatch({type:'WALLET',wallet});
                 }else if(orderData.orderStatus==='EXPIRED'){
                     transactionStatus='FAILED'
                     const res=await TransactionService.updateTransactionStatus(orderData?.transaction?.id,transactionStatus);
                 }
                 //to do update wallet for now on frontend... create a reducer for wallet 
                 
-            } 
+            }    
         })();
     },[]);
     
@@ -115,7 +120,8 @@ function AddMoney(props) {
 
 const mapStateToProps = (state) => {
     return {
-        money: state.money
+        money: state.money,
+        wallet: state.wallet
     };
 }
 

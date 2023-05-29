@@ -8,7 +8,7 @@ import Login from '../services/login.service';
 
 function Register(props) {
     const navigate = useNavigate();
-    const [phone, setPhone] = useState()
+    const [phone, setPhone] = useState();
     const [ctx, setCtx] = useState(null)
     const [otp, setOtp] = useState()
     const [showResults, setShowResults] = useState(false)
@@ -38,6 +38,7 @@ function Register(props) {
             console.log(c);
         }
     }
+
     const submitRegister = async (e) => {
         e.preventDefault();
         props.dispatch({ type: 'PHONE_NUMBER', phone });
@@ -56,8 +57,8 @@ function Register(props) {
         } catch (c) {
             console.log(c);
         }
-
     }
+    
     return (
         <>
             <Header />
