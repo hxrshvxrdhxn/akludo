@@ -15,6 +15,7 @@ class BankTransactionHook extends Hook {
 
     async onBankTransactionCreate(newObj) {
         // called when BankTransaction is created.
+       // jab transaction create hoti tab hum ledger create krte hai aur uss ledger ko wallet m store krte  hai corresponding 
         //sort the  data
         let status='PENDING';
         // now call the cashfree order api 
@@ -22,8 +23,16 @@ class BankTransactionHook extends Hook {
             try{
 
                 let user = await _db.User.findOne({_id:newObj.createdBy});
-                let orderData= await OrderService.createOrder(user,newObj) 
-                console.log("payment session Id====-----------------",orderData.payment_session_id);
+                // to check if transaction type is top up then create a order 
+                if(newObj.txType==='TOP_UP'){
+                    let orderData= await OrderService.createOrder(user,newObj) 
+                    console.log("payment session Id -----------------",orderData.payment_session_id);
+                }
+                //if transaction type is withdrawal then check for if then amount can be withrawn and the debit it using cashfree refund
+
+                //if transcation type is hold then it means its in state either it will be credited or debited after game
+                
+                //if transaction is transfer then transfer game win lose or referal money etc,.....
                
             }catch(c){
                 console.log(c);
@@ -35,8 +44,13 @@ class BankTransactionHook extends Hook {
        
     }
 
-    onBankTransactionUpdate({oldObj, newObj}) {
-        // called when BankTransaction is updated.
+    async onBankTransactionUpdate({oldObj, newObj}) {
+       // called when BankTransaction is updated.
+       if(oldObj.status==='PENDING'&&newObj.status==='SUCCESS'){
+            console.log("status has changed.........updating wallet amount..........");
+           console.log("updating wallet",await _db.Wallet.updateOne({user:newObj.createdBy},{$inc:{bal:newObj.amount}}));
+       }
+       // if a bank transaction is  updated in regards of status then update the wallet amount as well
     }
 
     onBankTransactionDelete(id) {

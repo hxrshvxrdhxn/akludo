@@ -7,13 +7,14 @@ import WalletService from '../services/wallet.service';
 
 function Cash(props) {
 
-    const [wallet,setWallet]=useState({});
+    const [wallet,setWallet]=useState(props.wallet);
     //add check for login if logged then only make api call and display wallet balance-------------- 
     useEffect(()=>{
         async function getWallet(){
             let wallt=await WalletService.getWallet();
             console.log(wallt);
             setWallet(wallt[0]);
+            props.dispatch({type:'WALLET',wallet});
         }
         getWallet();
     },[]);
@@ -27,7 +28,8 @@ function Cash(props) {
 
 const mapStateToProps = (state) => {
     return {
-        amount: state.amount
+        amount: state.amount,
+        wallet: state.wallet
     };
 }
 

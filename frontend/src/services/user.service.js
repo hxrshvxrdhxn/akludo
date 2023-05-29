@@ -53,12 +53,12 @@ export default class UserService extends ApiCoreService {
                       ledger{
                         id
                         fromUser{
-                           id
+                          id
                           name
                         }
                         toUser{
                           id
-                            name
+                          name
                         }
                         amount
                         txType
@@ -170,7 +170,7 @@ export default class UserService extends ApiCoreService {
 
   static async logout() {
     try {
-      this.graphCall(
+      return this.graphCall(
         "logout",
         `
           {
@@ -184,6 +184,7 @@ export default class UserService extends ApiCoreService {
       )
         .then((data) => {
           this.#user = null;
+          console.log("user null");
           return data;
         })
         .catch((e) => {
