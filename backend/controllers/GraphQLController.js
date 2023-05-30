@@ -8,6 +8,7 @@ const GraphSchema = require('../graph/GraphSchema');
 
 // constants
 const {MAPPER_HELP_STR} = require('../util/Constants');
+const TransactionService = require('../services/paymentgateway/TransactionService');
 
 /**
  * To handle graphQL routes
@@ -43,18 +44,24 @@ exports = module.exports = class GraphQLController {
         console.log("hello--------",req.body);
         if(req.body.data){
             const body=req.body.data;
-            console.log(body);
             const transactionId=body?.order?.order_tags?.transaction_id||'';
             let paymentStatus=body?.payment?.payment_status||'PENDING';
             let paymentMethod=body?.payment?.payment_method?.app?.channel;
             paymentStatus= getStatus(paymentStatus);
-            console.log("updating bank transaction for status",await _db.BankTransaction.updateOne({_id:transactionId||''},{$set:{gatewayMethod:paymentMethod}}));          //status:paymentStatus, i will set it on frontend ..
-            // const led=await _db.Ledger.findOne({linkedBankTransaction:transactionId||''})
-            // console.log("fetching ledger",led);
-            // now update wallet amount after finding ledger form bank transaction 
-            // if(paymentStatus=="SUCCESS"){
-            //     console.log("updating wallet for the transaction if transaction success",await _db.Wallet.updateOne({ledger:led._id},{$inc:{bal:body?.payment?.payment_amount}})); 
-            // }
+            let bankTransaction =await _db.BankTransaction.findOne({_id:transactionId});
+            console.log("this is bank Transaction",bankTransaction);
+            if(bankTransaction?.status && bankTransaction?.status==='PENDING' && paymentStatus==="SUCCESS"){
+                console.log("updating bank transaction for status");
+                // let res=await _db.BankTransaction.updateOne({_id:transactionId||''},{$set:{gatewayMethod:paymentMethod,status:paymentStatus}}); 
+                //create service for updating this in order service
+                let res=await TransactionService.updateTransactionStatusAndGateway(transactionId,paymentMethod,paymentStatus,bankTransaction.createdBy);
+                console.log(res);
+                if(res.updateResult.nModified>0){
+                    console.log("updating wallet for the transaction if transaction success",await _db.Wallet.updateOne({user:bankTransaction.createdBy},{$inc:{bal:body?.payment?.payment_amount}}));
+                }
+            }else if(bankTransaction?.status && bankTransaction?.status==='PENDING' && paymentStatus==="FAILED"){
+                console.log("updating bank transaction for status",await _db.BankTransaction.updateOne({_id:transactionId||''},{$set:{gatewayMethod:paymentMethod,status:paymentStatus}}));   //this.incrementwalletamount
+            }   
         }
 }
 

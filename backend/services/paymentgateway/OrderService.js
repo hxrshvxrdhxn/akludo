@@ -11,13 +11,14 @@ const sdk = require("api")("@cashfreedocs-new/v3#3pbsh2zlhrk1eey");
  * */
 
 class OrderService {
+  
   static async createOrder(customerDetails, transaction) {
     // authenticating the customer details
     console.log(customerDetails, transaction);
     //to creating a env file for saving secret key and urls
     //calculate order expriy time and add 10 mins to cuuren t=time
     var curr = new Date(),
-      orderExpiryTime = new Date(curr);
+    orderExpiryTime = new Date(curr);
     orderExpiryTime.setMinutes(curr.getMinutes() + 20);
     console.log(orderExpiryTime);
     return new Promise((resolve, reject) => {
@@ -32,7 +33,7 @@ class OrderService {
             order_meta: {
               return_url: "http://localhost:3001/deposit?order_id={order_id}",
               notify_url:
-                "https://ab94-103-81-215-165.ngrok-free.app/api/webhook/cashfree", //todo create a webhook api
+                "https://6f83-122-177-104-216.ngrok-free.app/api/webhook/cashfree", //todo create a webhook api
             },
             order_amount: parseFloat(transaction.amount) || 1.0,
             order_currency: "INR",
@@ -95,7 +96,6 @@ class OrderService {
 
   static async list() {}
 
-  static async update() {}
 }
 
 exports = module.exports = OrderService;

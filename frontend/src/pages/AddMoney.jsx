@@ -14,31 +14,30 @@ function AddMoney(props) {
     const [transaction,setTransaction]=useState({status:'PENDING',gateway:'Cashfree',gatewayMethod:'',amount:money.money,txType:'TOP_UP'});
     const [wallet,setWallet]=useState(props.wallet);
     
-    useEffect(()=>{
-        (async function UpdateWallet(){
-            const orderId=param.get('order_id');
-            if(orderId){
-                //first get the order using a query and then update the transaction with amount status and payment gateway etc 
-                const orderData=await TransactionService.getOrder(orderId);
-                //i mean verify the transaction again beacuse there can be a case when bank transction is not updated by webhook
-                console.log(orderData);
-                let transactionStatus;
-                if(orderData.orderStatus==='PAID'){     //update the bank transaction status and 
-                    transactionStatus='SUCCESS'
-                    const res=await TransactionService.updateTransactionStatus(orderData?.transaction?.id,transactionStatus);
-                    let wallt=await WalletService.getWallet();
-                    console.log(wallt);
-                    setWallet(wallt[0]);
-                    props.dispatch({type:'WALLET',wallet});
-                }else if(orderData.orderStatus==='EXPIRED'){
-                    transactionStatus='FAILED'
-                    const res=await TransactionService.updateTransactionStatus(orderData?.transaction?.id,transactionStatus);
-                }
-                //to do update wallet for now on frontend... create a reducer for wallet 
-                
-            }    
-        })();
-    },[]);
+    // useEffect(()=>{
+    //     (async function UpdateWallet(){
+    //         const orderId=param.get('order_id');
+    //         if(orderId){
+    //             //first get the order using a query and then update the transaction with amount status and payment gateway etc 
+    //             const orderData=await TransactionService.getOrder(orderId);
+    //             //i mean verify the transaction again beacuse there can be a case when bank transction is not updated by webhook
+    //             console.log(orderData);
+    //             let transactionStatus;
+    //             if(orderData.orderStatus==='PAID'){     //update the bank transaction status and 
+    //                 transactionStatus='SUCCESS'
+    //                 const res=await TransactionService.updateTransactionStatus(orderData?.transaction?.id,transactionStatus);
+    //                 let wallt=await WalletService.getWallet();
+    //                 console.log(wallt);
+    //                 setWallet(wallt[0]);
+    //                 props.dispatch({type:'WALLET',wallet});
+    //             }else if(orderData.orderStatus==='EXPIRED'){
+    //                 transactionStatus='FAILED'
+    //                 const res=await TransactionService.updateTransactionStatus(orderData?.transaction?.id,transactionStatus);
+    //             }
+    //             //to do update wallet for now on frontend... create a reducer for wallet           
+    //         }    
+    //     })();
+    // },[]);
     
     
     
@@ -66,6 +65,13 @@ function AddMoney(props) {
             let trans=await TransactionService.createTransaction(transaction);
             console.log(trans);
             setTransaction({...transaction,transactionId:trans.id});
+            // if(trans.id){
+            //         let led=await LedgerService.createLedger( 
+            //             trans.createdBy,
+            //             trans.amount,
+            //             'TOP_UP' ,trans.id);
+            //         console.log(led);
+            // }
             //redirect to payment gateway
             if(trans.meta){
                 let meta=JSON.parse(trans.meta);

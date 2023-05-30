@@ -1,3 +1,5 @@
+const WalletService = require('../services/WalletService');
+const WalletDTO = require('../util/beans/WalletDTO');
 const Hook = require('./base/Hook');
 
 /**
@@ -14,6 +16,10 @@ class LedgerHook extends Hook {
     async onLedgerCreate(newObj) {
         // called when Ledger is created.
         console.log("updating wallet for user with new ledger");
+        // await WalletService.findOne()
+        // const dto = new WalletDTO({user, bal, ledger, createdAt, updatedAt, createdBy, updatedBy});
+        // const result = await WalletService.update(id, dto, this._user); //{updateResult, updatedDbObj}
+          
         await _db.Wallet.updateOne({user:newObj.fromUser},{$push:{ledger:newObj._id}})
         //update the wallet with a ledger.
     }
