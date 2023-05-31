@@ -55,16 +55,16 @@ class BankTransactionHook extends Hook {
 
     async onBankTransactionUpdate({oldObj, newObj}) {
        // called when BankTransaction is updated.
-       if(oldObj.status==='PENDING'&&newObj.status==='SUCCESS'){
-            console.log("status has changed.........updating wallet amount..........");
-           console.log("updating wallet",await _db.Wallet.updateOne({user:newObj.createdBy},{$inc:{bal:newObj.amount}}));
-       }
+    //    if(oldObj.status==='PENDING'&&newObj.status==='SUCCESS'){
+    //         console.log("status has changed.........updating wallet amount..........");
+    //        console.log("updating wallet",await _db.Wallet.updateOne({user:newObj.createdBy},{$inc:{bal:newObj.amount}}));
+    //    }
        // if a bank transaction is  updated in regards of status then update the wallet amount as well
     }
 
     onBankTransactionDelete(id) {
         // called when BankTransaction is deleted.
-        
+
     }
 
 }

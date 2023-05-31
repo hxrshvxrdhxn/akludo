@@ -50,18 +50,18 @@ exports = module.exports = class GraphQLController {
             paymentStatus= getStatus(paymentStatus);
             let bankTransaction =await _db.BankTransaction.findOne({_id:transactionId});
             console.log("this is bank Transaction",bankTransaction);
-            if(bankTransaction?.status && bankTransaction?.status==='PENDING' && paymentStatus==="SUCCESS"){
-                console.log("updating bank transaction for status");
-                // let res=await _db.BankTransaction.updateOne({_id:transactionId||''},{$set:{gatewayMethod:paymentMethod,status:paymentStatus}}); 
-                //create service for updating this in order service
+            if(bankTransaction?.status && bankTransaction?.status==='PENDING' && paymentStatus==='SUCCESS'){
                 let res=await TransactionService.updateTransactionStatusAndGateway(transactionId,paymentMethod,paymentStatus,bankTransaction.createdBy);
-                console.log(res);
+                console.log("updating bank transaction for status",res);
                 if(res.updateResult.nModified>0){
-                    console.log("updating wallet for the transaction if transaction success",await _db.Wallet.updateOne({user:bankTransaction.createdBy},{$inc:{bal:body?.payment?.payment_amount}}));
+                    console.log("updating wallet for the transaction if transaction success")//,await _db.Wallet.updateOne({user:bankTransaction.createdBy},{$inc:{bal:body?.payment?.payment_amount}}));//this.incrementwalletamount
+                    let walletres=await TransactionService.incrementWalletAmount(bankTransaction.createdBy,body?.payment?.payment_amount||0);
+                    console.log(walletres);
                 }
-            }else if(bankTransaction?.status && bankTransaction?.status==='PENDING' && paymentStatus==="FAILED"){
-                console.log("updating bank transaction for status",await _db.BankTransaction.updateOne({_id:transactionId||''},{$set:{gatewayMethod:paymentMethod,status:paymentStatus}}));   //this.incrementwalletamount
-            }   
+            }else if(bankTransaction?.status && bankTransaction?.status==='PENDING' && paymentStatus==='SUCCESS'){
+                let res=await TransactionService.updateTransactionStatusAndGateway(transactionId,paymentMethod,paymentStatus,bankTransaction.createdBy);
+                console.log("updating bank transaction for status",res);
+            }
         }
 }
 

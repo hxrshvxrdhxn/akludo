@@ -8,26 +8,26 @@ class TransactionService {
     static user
     static async getCurrentUser(userId){
         this.user = await _db.User.findOne({_id:userId});
+        console.log("this is a user:-",this.user)
     }
 
     static async updateTransactionStatusAndGateway(id,gatewayMethod,status,userId) {
-        this.getCurrentUser(userId);
+        await this.getCurrentUser(userId);
         const dtoObj={status:status,gatewayMethod:gatewayMethod}
         const dto = new BankTransactionDTO(dtoObj);
-        console.log(dto);
         const result = await BankTransactionService.update(id,dto,this.user);
         return result;
     }
 
     static async incrementWalletAmount(userId,amount){
-        this.getCurrentUser(userId);
-        let wallet= await WalletService.findOne(user.wallet.id);
+        await this.getCurrentUser(userId);
+        let wallet= await WalletService.findOne(this.user.wallet,this.user);
         console.log("this is wallet",wallet);
-        const money=parseInt(wallet.amount)+parseInt(amount);
-        const dtoObj={amount:money}
+        const money=parseInt(wallet.bal)+parseInt(amount);
+        const dtoObj={bal:money}
         const dto = new WalletDTO(dtoObj);
         console.log(dto);
-        const result = await WalletService.update(wallet.id,dto,this.user);
+        const result = await WalletService.update(wallet._id,dto,this.user);
         return result;
     }
 }
