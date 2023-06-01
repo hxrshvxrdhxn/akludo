@@ -28,25 +28,6 @@ function Home() {
                     <div className='tag'>Coming Soon</div>
                     <img src='../images/ludo-plus.png' alt='Classic Ludo' />
                 </div>
-
-                <div className="home-card-item">
-                    <Link to='/about' className='black-text'>About Us</Link>
-                </div>
-                <div className="home-card-item">
-                    <Link to='/refund-policy' className='black-text'>Refund policy</Link>
-                </div>
-                <div className="home-card-item">
-                    <Link to='/terms-condition' className='black-text'>Terms & Condition</Link>
-
-                </div>
-                <div className="home-card-item">
-                    <Link to='/privacy-policy' className='black-text'>Privacy policy</Link>
-                </div>
-
-                <div className="home-card-item">
-                    <Link to='/support' className='black-text'>Contact Us</Link>
-                </div>
-
             </div>
         </>
     )

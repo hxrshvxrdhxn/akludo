@@ -47,7 +47,7 @@ function UserProfile(props) {
             if (user.id) {
                 let data = await UserService.updateUser({ id: user.id, name: updateProfile.username,email:updateProfile.email });   
                 console.log(data);
-                toast.error("user updated")
+                toast.success("user updated")
             }
         } catch (c) {
             console.log(c);

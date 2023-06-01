@@ -94,7 +94,7 @@ function GaurdedAuth({ comp}) {
       try{
         if(Auth){
           let user= await UserService.getUser();
-          console.log(user)
+          console.log("umar pahat user login.....--------------->>>>>>>>>>>",user)
           if(user && user.naiveAuthPass){
             console.log("password set")
             setPassword(true);

@@ -51,7 +51,11 @@ function Burger() {
                     <li><a href='/refer'>Refer & Earn</a></li>
                     <li><a href="/user-profile">Profile</a></li>
                     <li><a href="/support">Support</a></li>
-                    <li> <a href="/terms-condition">Legal Terms</a></li>
+                    <li> <a href="/about">About Us</a></li>
+                    <li> <a href="/refund-policy">Refund policy</a></li>
+                    <li> <a href="/terms-condition">Terms & Condition</a></li>
+                    <li> <a href="/privacy-policy">Privacy policy</a></li>
+                    <li> <a href="/support">Contact Us</a></li>
                     <li onClick={handleLogout}><a>Logout</a></li>
                 </ul>
             </div>
