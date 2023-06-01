@@ -24,7 +24,7 @@ function OtpResetPasword(props) {
     const submitRegister = async(e) => {
         e.preventDefault();
         try{
-            let data=await Login.verifyOtp(phoneOtp.otp,location.state.context);
+            let data=await Login.verifyOtp(phoneOtp?.otp,location?.state?.context);
             console.log(data);
             navigate('/new-password');
         }catch(c){

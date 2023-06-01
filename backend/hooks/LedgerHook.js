@@ -19,8 +19,9 @@ class LedgerHook extends Hook {
         // await WalletService.findOne()
         // const dto = new WalletDTO({user, bal, ledger, createdAt, updatedAt, createdBy, updatedBy});
         // const result = await WalletService.update(id, dto, this._user); //{updateResult, updatedDbObj}
-          
-        await _db.Wallet.updateOne({user:newObj.fromUser},{$push:{ledger:newObj._id}})
+        // const user=await _db.User.findOne({_id:newObj.createdBy});
+        // await WalletService.updateWalletLedger(user?.wallet,newObj?._id,user);
+        await _db.Wallet.updateOne({user:newObj.fromUser},{$push:{ledger:newObj._id}});
         //update the wallet with a ledger.
     }
 
