@@ -61,6 +61,7 @@ header {
   padding: 16px 16px 0 5px;
   float: left;
   position: relative;
+  cursor: pointer;
 }
 
 .cash-box::before {

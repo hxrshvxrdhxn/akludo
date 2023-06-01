@@ -10,8 +10,8 @@ function Header() {
             <Burger></Burger>
             <Logo></Logo>
             <div className='rightNav'>
-            <Cash></Cash>
-            <Profile></Profile>
+                <Cash></Cash>
+                <Profile></Profile>
             </div>
         </header>
     )

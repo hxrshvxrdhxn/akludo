@@ -1,4 +1,4 @@
-import { PHONE_NUMBER, ADD_MONEY, ADD_AMOUNT, USER_ID, CHALLENGE_ITEM, CHALLENGE_OPEN, WALLET } from './actions';
+import { PHONE_NUMBER, ADD_MONEY, ADD_AMOUNT, USER_ID, CHALLENGE_ITEM, CHALLENGE_OPEN, ADD_WALLET } from './actions';
 const INITIAL_STATE = {
   phone: null,
   money: null,
@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   uid: 'me',
   challenge: '',
   openChallenges: '',
-  wallet : {}
+  wallet : ''
 };
 
 function reducer(state = INITIAL_STATE, action) {
@@ -31,13 +31,15 @@ function reducer(state = INITIAL_STATE, action) {
     case CHALLENGE_ITEM:
       console.log("reducer chanllenge-------------------->:", action.challenge)
       return { challenge: action.challenge };
+       break;
 
     case CHALLENGE_OPEN:
       console.log("reducer Open chanllenge-------------------->:", action.openChallenges)
       return { openChallenges: action.openChallenges };
+      break;
 
-    case WALLET:
-      console.log("reducer wallet-------------------->:", action.wallet)
+    case ADD_WALLET:
+      console.log("reducer ADD_WALLET-------------------->:", action.wallet)
       return { wallet: action.wallet };
 
     default:

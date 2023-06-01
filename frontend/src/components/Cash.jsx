@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
 import WalletService from '../services/wallet.service';
 
-
-
 function Cash(props) {
-
-    const [wallet,setWallet]=useState(props.wallet);
-    //add check for login if logged then only make api call and display wallet balance-------------- 
-    useEffect(()=>{
-        async function getWallet(){
-            let wallt=await WalletService.getWallet();
-            console.log(wallt);
-            setWallet(wallt[0]);
-            props.dispatch({type:'WALLET',wallet});
+    const navigate = useNavigate()
+    const [wallet, setWallet] = useState();
+    useEffect(() => {
+        async function getWallet() {
+            const wallt = await WalletService.getWallet();
+            const walletBal = wallt[0].bal
+            setWallet(walletBal);
         }
         getWallet();
-    },[]);
+    }, []);
 
-    return (
-        <div className='cash-box'>
-            <Link className='wallet-txt' to='/deposit'> {wallet.bal?wallet.bal:0.0}</Link>
-        </div>
-    )
+    const addChips = () => {
+        navigate('/chips', { replace: true });
+    }
+
+    return <div className="cash-box" onClick={addChips} ><div className='wallet-txt'> {props.wallet === 0 ? 0 : props.wallet || wallet}</div></div>
 }
 
 const mapStateToProps = (state) => {
     return {
-        amount: state.amount,
         wallet: state.wallet
     };
 }
