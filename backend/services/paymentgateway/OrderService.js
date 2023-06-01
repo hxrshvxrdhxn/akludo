@@ -31,9 +31,9 @@ class OrderService {
               customer_phone: customerDetails?.phones[0]?.number || "",
             },
             order_meta: {
-              return_url: "http://localhost:3001/deposit?order_id={order_id}",
+              return_url: "https://akludo.com/deposit?order_id={order_id}",
               notify_url:
-                "https://6f83-122-177-104-216.ngrok-free.app/api/webhook/cashfree", //todo create a webhook api
+                "https://akludo.com/api/webhook/cashfree", //todo create a webhook api
             },
             order_amount: parseFloat(transaction.amount) || 1.0,
             order_currency: "INR",

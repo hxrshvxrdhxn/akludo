@@ -2,15 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import WalletService from '../services/wallet.service';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Cash(props) {
     const navigate = useNavigate()
     const [wallet, setWallet] = useState();
     useEffect(() => {
         async function getWallet() {
-            const wallt = await WalletService.getWallet();
-            const walletBal = wallt[0].bal
-            setWallet(walletBal);
+            try {
+                const wallt = await WalletService.getWallet();
+                const walletBal = wallt[0].bal
+                setWallet(walletBal);
+            }
+            catch (c) {
+                console.log(c);
+                toast.error(c.message);
+                throw new Error(c)
+            }
         }
         getWallet();
     }, []);
