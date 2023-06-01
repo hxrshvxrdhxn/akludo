@@ -10,7 +10,6 @@ function Login(props) {
     const navigate = useNavigate();
     const [phoneError, setPhoneError] = useState();
     const [passwordError, setPasswordError] = useState();
-
     const [login, setLogin] = useState({ username: '', password: '' });
 
 

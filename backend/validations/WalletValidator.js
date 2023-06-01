@@ -26,6 +26,9 @@ class WalletValidator extends Validator {
 
 
     ledger(ledger) {
+        if(!ledger){
+            return false;
+        }
         return ledger.map((entityId, idx) => _db.Wallet.convertToObjectId(entityId) ? false : 'Invalid ID passed for Wallet->ledger[' + idx + ']. Please pass a valid Object id.').filter(e => !!e).join(',').trim();
     }
 

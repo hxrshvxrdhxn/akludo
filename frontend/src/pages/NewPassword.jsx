@@ -4,6 +4,7 @@ import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom';
 import UserService from '../services/user.service';
 import Login from '../services/login.service';
+import { ToastContainer, toast } from 'react-toastify';
 
 function NewPassword(props) {
     const navigate = useNavigate();
@@ -17,16 +18,22 @@ function NewPassword(props) {
     const submitForm = async (e) => {
         e.preventDefault();
         try {
-            const user=await UserService.getUser();
-            let data = await UserService.setUserPassword(user.id,newPassword.password);
-            console.log(data);
-            if(data&&!!data.phones.length){
-                let logindata = await Login.login(data.phones[0].number,newPassword.password);
-                console.log(logindata);
+            /// TO DO PASSWORD CONFIRM PASSWORD SHOULD BE SAME=====-done
+            if(newPassword.password&&newPassword.password===newPassword.confirmPassword){
+                const user=await UserService.getUser();
+                let data = await UserService.setUserPassword(user.id,newPassword.password);
+                console.log(data);
+                if(data&&!!data.phones.length){
+                    let logindata = await Login.login(data.phones[0].number,newPassword.password);
+                    console.log(logindata);
+                }
+                navigate('/', { replace: true });
+            }else{
+                toast.error("passsword and confirm password should be same and filled")
             }
-            navigate('/', { replace: true });
         } catch (c) {
             console.log(c);
+            toast.error(c);
         }
 
 
@@ -42,6 +49,7 @@ function NewPassword(props) {
                 <div className='head-card'>
                     <h3>Set New Password</h3>
                 </div>
+                <ToastContainer />
                 <form onSubmit={submitForm}>
                     <div className='label-input mt10'><label>New Password</label></div>
                     <div className='small-body section-center'>

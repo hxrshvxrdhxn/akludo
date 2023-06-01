@@ -128,6 +128,43 @@ class WalletService {
 
     }
 
+    // static async updateWalletLedger(id,ledger,user=null){
+    //     if (!(await RBACPermissionService.check(id, 'update.Wallet', user, _db.Wallet, null, dto))) throw new Error('You do not have permission to do this operation');
+    //     // validate
+    //     if (!id) throw new Error('Please provide an Id to update.');
+    //     const _id = id;
+    //     id = _db.Wallet.convertToObjectId(id);
+    //     if (!id) throw new Error('Invalid ID passed to update Wallet. ' + _id);
+
+    //     // Fetch original object
+    //     const origDbObj = await _db.Wallet.findOne({_id: id});
+    //     if (!origDbObj) throw new Error('No object with provided id: ' + id);
+
+    //     // // validate DTO
+    //     // if (!(dto instanceof WalletDTO)) throw new Error('Please provide a WalletDTO to update the Wallet.');
+
+    //     // // enrich
+    //     // dto.createTrack(user && user._id || user.id || null);
+    //     // await WalletInterceptor.beforeWalletUpdate(dto, origDbObj, user);
+
+    //     // Check data
+    //     // const obj = dto.toObject();
+    //     // const validationResult = new WalletValidator(obj, origDbObj, false).validate();
+    //     // if (!validationResult.isValid) {
+    //     //     throw new Error('Validation Failure for Wallet: ' + validationResult.errorString);
+    //     // }
+
+    //     // update
+    //     const updateResult =await _db.Wallet.updateOne({_id:id},{$addToSet:{ledger:{each:ledger}}})
+       
+    //     // fetch latest
+    //     const updatedDbObj = await _db.Wallet.findOne({_id: id});
+    //     WalletHook.trigger('onWalletUpdate', {oldObj: origDbObj, newObj: updatedDbObj});
+
+    //     return {updateResult, updatedDbObj};
+
+    // }
+
 }
 
 exports = module.exports = WalletService;

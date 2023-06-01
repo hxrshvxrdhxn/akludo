@@ -19,7 +19,7 @@ function Register(props) {
         e.preventDefault();
         props.dispatch({ type: 'PHONE_NUMBER', phone});
         try{
-            let data=await Login.sendOtp(phone);
+            let data=await Login.sendOtp(phone.phone);
             console.log(data);
             let ctx=data.ctx;
             console.log(ctx);
