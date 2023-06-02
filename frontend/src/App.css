@@ -50,6 +50,18 @@ header {
   box-sizing: border-box;
 }
 
+.editable-photo {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.editable-photo .profile-box {
+  height: 100px;
+  width: 100px;
+ float: none;
+}
+
+
 .cash-box {
   background: url('../public/images/cash-right.png') no-repeat right 0;
   min-width: 25px;
