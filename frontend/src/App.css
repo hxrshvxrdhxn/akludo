@@ -422,7 +422,13 @@ header {
   margin-top: 30px;
 }
 
+.pb10{
+  padding-bottom: 10px;
+}
 
+.pb20{
+  padding-bottom: 20px;
+}
 
 .text-para {
   font-size: 13px;

@@ -10,18 +10,28 @@ import UploadPhoto from '../components/UploadPhoto';
 
 
 function UserProfile(props) {
-
     const [updateProfile, setUpdateProfile] = useState({ username: '', phone: props.phone ? props.phone : '', email: '', referral: {} });
-    //const [history,setHistory] = useState({});
     const [gamesCount, setgameCount] = useState(0);
     const [user, Setuser] = useState({});
+    const [update, setUpdate] = useState(false);
+    const [blob, setBlob] = useState();
+
+
     const handler = (e) => {
-        console.log(e.target.value)
+        console.log("handler===================>", e.target.name, !e.target.value)
         setUpdateProfile({ ...updateProfile, [e.target.name]: e.target.value })
+        setUpdate(e.target.value = true)
+        console.log("update--------?", update)
+
+    }
+    const blog = (blob) => {
+        console.log("this is parent component-", blob);
+        setBlob(blob)
+
     }
 
     useEffect(() => {
-        async function test() {
+        async function getUserProfile() {
             try {
                 let user = await UserService.getUser();
                 console.log(user);
@@ -29,26 +39,27 @@ function UserProfile(props) {
                 setUpdateProfile({ username: user.name ? user.name : updateProfile.username, phone: user.phones && user.phones.length ? user.phones[0].number : updateProfile.phone, email: user.emails && !!user.emails.length ? user.emails[0].address : updateProfile.email, referral: user.referral ? user.referral : {} });
                 let history = await ChallengeService.listAllChallengesByPlayerId(user.id);
                 console.log(history);
-                //setHistory(history);
                 setgameCount(history.length ? history.length : 0)
+
             } catch (c) {
                 console.log(c);
                 toast.error(c.message);
                 throw new Error(c)
             }
         }
-        test();
+        getUserProfile();
     }, []);
+
 
 
     const submitProfile = async (e) => {
         e.preventDefault();
         try {
-            console.log(updateProfile);
+            console.log("updateProfile-------------->", updateProfile);
             if (user.id) {
-                let data = await UserService.updateUser({ id: user.id, name: updateProfile.username, email: updateProfile.email });
+                let data = await UserService.updateUser({ id: user.id, name: updateProfile.username, email: updateProfile.email, picture: { url: blob, storageType: 'REMOTE_URL' } });
                 console.log(data);
-                toast.success("user updated")
+                toast.success("Updated User Profile")
             }
         } catch (c) {
             console.log(c);
@@ -56,6 +67,8 @@ function UserProfile(props) {
             console.log(c);
         }
     }
+
+
 
     return (
         <>
@@ -67,7 +80,7 @@ function UserProfile(props) {
                 <ToastContainer />
                 <form onSubmit={submitProfile}>
                     <div className='editable-photo'>
-                        <UploadPhoto></UploadPhoto>
+                    {(user && user.picture && user.picture.uri) ?  <UploadPhoto blog={blog} picture={user.picture.uri}/>: <UploadPhoto blog={blog}/>}
                     </div>
                     <div className='label-input mt10'><label>Username</label></div>
                     <div className='small-body section-center'>
@@ -82,10 +95,8 @@ function UserProfile(props) {
 
                         <input placeholder='Email Address' onChange={handler} className='input-white' name='email' value={updateProfile.email} />
                     </div>
-                    <div className='text-center mt20'>
-                        <button className='btn-green' type='submit'>UPDATE</button>
-                        <br />
-                        <br />
+                    <div className='text-center mt20 pb20'>
+                        {update ? <button className='btn-green' type='submit'>UPDATE</button> : ''}
                     </div>
 
 
