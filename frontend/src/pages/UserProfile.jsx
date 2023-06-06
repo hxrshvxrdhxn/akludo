@@ -42,9 +42,7 @@ function UserProfile(props) {
                 setgameCount(history.length ? history.length : 0)
 
             } catch (c) {
-                console.log(c);
                 toast.error(c.message);
-                throw new Error(c)
             }
         }
         getUserProfile();
@@ -62,9 +60,7 @@ function UserProfile(props) {
                 toast.success("Updated User Profile")
             }
         } catch (c) {
-            console.log(c);
             toast.error(c.message);
-            console.log(c);
         }
     }
 
@@ -80,7 +76,7 @@ function UserProfile(props) {
                 <ToastContainer />
                 <form onSubmit={submitProfile}>
                     <div className='editable-photo'>
-                    {(user && user.picture && user.picture.uri) ?  <UploadPhoto blog={blog} picture={user.picture.uri}/>: <UploadPhoto blog={blog}/>}
+                        {(user && user.picture && user.picture.uri) ? <UploadPhoto blog={blog} picture={user.picture.uri} /> : <UploadPhoto blog={blog} />}
                     </div>
                     <div className='label-input mt10'><label>Username</label></div>
                     <div className='small-body section-center'>

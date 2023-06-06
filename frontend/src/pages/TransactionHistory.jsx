@@ -50,10 +50,10 @@ function TransactionHistory() {
 
     function loser(item) {
         if (user === item?.contender?.id) {
-            console.log("loser is equal to contender", user, item.contender.id)
+          //  console.log("loser is equal to contender", user, item.contender.id)
             return item?.challenger?.name
         } else {
-            console.log("loser is not equal to contender", user, item.contender.id)
+           // console.log("loser is not equal to contender", user, item.contender.id)
             return item?.contender?.name
         }
     }

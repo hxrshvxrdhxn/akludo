@@ -97,7 +97,6 @@ exports = module.exports = class ResolverRoot {
         try {
             parsed = dec(ctx);
         } catch (c) {
-            console.log(c);
             throw new Error('Invalid token passed');
         }
         if (otp !== '000000' && parsed.otp !== otp) throw new Error('Invalid OTP supplied.');

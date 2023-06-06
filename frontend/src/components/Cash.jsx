@@ -15,9 +15,7 @@ function Cash(props) {
                 setWallet(walletBal);
             }
             catch (c) {
-                console.log(c);
                 toast.error(c.message);
-                throw new Error(c)
             }
         }
         getWallet();

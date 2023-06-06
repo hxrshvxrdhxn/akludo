@@ -14,9 +14,7 @@ function Burger() {
                 let user = await UserService.getUser();
                 setUsername(user.name)
             } catch (c) {
-                console.log(c);
                 toast.error(c.message);
-                throw new Error(c)
             }
         }
         test();
@@ -30,7 +28,7 @@ function Burger() {
             //TO DO check if cookie exist if so clear it again just for sureity
             navigate('/login', { replace: true });
         } catch (c) {
-            console.log(c);
+            toast.error(c.message);
         }
     }
 

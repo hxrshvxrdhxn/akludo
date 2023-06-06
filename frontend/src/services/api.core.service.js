@@ -11,7 +11,7 @@ export default class ApiCoreService {
             let result = await this.post('/api/graph-api', {query, variables: params});
             // check result fine.
             result = result.data;
-            console.log(result);
+           console.log("result ------------------------>>>>>>",result);
             if (result.errors) {
                 const newError = new Error();
                 newError.source = name;

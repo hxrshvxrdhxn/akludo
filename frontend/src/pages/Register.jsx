@@ -1,9 +1,9 @@
-import axios from 'axios'
 import React, { useState } from 'react'
 import { connect } from 'react-redux';
 import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom';
 import Login from '../services/login.service';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function Register(props) {
@@ -14,12 +14,10 @@ function Register(props) {
     const [showResults, setShowResults] = useState(false)
 
     const handler = (e) => {
-        console.log(e.target.value)
         setPhone(e.target.value)
     }
 
     const handlerOtp = (e) => {
-        console.log(e.target.value)
         setOtp(e.target.value)
     }
 
@@ -27,41 +25,37 @@ function Register(props) {
         e.preventDefault();
         setShowResults(true)
         props.dispatch({ type: 'PHONE_NUMBER', phone });
-        console.log(phone)
         try {
             let data = await Login.sendOtp(phone);
-            console.log(data);
             if (data && data.ctx) {
                 setCtx(data.ctx)
             }
         } catch (c) {
-            console.log(c);
+            toast.error(c.message);
         }
     }
 
     const submitRegister = async (e) => {
         e.preventDefault();
-        props.dispatch({ type: 'PHONE_NUMBER', phone });
         try {
             if (ctx) {
                 let data = await Login.verifyOtp(otp, ctx);
-                console.log(data);
                 if (data && data.id) {
                     const uid=data.id;
-                    console.log("UID", uid, data.id)
                     props.dispatch({ type: 'USER_ID', uid });
                 }
 
                 navigate('/new-password', { replace: true });
             }
         } catch (c) {
-            console.log(c);
+            toast.error(c.message);
         }
     }
     
     return (
         <>
             <Header />
+            <ToastContainer />
             <div className='card'>
                 <div className='head-card'>
                     <h3>Register</h3>
@@ -69,7 +63,7 @@ function Register(props) {
                 <form onSubmit={submitRegister}>
                     <div className='label-input mt10'><label>Phone</label></div>
                     <div className='small-body section-center'>
-                        <input placeholder='Enter Phone number' onChange={handler} className='input-white' name='phone' />
+                        <input placeholder='Enter Phone number' onChange={handler} className='input-white' name='phone' value={phone || ''}/>
                     </div>
 
                     {showResults ? <> <div className='label-input'><label>OTP</label></div>
@@ -101,7 +95,7 @@ function Register(props) {
 
 const mapStateToProps = (state) => {
     return {
-        phone: state.phone
+      //  phone: state.phone
     };
 }
 

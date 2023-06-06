@@ -13,8 +13,7 @@ export default class Login extends ApiCoreService{
                 }
             }`,{});
         }catch(c){
-            console.log(c);
-            throw new Error('Unable to send otp');
+            throw new Error(c);
         }
     }
 
@@ -28,8 +27,7 @@ export default class Login extends ApiCoreService{
                 }
             }`,{});
         }catch(c){
-            console.log(c);
-            throw new Error('Unable to verify otp/');
+            throw new Error(c);
         }
     }
 
@@ -44,8 +42,7 @@ export default class Login extends ApiCoreService{
                 }
             }`,{});
         }catch(c){
-            console.log(c);
-            throw new Error('Unable to login');
+            throw new Error(c);
         }
     }
 

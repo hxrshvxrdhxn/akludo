@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import axios from "axios";
 import Header from '../components/Header'
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -59,14 +58,12 @@ function Login(props) {
 
         try {
             let data = await Loginn.login(login.username, login.password);
-            console.log(data);
             let phone = login.username
             if (data.success) {
                 props.dispatch({ type: 'PHONE_NUMBER', phone });
                 navigate('/', { replace: true });
             }
         } catch (c) {
-            console.log(c);
             toast.error(c.message);
         }
 
@@ -120,7 +117,7 @@ function Login(props) {
 
 const mapStateToProps = (state) => {
     return {
-        phone: state.phone
+   //    phone: state.phone
     };
 }
 
