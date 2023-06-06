@@ -14,6 +14,7 @@ const Wallet = new keystone.List('Wallet', {
 Wallet.add({
     user: {type: Types.Relationship, ref: 'User', initial: true, required: false, index: false},
     bal: {type: Types.Number, initial: true},
+    earning: {type:Types.Number, intial: true},
     ledger: {type: Types.Relationship, ref: 'Ledger', initial: true, required: false, index: false, many: true}
 });
 

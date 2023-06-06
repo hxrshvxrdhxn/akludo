@@ -1,14 +1,17 @@
 const BankTransactionDTO = require("../../util/beans/BankTransactionDTO");
 const WalletDTO = require("../../util/beans/WalletDTO");
 const BankTransactionService = require("../BankTransactionService");
+const UserService = require("../UserService");
 const WalletService = require("../WalletService");
 
 class TransactionService {
 
     static user
     static async getCurrentUser(userId){
-        this.user = await _db.User.findOne({_id:userId});
+        //this.user = await _db.User.findOne({_id:userId});
+        this.user=await UserService.findOne("me");
         console.log("this is a user:-",this.user)
+        return 
     }
 
     static async updateTransactionStatusAndGateway(id,gatewayMethod,status,userId) {

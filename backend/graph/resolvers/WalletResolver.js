@@ -31,6 +31,9 @@ class WalletResolver {
         return this.data.bal;
     }
 
+    async earning(){
+        return this.data.earning || 0;
+    }
 
     async ledger() {
         const docs = [];

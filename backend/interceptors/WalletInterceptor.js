@@ -10,6 +10,21 @@ class WalletInterceptor {
 
     static async beforeWalletUpdate(refWalletUpdateDto, refWalletOrigObj, user) {
         // feel free to change the Dto for manipulation before update
+        console.log(refWalletUpdateDto,refWalletOrigObj);
+        
+        if(refWalletUpdateDto._payload.ledger && !!refWalletUpdateDto?._payload.ledger.length){
+            //console.log(refWalletOrigObj.ledger)
+
+            refWalletUpdateDto._payload.ledger=[...refWalletOrigObj.ledger,...refWalletUpdateDto._payload.ledger];
+            refWalletUpdateDto._payload.ledger=refWalletUpdateDto._payload.ledger.map((item)=>{
+                return item.toString();
+            })
+            refWalletUpdateDto._payload.ledger=[...new Set(refWalletUpdateDto._payload.ledger)]          
+        }
+
+        //console.log("this is dto-",refWalletUpdateDto);
+        //return refWalletUpdateDto;
+
     }
 
     static async beforeWalletDelete(id, user) {

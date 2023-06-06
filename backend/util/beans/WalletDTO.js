@@ -39,6 +39,14 @@ class WalletDTO extends Bean {
         this._payload.bal = bal;
     }
 
+    get earning(){
+        return this._payload.earning;
+    }
+
+    set earning(earning){
+        this._payload.earning = earning;
+    }
+
     get ledger() {
         return this._payload.ledger;
     }

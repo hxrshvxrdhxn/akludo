@@ -22,6 +22,7 @@ class Wallet extends MongoDbModel {
         return mongoose => ({
             user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
             bal: Float,
+            earning:Float,
             ledger: [{type: mongoose.Schema.Types.ObjectId, ref: 'Ledger'}],
             createdAt: Number,
             updatedAt: Number,

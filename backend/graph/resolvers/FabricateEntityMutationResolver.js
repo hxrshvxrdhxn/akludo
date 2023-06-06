@@ -118,8 +118,8 @@ class FabricateEntityMutationResolver {
     }
 
 
-    async createWallet({user, bal, ledger, createdAt, updatedAt, createdBy, updatedBy}) {
-        const dto = new WalletDTO({user, bal, ledger, createdAt, updatedAt, createdBy, updatedBy});
+    async createWallet({user, bal, earning, ledger, createdAt, updatedAt, createdBy, updatedBy}) {
+        const dto = new WalletDTO({user, bal, earning, ledger, createdAt, updatedAt, createdBy, updatedBy});
         const doc = await WalletService.create(dto, this._user);
         return doc ? new this.WalletResolver(doc, this._user) : null;
     }
