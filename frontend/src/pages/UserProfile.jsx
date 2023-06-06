@@ -56,6 +56,13 @@ function UserProfile(props) {
         }
     }
 
+    async function calculateWithdrawableAmount(){
+            //FIRST FETCH ALL THE CHALLENGES WINNNIGS IN WHICH CURRENT USER IS 
+            ///SUM OF REFERRAL EARNING PLUS EARNINGS IN WALLET 
+            let referralearning=0,
+            winnings=0;
+    }
+
     return (
         <>
             <Header />

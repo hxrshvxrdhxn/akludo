@@ -19,16 +19,20 @@ function AddMoney(props) {
                 //first get the order using a query and then update the transaction with amount status and payment gateway etc 
                 const orderData = await TransactionService.getOrder(orderId);
                 //i mean verify the transaction again beacuse there can be a case when bank transction is not updated by webhook
-                // console.log(orderData);
-                let transactionStatus;
-                if (orderData.orderStatus === 'PAID') {     //update the bank transaction status and 
-                    transactionStatus = 'SUCCESS'
-                    const res = await TransactionService.updateTransactionStatus(orderData?.transaction?.id, transactionStatus);
-                    let wallt = await WalletService.getWallet();
-                    console.log(wallt);
-                    const wallet = wallt[0].bal
-                    props.dispatch({ type: 'ADD_WALLET', wallet });
-                } else if (orderData.orderStatus === 'EXPIRED') {
+                console.log(orderData);
+                let transaction=await TransactionService.getTransaction(orderData?.transaction?.id);
+                const transactionStatus=transaction.status;
+                console.log(transactionStatus)
+                if (orderData.orderStatus === 'PAID' && transactionStatus=='Pending') {     //update the bank transaction status as order has been paid and transaction Status  
+                    toast.error("there was Error while updating your wallet please contact admin");
+                    // TO DO WHAT IF TRANSACTION HAS NOT BEEN UPDATED BY WEBHOOK---------
+                    // transactionStatus = 'SUCCESS'
+                    // const res = await TransactionService.updateTransactionStatus(orderData?.transaction?.id, transactionStatus);
+                    // let wallt = await WalletService.getWallet();
+                    // console.log(wallt);
+                    // const wallet = wallt[0].bal
+                    //props.dispatch({ type: 'ADD_WALLET', wallet });
+                } else if (orderData.orderStatus === 'EXPIRED' && transactionStatus=='Pending') {
                     transactionStatus = 'FAILED'
                     const res = await TransactionService.updateTransactionStatus(orderData?.transaction?.id, transactionStatus);
                 }
