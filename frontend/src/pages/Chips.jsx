@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { connect } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import UserService from '../services/user.service';
+import { toast,ToastContainer } from 'react-toastify';
 
 function Chips() {
+
+    const [User,SetUser]=useState({});
+
+    useEffect(()=>{
+        (async function (){
+            try{
+                const user=await UserService.getUser();
+                console.log(user);
+                SetUser(user);
+            }catch(c){
+                console.log(c);
+                toast.error(c.message);
+            }
+        })();
+    },[])
     const navigate = useNavigate();
 
     const AddToChips = () => {
@@ -17,6 +34,7 @@ function Chips() {
     return (
         <>
             <Header />
+            <ToastContainer/>
             <div className='card'>
                 <div className='head-card'>
                     <h3>Winning Chips</h3>
@@ -25,7 +43,7 @@ function Chips() {
                     <p>These chips  is  withdraw from bank, or UPI</p>
                     <br />
                     <strong className='mt20'>Chips</strong>
-                    <div className='mt10'>0.00</div>
+                    <div className='mt10'>{User?.wallet?.earning+User?.referral?.earning}</div>
                     <br />
                     <button className='btn-green' onClick={WithdrawToChips} >Withdraw Chips</button>
                 </div>
@@ -39,7 +57,7 @@ function Chips() {
                         only use for play games.</p>
                     <br />
                     <strong className='mt20'>Chips</strong>
-                    <div className='mt10'>0.00</div>
+                    <div className='mt10'>{User?.wallet?.bal-User.wallet?.earning}</div>
                     <br />
                     <button className='btn-green' onClick={AddToChips} >Add Chips</button>
                 </div>

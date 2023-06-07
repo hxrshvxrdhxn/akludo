@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import Profile from '../components/Profile';
 import ReferralService from '../services/referral.service';
 import ChallengeService from '../services/challenge.service';
+import WalletService from '../services/wallet.service';
 
 
 function UserProfile(props) {
@@ -17,6 +18,7 @@ function UserProfile(props) {
     const handler = (e) => {
         console.log(e.target.value)
         setUpdateProfile({ ...updateProfile, [e.target.name]: e.target.value })
+        calculateWithdrawableAmount();
     }
 
     useEffect(() => {
@@ -52,7 +54,6 @@ function UserProfile(props) {
         } catch (c) {
             console.log(c);
             toast.error(c.message);
-            console.log(c);
         }
     }
 
@@ -61,6 +62,8 @@ function UserProfile(props) {
             ///SUM OF REFERRAL EARNING PLUS EARNINGS IN WALLET 
             let referralearning=0,
             winnings=0;
+            console.log("user Earning",user?.wallet?.bal);
+            console.log("user Referral",user?.referral);
     }
 
     return (

@@ -42,7 +42,8 @@ export default class UserService extends ApiCoreService {
                       }
                       earning
                       rate
-                      count  
+                      count 
+                      code 
                     }
                     wallet{
                       id
@@ -82,7 +83,7 @@ export default class UserService extends ApiCoreService {
                         }
                       }
                       bal
-                      
+                      earning
                     }
                     gender
                   }
