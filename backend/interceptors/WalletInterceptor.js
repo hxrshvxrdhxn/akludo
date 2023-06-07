@@ -10,11 +10,13 @@ class WalletInterceptor {
 
     static async beforeWalletUpdate(refWalletUpdateDto, refWalletOrigObj, user) {
         // feel free to change the Dto for manipulation before update
-        console.log(refWalletUpdateDto,refWalletOrigObj);
+        // console.log(refWalletUpdateDto,refWalletOrigObj);
         
         if(refWalletUpdateDto._payload.ledger && !!refWalletUpdateDto?._payload.ledger.length){
             //console.log(refWalletOrigObj.ledger)
-
+            if(typeof(refWalletUpdateDto._payload.ledger)=='string'){
+                refWalletUpdateDto._payload.ledger=[refWalletUpdateDto._payload.ledger]
+            }
             refWalletUpdateDto._payload.ledger=[...refWalletOrigObj.ledger,...refWalletUpdateDto._payload.ledger];
             refWalletUpdateDto._payload.ledger=refWalletUpdateDto._payload.ledger.map((item)=>{
                 return item.toString();

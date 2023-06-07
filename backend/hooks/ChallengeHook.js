@@ -6,6 +6,7 @@ const WalletService = require('../services/WalletService');
 const WalletDTO = require('../util/beans/WalletDTO');
 const LedgerDTO = require('../util/beans/LedgerDTO');
 const LedgerService = require('../services/LedgerService');
+const ChallengeDTO = require('../util/beans/ChallengeDTO');
 
 /**
  * Hook to run lifecycle events for entity Challenge
@@ -29,40 +30,35 @@ class ChallengeHook extends Hook {
     async onChallengeUpdate({oldObj, newObj}) {
         // called when Challenge is updated.
         MainSocketController.instance.sendMessageToAll({type: 'challenge', data: newObj});
-        //we need to check if old obj status is pending and new obj is created or cancelled  WE CAN ADD MORE STATUS
-        //lets assumwe the new object has already a inner in it  
-        console.log("winnner--",newObj.winner);
-        const winner= await UserService.findOne(newObj.winner);
-        console.log("winner:-",winner);
-        if(((oldObj.status==='PENDING'||oldObj.status==='STARTED')||oldObj.status==='CREATED')&&(newObj.status==='COMPLETE'||newObj.status==='CANCELLED')){  //TO DO REMOVE CREATED OLD OBJ STATUS AFTER GAME HAS BEENBINDED TO IT
+        //we need to check if old obj status is pending and new obj is created or cancelled  
+        //lets assumwe the new object has already a winner in it  
+        
+        if(((oldObj.status==='PENDING'||oldObj.status==='STARTED')||oldObj.status==='CREATED')&&(newObj.status==='COMPLETE'||newObj.status==='CANCELLED')&&newObj.winner){  //TO DO REMOVE CREATED OLD OBJ STATUS AFTER GAME HAS BEENBINDED TO IT
             console.log("this tells us that challenge has completed so we need set winner and deduct money------ update wallet using winner id--- ");
+            const winner= await UserService.findOne(newObj.winner);
+            console.log("winner:-",winner);
             await this.updateWinnerWallet(winner,newObj);
         }else if(newObj.status==='STARTED'){
             console.log("this tells us that challenge has started so we need set contender--");  //TO DO 
-        }else{
-            console.log("lol")
         }
     }
 
     async updateWinnerWallet(winner,challenge){
-        const wallet=await WalletService.findOne(winner?.wallet);  //to do create a ledger and bank transaction before adding money to wallet also 
+        const wallet=await WalletService.findOne(winner?.wallet);       //after this create a ledger before adding money to wallet also 
         console.log("wallet=------------",wallet);
-        wallet.bal+=parseFloat(challenge?.amount);
-        wallet.earning+=parseFloat(challenge?.amount);
+        wallet.bal=wallet.bal+(2*parseFloat(challenge?.amount))-5;
+        wallet.earning=(wallet?.earning||0)+parseFloat(challenge?.amount)-5;
         //update the ledger first
-        const objDto={toUser:winner._id,txType:'TRANSFER'}
+        const from=(challenge?.challenger===challenge?.winner?challenge?.contender:challenge?.contender);
+        console.log("FromUser-------",from);
+        //first update ledger----- for challenge and then add it to wallet------
+        const objDto={fromUser:from,toUser:winner._id,txType:'TRANSFER'};
         const ledgerDto=new LedgerDTO(objDto);
-        const ledgerResp= LedgerService.update(challenge.meta,objDto,winner); 
+        console.log("ledger Dto updtaing Ledger:-----",ledgerDto);
+        const ledgerResp= await LedgerService.update(challenge?.meta,ledgerDto,winner);
         let Dto;
-        if(winner._id===challenge.challenger){
-            const obj={bal:wallet?.bal,earning:wallet?.earning}
-            Dto=new WalletDTO(obj);
-        }else if(winner._id===challenge.contender){
-            //get all the ledgers for this person
-            const obj={bal:wallet?.bal,earning:wallet?.earning,ledger:challenge.meta}
-            Dto=new WalletDTO(obj);
-        }
-        console.log("Dto===--",Dto);
+        const walletObj={bal:wallet?.bal,earning:wallet?.earning,ledger:challenge?.meta}
+        Dto=new WalletDTO(walletObj);
         const resUpdate=await WalletService.update(wallet._id,Dto,winner);
         console.log("response-=======------ ",resUpdate);
     }
