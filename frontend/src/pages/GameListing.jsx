@@ -45,9 +45,7 @@ function GameListing(props) {
             let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
 
         } catch (c) {
-            console.log("Umar:  ", c);
-            toast.error(c.message);
-            throw new Error(c);
+            toast.error(c.message.split(':')[1]);
         }
     }
     const handlerAmount = (e) => {
@@ -88,15 +86,12 @@ function GameListing(props) {
                     let openChallenge = await ChallengeService.listChallengeByStatus('CREATED');
                     setOpenChallenges(openChallenge);
                     props.dispatch({ type: 'ADD_WALLET', wallet });
-
                     e.target.reset();
                 }
             }
             //````1===----------- to do list & add all challnges via web socket--==---------=--===------------   
         } catch (c) {
-            console.log(c);
             toast.error(c.message.split(':')[1]);
-            throw new Error(c);
         }
     }
 

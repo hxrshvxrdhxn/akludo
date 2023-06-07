@@ -39,7 +39,7 @@ function UserProfile(props) {
                 setUpdateProfile({ username: user.name ? user.name : updateProfile.username, phone: user.phones && user.phones.length ? user.phones[0].number : updateProfile.phone, email: user.emails && !!user.emails.length ? user.emails[0].address : updateProfile.email, referral: user.referral ? user.referral : {} });
                 let history = await ChallengeService.listAllChallengesByPlayerId(user.id);
                 console.log(history);
-                setgameCount(history.length ? history.length : 0)
+                setgameCount(history?.length ? history?.length : '0.00')
 
             } catch (c) {
                 toast.error(c.message);
@@ -94,11 +94,7 @@ function UserProfile(props) {
                     <div className='text-center mt20 pb20'>
                         {update ? <button className='btn-green' type='submit'>UPDATE</button> : ''}
                     </div>
-
-
                 </form>
-
-
             </div>
             <div className='card'>
                 <div className='head-card'>
@@ -113,26 +109,26 @@ function UserProfile(props) {
                         </div>
                     </div>
                     <div className='img-text-align mt10'>
-                        <div className="left-img"> <img src='../images/win-chips.png' alt='Games Played' /></div>
+                        <div className="left-img"> <img src='../images/win-chips.png' alt='Chips Won' /></div>
                         <div className="right-text" >
                             <div className='font13'>Chips Won</div>
-                            <div className='mt5 font13'><strong>0.00</strong></div>
+                            <div className='mt5 font13'><strong>{updateProfile?.wallet?.earning ? updateProfile?.wallet?.earning : '0.00'}</strong></div>
                         </div>
                     </div>
                 </div>
                 <div className='heading-equal mt5 mb20'>
                     <div className='img-text-align mt10'>
-                        <div className="left-img"> <img src='../images/refferal.png' alt='Games Played' /></div>
+                        <div className="left-img"> <img src='../images/refferal.png' alt='Referrals' /></div>
                         <div className="right-text" >
-                            <div className='font13'>Referral Earning</div>
-                            <div className='mt5 font13'><strong>{updateProfile.referral && updateProfile.referral.earning ? updateProfile.referral.earning : 'unable to fetch'}</strong></div>
+                            <div className='font13'>Referrals</div>
+                            <div className='mt5 font13'><strong>{updateProfile?.referral?.count ? updateProfile?.referral?.count : '0.00'}</strong></div>
                         </div>
                     </div>
                     <div className='img-text-align mt10'>
-                        <div className="left-img"> <img src='../images/panelty.png' alt='Games Played' /></div>
+                        <div className="left-img"> <img src='../images/panelty.png' alt='Referal Money' /></div>
                         <div className="right-text" >
-                            <div className='font13'>Penalty</div>
-                            <div className='mt5 font13'><strong>0.00</strong></div>
+                            <div className='font13'>Referal Money</div>
+                            <div className='mt5 font13'><strong>{updateProfile?.referral?.earning ? updateProfile?.referral?.earning : '0.00'}</strong></div>
                         </div>
                     </div>
                 </div>
