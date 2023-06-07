@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import UserService from '../services/user.service';
 import Login from '../services/login.service';
 import { ToastContainer, toast } from 'react-toastify';
+import { encrypt, decrypt, compare } from 'n-krypta'; 
 
 function NewPassword(props) {
     const navigate = useNavigate();
@@ -12,8 +13,10 @@ function NewPassword(props) {
 
 
     const handler = (e) => {
-        console.log(e.target.value)
-        setNewPassword({ ...newPassword, [e.target.name]: e.target.value })
+        const secret = 'Secret'; // secret key for encryption
+        const passwordsecret = e.target.value
+        const onlyDigits =  encrypt(passwordsecret, secret);
+        setNewPassword({ ...newPassword, [e.target.name]: onlyDigits })
     }
     const submitForm = async (e) => {
         e.preventDefault();

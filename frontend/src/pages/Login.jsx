@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import Header from '../components/Header'
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Loginn from '../services/login.service';
 import { ToastContainer, toast } from 'react-toastify';
+import { encrypt, decrypt, compare } from 'n-krypta'; 
 
 function Login(props) {
     const navigate = useNavigate();
@@ -26,9 +27,11 @@ function Login(props) {
     }
 
     const handler = (e) => {
+        const secret = 'Secret'; // secret key for encryption
+        const passwordsecret = e.target.value
         if (e.target.value.length > 0) {
             setPasswordError("");
-            const onlyDigits = e.target.value
+            const onlyDigits =  encrypt(passwordsecret, secret);
             setLogin({ ...login, [e.target.name]: onlyDigits })
             return false
         }
@@ -68,6 +71,7 @@ function Login(props) {
         }
 
     }
+
 
     return (
         <>

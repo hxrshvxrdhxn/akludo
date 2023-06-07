@@ -53,7 +53,6 @@ function Burger() {
                     <li> <a href="/refund-policy">Refund policy</a></li>
                     <li> <a href="/terms-condition">Terms & Condition</a></li>
                     <li> <a href="/privacy-policy">Privacy policy</a></li>
-                    <li> <a href="/support">Contact Us</a></li>
                     <li onClick={handleLogout}><a>Logout</a></li>
                 </ul>
             </div>
