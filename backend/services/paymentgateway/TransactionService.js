@@ -1,6 +1,7 @@
 const BankTransactionDTO = require("../../util/beans/BankTransactionDTO");
 const WalletDTO = require("../../util/beans/WalletDTO");
 const BankTransactionService = require("../BankTransactionService");
+const UserService = require("../UserService");
 const WalletService = require("../WalletService");
 
 class TransactionService {

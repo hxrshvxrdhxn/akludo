@@ -411,6 +411,7 @@ type Wallet {
   id: String
   user: User
   bal: Float
+  earning: Float
   ledger: [Ledger]
   createdAt: String
   updatedAt: String
@@ -591,6 +592,7 @@ type UpdateEntityMutation {
     id: String
     user: String
     bal: Float
+    earning: Float
     ledger: [String]
     createdAt: String
     updatedAt: String
@@ -769,6 +771,7 @@ type FabricateEntityMutation {
   createWallet(
     user: String
     bal: Float
+    earning: Float
     ledger: [String]
     createdAt: String
     updatedAt: String

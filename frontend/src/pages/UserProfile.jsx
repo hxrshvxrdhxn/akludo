@@ -7,6 +7,7 @@ import Profile from '../components/Profile';
 import ReferralService from '../services/referral.service';
 import ChallengeService from '../services/challenge.service';
 import UploadPhoto from '../components/UploadPhoto';
+import WalletService from '../services/wallet.service';
 
 
 function UserProfile(props) {
@@ -28,6 +29,7 @@ function UserProfile(props) {
         console.log("this is parent component-", blob);
         setBlob(blob)
 
+        calculateWithdrawableAmount();
     }
 
     useEffect(() => {
@@ -64,7 +66,14 @@ function UserProfile(props) {
         }
     }
 
-
+    async function calculateWithdrawableAmount(){
+            //FIRST FETCH ALL THE CHALLENGES WINNNIGS IN WHICH CURRENT USER IS 
+            ///SUM OF REFERRAL EARNING PLUS EARNINGS IN WALLET 
+            let referralearning=0,
+            winnings=0;
+            console.log("user Earning",user?.wallet?.bal);
+            console.log("user Referral",user?.referral);
+    }
 
     return (
         <>
