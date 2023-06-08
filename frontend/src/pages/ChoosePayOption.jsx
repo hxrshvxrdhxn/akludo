@@ -13,13 +13,6 @@ function ChoosePayOption(props) {
     const AddAmount = (e) => {
         e.preventDefault();
         props.dispatch({ type: 'ADD_AMOUNT', amount });
-       // axios.post("http://akludo.com", amount)
-         //   .then(response => {
-               // console.log(response)
-           // })
-           // .catch(error => {
-            //    console.log(error)
-          //  })
         navigate('/ludo-classic', { replace: true });
     }
 

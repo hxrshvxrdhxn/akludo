@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home";
 import './App.css';
 import GameListing from "./pages/GameListing";
-import Withdraw from './pages/Chips';
+import Chips from './pages/Chips';
+import WithdrawChip from './pages/WithdrawChip';
 import AddMoney from './pages/AddMoney';
 import ChoosePayOption from './pages/ChoosePayOption';
 import UserProfile from './pages/UserProfile';
@@ -32,9 +33,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/ludo-classic" element={<GaurdedAuth comp={<GameListing />} />} />
-          <Route path="/chips" element={<GaurdedAuth comp={<Withdraw />} />} />
+          <Route path="/chips" element={<GaurdedAuth comp={<Chips />} />} />
           <Route path="/deposit" element={<GaurdedAuth comp={<AddMoney />} />} />
           <Route path="/pay-option" element={<GaurdedAuth comp={<ChoosePayOption />} />} />
+          <Route path="/withdraw" element={<GaurdedAuth comp={<WithdrawChip />} />} />
           <Route path="/refer" element={<GaurdedAuth comp={<Refer />} />} />
           <Route path="/user-profile" element={<GaurdedAuth comp={<UserProfile />} />} />
           <Route path="/login" element={<Login />} />
