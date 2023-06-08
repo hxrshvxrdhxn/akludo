@@ -40,10 +40,10 @@ function Chips() {
                     <h3>Winning Chips</h3>
                 </div>
                 <div className='body text-center text-para'>
-                    <p>These chips  is  withdraw from bank, or UPI</p>
+                    <p>These chips can be withdrawn from bank, or UPI,<br/> Minimum withdrawable chips must be 95 or greater</p>
                     <br />
                     <strong className='mt20'>Chips</strong>
-                    <div className='mt10'>{User?.wallet?.earning+User?.referral?.earning}</div>
+                    <div className='mt10'>{User?.wallet?.earning+User?.referral?.earning||0.0}</div>
                     <br />
                     <button className='btn-green' onClick={WithdrawToChips} >Withdraw Chips</button>
                 </div>
@@ -57,7 +57,7 @@ function Chips() {
                         only use for play games.</p>
                     <br />
                     <strong className='mt20'>Chips</strong>
-                    <div className='mt10'>{User?.wallet?.bal-User.wallet?.earning}</div>
+                    <div className='mt10'>{User?.wallet?.bal-User.wallet?.earning||0.0}</div>
                     <br />
                     <button className='btn-green' onClick={AddToChips} >Add Chips</button>
                 </div>
