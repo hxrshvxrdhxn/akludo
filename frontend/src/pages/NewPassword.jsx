@@ -35,8 +35,7 @@ function NewPassword(props) {
                 toast.error("passsword and confirm password should be same and filled")
             }
         } catch (c) {
-            console.log(c);
-            toast.error(c);
+            toast.error(c.message);
         }
 
 
