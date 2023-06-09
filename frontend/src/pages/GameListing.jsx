@@ -15,13 +15,14 @@ function GameListing(props) {
     const [openChallenges, setOpenChallenges] = useState([]);
     const [runningChallenges, setRunningChallenges] = useState([]);
     const [challenge, setChallenge] = useState({ challenger: "", amount: 0, contender: "", status: '', roomCode: "", game: "" });
-
+    const [currentUser, setCurrentUser] = useState([]);
     useEffect(() => {
         async function test() {
             try {
                 let user = await UserService.getUser();
                 if (user && user.id) {
                     console.log(user.id)
+                    setCurrentUser(user.id)
                     const userid = { challenger: user.id }
                     console.log('challenger id', userid)
                     setChallenge((challenge) => ({ ...challenge, ...userid }));
@@ -30,7 +31,8 @@ function GameListing(props) {
                 setRunningChallenges(runChallenge);
                 let openChallenge = await ChallengeService.listChallengeByStatus('CREATED');
                 setOpenChallenges(openChallenge);
-                console.log(runChallenge, openChallenge)
+                console.log("runChallenge==========>", runChallenge)
+                console.log("openChallenge============>", openChallenge)
             } catch (c) {
                 console.log(c);
                 toast.error(c.message);
@@ -82,7 +84,7 @@ function GameListing(props) {
                     console.log("before openChallenges :---->", { id: challenge.id, challenger: { id: challenge.challenger.id, name: challenge.challenger }, contender: { id: user.id, name: challenge.contender.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null })
                     openChallenges.push({ id: challenge.id, challenger: { id: challenge.challenger.id, name: challenge.challenger }, contender: { id: user.id, name: challenge.contender.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
                     props.dispatch({ type: 'CHALLENGE_OPEN', openChallenges });
-                    console.log("after openChallenges------>", openChallenges)
+                    console.log("after openChallenges Umar------>", openChallenges)
                     let openChallenge = await ChallengeService.listChallengeByStatus('CREATED');
                     setOpenChallenges(openChallenge);
                     props.dispatch({ type: 'ADD_WALLET', wallet });
@@ -98,45 +100,51 @@ function GameListing(props) {
     const AddToMoney = () => {
         navigate('/deposit', { replace: true });
     }
-    
-    const ChallegeListItem = ({ item }) => (<>
-        <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
-        <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
-            {close => (<div className="modal">
-                <div className="content text-center">
-                    <br /><br />
-                    <h2>Insufficient balance </h2>
-                    <br /><br /><br /><br />
-                </div>
-                <div className="actions">
-                    <button
-                        className="button btn-green"
-                        onClick={() => {
-                            console.log('ok ');
 
-                        }}
-                    >
-                        Close
-                    </button>  &nbsp;
-                    <button
-                        className="button btn-green"
-                        onClick={() => {
-                            console.log('modal closed ');
-                            close();
-                        }}
-                    >
-                        Close
-                    </button> &nbsp;
-                    <button
-                        className="button btn-green"
-                        onClick={AddToMoney}
-                    >
-                        Add Money
-                    </button>
-                    <br /><br />
-                </div>
-            </div>)}
-        </Popup>
+    const ChallegeListItem = ({ item, currentUser }) => (<>
+
+        {(item.challenger.id === currentUser) ?
+            <>
+                <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
+                <Popup trigger={<><button className='btn-play' onClick={() => { playGame(item) }}> Start  </button> <button className='btn-play error' onClick={() => { playGame(item) }}> Reject  </button></>}></Popup></> :
+            <>
+                <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
+                <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
+                    {close => (<div className="modal">
+                        <div className="content text-center">
+                            <br /><br />
+                            <h2>Insufficient balance </h2>
+                            <br /><br /><br /><br />
+                        </div>
+                        <div className="actions">
+                            <button
+                                className="button btn-green"
+                                onClick={() => {
+                                    console.log('ok ');
+
+                                }}
+                            >
+                                Close
+                            </button>  &nbsp;
+                            <button
+                                className="button btn-green"
+                                onClick={() => {
+                                    console.log('modal closed ');
+                                    close();
+                                }}
+                            >
+                                Close
+                            </button> &nbsp;
+                            <button
+                                className="button btn-green"
+                                onClick={AddToMoney}
+                            >
+                                Add Money
+                            </button>
+                            <br /><br />
+                        </div>
+                    </div>)}
+                </Popup></>}
     </>)
     return (
         <>
@@ -152,6 +160,7 @@ function GameListing(props) {
                 </form>
             </div>
             <ToastContainer />
+
             <div className='card'>
                 <div className='head-card'>
                     <h3>Open Challenge</h3>
@@ -160,9 +169,9 @@ function GameListing(props) {
                 <div className=''>
                     <ul className='challenge-list'>
 
-                        {openChallenges && !!openChallenges.length ? openChallenges?.slice(0).reverse().map((item, i) => {
-                            return (<li key={i} className='newItem'>
-                                <ChallegeListItem item={item} />
+                        {openChallenges && !!openChallenges.length ? openChallenges?.slice(0).reverse().filter((currentUser) => currentUser.challenger.id !== currentUser).map((item, i) => {
+                            return (<li key={i}>
+                                <ChallegeListItem item={item} currentUser={currentUser} />
                             </li>)
                         }) : <div className='text-center white-bg padding20'>Hooray, no Challenge here!</div>}
 

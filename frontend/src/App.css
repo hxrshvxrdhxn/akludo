@@ -269,13 +269,9 @@ header {
   background: #FAFAFC;
   list-style-type: none;
   -webkit-font-smoothing: antialiased;
-  /* to stop flickering of text in safari */
-
   transform-origin: 0% 0%;
   transform: translate(-100%, 0);
-
   transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
-  height: 100vh;
   box-sizing: border-box;
   box-shadow: 0 0 30px 0 #f2f2f2;
 }
@@ -284,6 +280,10 @@ header {
   padding: 15px 0;
   font-size: 16px;
   border-bottom: 1px solid #ddd;
+}
+#menu li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
 /*
