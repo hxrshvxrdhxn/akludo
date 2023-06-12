@@ -21,35 +21,44 @@ class BankTransactionHook extends Hook {
         //sort the  data
         let status='PENDING';
         // now call the cashfree order api 
-        if(newObj.txType=='TOP_UP'){
-            try{
+         //create a dto for ledger and then service to call ledger create for 
+        let objDto={fromUser:newObj.createdBy,amount:newObj.amount,txType:newObj.txType,linkedBankTransaction:newObj._id}
+        const dto = new LedgerDTO(objDto);
+        const doc = await LedgerService.create(dto, user);
+        console.log(doc);
+        
+        try{
+            let user = await _db.User.findOne({_id:newObj.createdBy});
+            console.log(user);
+            // to check if transaction type is top up then create a order 
+            if(newObj.txType==='TOP_UP'){
+                let orderData= await OrderService.createOrder(user,newObj) 
+                console.log("payment session Id -----------------",orderData.payment_session_id);
+            }
+            //if transaction type is withdrawal then check for if then amount can be withdrawn and the debit it using cashfree refund
+            if(newObj.txType==='WITHDRAW'){
+                // recheck if the amount is less than earning in wallet and is greater then 95 and less than a specific limit suppose 10000
+                console.log(user?.wallet?.earning,newObj.amount);
 
+                //after this check if the kyc is done for the user or not-----
+                console.log(user?.kyc?.isKYCApproved)
+
+
+                //after this call the debit api of cashfree ------
                 
-                let user = await _db.User.findOne({_id:newObj.createdBy});
-                // to check if transaction type is top up then create a order 
-                if(newObj.txType==='TOP_UP'){
-                    let orderData= await OrderService.createOrder(user,newObj) 
-                    console.log("payment session Id -----------------",orderData.payment_session_id);
-                }
-                //if transaction type is withdrawal then check for if then amount can be withrawn and the debit it using cashfree refund
 
-                //if transcation type is hold then it means its in state either it will be credited or debited after game
-                
-                //if transaction is transfer then transfer game win lose or referal money etc,.....
+            }
+            //if transcation type is hold then it means its in state either it will be credited or debited after game
+            
+            //if transaction is transfer then transfer game win lose or referal money etc,.....
 
-                //create a dto for ledger and then service to call ledger create for 
-                let objDto={fromUser:newObj.createdBy,amount:newObj.amount,txType:newObj.txType,linkedBankTransaction:newObj._id}
-                const dto = new LedgerDTO(objDto);
-                const doc = await LedgerService.create(dto, user);
-                console.log(doc);
-               
-            }catch(c){
-                console.log(c);
-                status='FAILED';
-                //_db.BankTransaction.update({_id: id}, {$set: {status:status}});
-                throw new Error('unable to create order');
-            } 
-        }
+           
+        }catch(c){
+            console.log(c);
+            status='FAILED';
+            //_db.BankTransaction.update({_id: id}, {$set: {status:status}});
+            throw new Error('unable to create order');
+        } 
        
     }
 

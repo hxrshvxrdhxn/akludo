@@ -21,9 +21,9 @@ function AddMoney(props) {
                 //i mean verify the transaction again beacuse there can be a case when bank transction is not updated by webhook
                 console.log(orderData);
                 let transaction=await TransactionService.getTransaction(orderData?.transaction?.id);
-                const transactionStatus=transaction.status;
+                const transactionStatus=transaction.status.toUpperCase();
                 console.log(transactionStatus)
-                if (orderData.orderStatus === 'PAID' && transactionStatus=='Pending') {     //update the bank transaction status as order has been paid and transaction Status  
+                if (orderData.orderStatus === 'PAID' && transactionStatus==='PENDING') {     //update the bank transaction status as order has been paid and transaction Status  
                     toast.error("there was Error while updating your wallet please contact admin");
                     // TO DO WHAT IF TRANSACTION HAS NOT BEEN UPDATED BY WEBHOOK---------
                     // transactionStatus = 'SUCCESS'

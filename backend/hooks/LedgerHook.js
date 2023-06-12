@@ -16,12 +16,12 @@ class LedgerHook extends Hook {
     async onLedgerCreate(newObj) {
         // called when Ledger is created.
         console.log("updating wallet for user with new ledger");
-        // await WalletService.findOne()
-        // const dto = new WalletDTO({user, bal, ledger, createdAt, updatedAt, createdBy, updatedBy});
+        // let obj= {user:newObj.user,ledger:newObj._id}
+        // const dto = new WalletDTO({user, bal, ledger});
         // const result = await WalletService.update(id, dto, this._user); //{updateResult, updatedDbObj}
         // const user=await _db.User.findOne({_id:newObj.createdBy});
         // await WalletService.updateWalletLedger(user?.wallet,newObj?._id,user);
-        await _db.Wallet.updateOne({user:newObj.fromUser},{$push:{ledger:newObj._id}});
+        await _db.Wallet.updateOne({user:newObj.fromUser},{$push:{ledger:newObj._id}});         //to do rectify
         //update the wallet with a ledger.
     }
 

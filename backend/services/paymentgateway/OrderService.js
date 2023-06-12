@@ -31,7 +31,7 @@ class OrderService {
               customer_phone: customerDetails?.phones[0]?.number || "",
             },
             order_meta: {
-              return_url: "https://akludo.com/deposit?order_id={order_id}",
+              return_url: "http://localhost:3001/deposit?order_id={order_id}",
               notify_url:
                 "https://akludo.com/api/webhook/cashfree", //todo create a webhook api
             },

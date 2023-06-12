@@ -48,7 +48,7 @@ exports = module.exports = class GraphQLController {
             let paymentStatus=body?.payment?.payment_status||'PENDING';
             let paymentMethod=body?.payment?.payment_method?.app?.channel;
             paymentStatus= getStatus(paymentStatus);
-            let bankTransaction =await _db.BankTransaction.findOne({_id:transactionId});
+            let bankTransaction =await _db.BankTransaction.findOne({_id:transactionId});            //to do update this as well
             console.log("this is bank Transaction",bankTransaction);
             if(bankTransaction?.status && bankTransaction?.status==='PENDING' && paymentStatus==='SUCCESS'){
                 let res=await TransactionService.updateTransactionStatusAndGateway(transactionId,paymentMethod,paymentStatus,bankTransaction.createdBy);

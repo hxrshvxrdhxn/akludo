@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import UserService from '../services/user.service';
+import WalletService from '../services/wallet.service';
 
 function WithdrawChip(props) {
     const [User, SetUser] = useState({});
@@ -30,8 +31,7 @@ function WithdrawChip(props) {
     const submitAddMoney = async (e) => {
         e.preventDefault();
         try {
-           
-            
+           let resp=await WalletService.updateBalanceOrLedger() 
         } catch (c) {
             console.log(c.message);
         }
