@@ -12,7 +12,10 @@ class ChallengeInterceptor {
         if(!wallet) throw new Error('Invalid user configuration.Create a new account or contact admin.');
         if(wallet.bal < refChallengeDto.amount) throw new Error('Low Balance. Please add funds');
         // deduct balance
-        wallet.bal = wallet.bal - refChallengeDto.amount ;
+        wallet.bal= wallet.bal - refChallengeDto.amount;
+        if(wallet.earning && wallet?.bal-wallet?.earning<=0 ){
+            wallet.earning = wallet?.earning+ wallet?.bal-wallet?.earning;
+        }
         await wallet.save();
         // create transaction
         const ledgerEntry = new _db.Ledger({

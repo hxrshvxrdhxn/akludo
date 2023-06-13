@@ -16,13 +16,14 @@ function GameListing(props) {
     const [runningChallenges, setRunningChallenges] = useState([]);
     const [challenge, setChallenge] = useState({ challenger: "", amount: 0, contender: "", status: '', roomCode: "", game: "" });
     const [currentUser, setCurrentUser] = useState([]);
+    const [user, setUser] = useState([]);
     useEffect(() => {
         async function test() {
             try {
                 let user = await UserService.getUser();
                 if (user && user.id) {
-                    console.log(user.id)
                     setCurrentUser(user.id)
+                    setUser(user)
                     const userid = { challenger: user.id }
                     console.log('challenger id', userid)
                     setChallenge((challenge) => ({ ...challenge, ...userid }));
@@ -42,9 +43,36 @@ function GameListing(props) {
         test();
     }, [socket]);
 
+    async function playGameStart(item) {
+        try {
+            console.log(challenge.amount)
+            // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
+
+        } catch (c) {
+            toast.error(c.message.split(':')[1]);
+        }
+    }
+
+    async function playGameReject(item) {
+        try {
+            console.log(currentUser)
+            // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
+
+        } catch (c) {
+            toast.error(c.message.split(':')[1]);
+        }
+    }
+
     async function playGame(item) {
         try {
-            let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
+            console.log(item.id, item.amount)
+
+            if (item.amount <= user.wallet.bal) {
+                console.log(user.wallet.bal)
+                console.log(openChallenges)
+                // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
+            }
+
 
         } catch (c) {
             toast.error(c.message.split(':')[1]);
@@ -104,43 +132,50 @@ function GameListing(props) {
     const ChallegeListItem = ({ item, currentUser }) => (<>
 
         {(item.challenger.id === currentUser) ?
-            <>
-                <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
-                <Popup trigger={<><button className='btn-play' onClick={() => { playGame(item) }}> Start  </button> <button className='btn-play error' onClick={() => { playGame(item) }}> Reject  </button></>}></Popup></> :
-            <>
-                <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
-                <Popup trigger={<button className='btn-play' onClick={() => { playGame(item) }}> Play </button>} modal>
+            <> <div className='userListTop'><div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>  <div><img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div></div>
+                <div className='userListTop userlistEnd'>  <div>Connecting...</div> <button className='btn-play-samll' onClick={() => { playGameStart(item) }}> Start  </button> <button className='btn-play-samll btn-play-samll-red' onClick={() => { playGameReject(item) }}> Reject  </button> </div></> :
+
+            <> <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
+                <Popup trigger={<div className='widthBtn100'><button className='btn-play' onClick={() => { playGame(item) }}> Play </button></div>} modal>
                     {close => (<div className="modal">
                         <div className="content text-center">
                             <br /><br />
-                            <h2>Insufficient balance </h2>
-                            <br /><br /><br /><br />
+                            {(item.amount <= user.wallet.bal) ? <h2>Please copy room code</h2> :
+                                <h2>Low Balance for this challege. </h2>
+                            }
+                            <br /><br /><br />
+                            {(item.amount <= user.wallet.bal) ? <input
+                                className="input-white"
+                                placeholder='Copy room code'
+                                value={item.roomCode}
+                               /> : ''} 
+                                <br /><br />
                         </div>
                         <div className="actions">
                             <button
-                                className="button btn-green"
-                                onClick={() => {
-                                    console.log('ok ');
-
-                                }}
-                            >
-                                Close
-                            </button>  &nbsp;
-                            <button
-                                className="button btn-green"
+                                className="button btn-green error"
                                 onClick={() => {
                                     console.log('modal closed ');
                                     close();
-                                }}
-                            >
+                                }} >
                                 Close
-                            </button> &nbsp;
-                            <button
-                                className="button btn-green"
-                                onClick={AddToMoney}
-                            >
-                                Add Money
                             </button>
+
+                            {(item.amount <= user.wallet.bal) ? <button
+                                className="button btn-green ml5"
+                                onClick={() => {
+                                    console.log('Copy Room Code ');
+
+                                }}>
+                               Copy Room Code
+                            </button> : ''} 
+
+                            {(item.amount <= user.wallet.bal) ? '' :
+                                <button
+                                    className="button btn-green ml5" 
+                                    onClick={AddToMoney}>
+                                    Add Money
+                                </button>}
                             <br /><br />
                         </div>
                     </div>)}

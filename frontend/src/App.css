@@ -58,7 +58,7 @@ header {
 .editable-photo .profile-box {
   height: 100px;
   width: 100px;
- float: none;
+  float: none;
 }
 
 
@@ -252,10 +252,12 @@ header {
 #menuToggle input:checked~span:nth-last-child(2) {
   transform: rotate(-45deg) translate(2px, -2px);
 }
-.padding20{
+
+.padding20 {
   padding: 20px;
   font-size: 12px;
 }
+
 /*
  * Make this absolute positioned
  * at the top left of the screen
@@ -281,6 +283,7 @@ header {
   font-size: 16px;
   border-bottom: 1px solid #ddd;
 }
+
 #menu li:last-child {
   border-bottom: 0;
   padding-bottom: 0;
@@ -409,6 +412,9 @@ header {
 .ml10 {
   margin-left: 10px;
 }
+.ml5 {
+  margin-left: 5px;
+}
 
 .mt10 {
   margin-top: 10px;
@@ -422,11 +428,11 @@ header {
   margin-top: 30px;
 }
 
-.pb10{
+.pb10 {
   padding-bottom: 10px;
 }
 
-.pb20{
+.pb20 {
   padding-bottom: 20px;
 }
 
@@ -457,6 +463,45 @@ header {
   margin-right: 10px;
 }
 
+.btn-play-samll {
+  background: #fff;
+  line-height: 20px;
+  border: 0;
+  padding: 1px 10px 1px 10px;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 10px;
+  color: #0AB111;
+  height: 20px;
+  box-sizing: border-box;
+  margin-top: 3px;
+  margin-left: 7px;
+}
+
+.btn-play-samll-red {
+  background: #fff;
+  box-shadow: 0px 0px 2px rgba(255, 0, 0, 1);
+  color: rgba(255, 0, 0, 1);
+}
+
+.widthBtn100 {
+  width: 110px;
+  text-align: right;
+}
+
+.widthBtn100 .btn-play {
+  margin-left: auto;
+  margin-right: 0;
+}
+.userListTop{
+  flex-grow: 10;
+  justify-content: space-between;
+  flex: 0 0 100%;
+}
+.userlistEnd{
+  justify-content: flex-end;
+}
 .btn-play {
   background: #fff url('../public/images/play.png') no-repeat 8px 7px;
   line-height: 25px;
@@ -619,7 +664,7 @@ ul.listPayOpt {
   flex-flow: row wrap;
   justify-content: space-between;
   font-size: 12px;
-  padding: 5px 5px 7px;
+  padding: 6px 6px 8px;
   margin: 0;
   line-height: 24px;
 }
@@ -716,13 +761,16 @@ ul.listPayOpt {
   border-radius: 18px;
   border: 1px solid #cfcece;
 }
-.black-text{
+
+.black-text {
   color: #333;
   font-weight: bold;
 }
-.terms-css p{
+
+.terms-css p {
   margin-top: 10px;
 }
+
 /* old css */
 
 

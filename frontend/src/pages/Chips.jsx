@@ -57,7 +57,7 @@ function Chips() {
                         only use for play games.</p>
                     <br />
                     <strong className='mt20'>Chips</strong>
-                    <div className='mt10'>{User?.wallet?.bal-User.wallet?.earning||0.0}</div>
+                    <div className='mt10'>{User?.wallet?.bal>User?.wallet?.earning ? User?.wallet?.bal-User.wallet?.earning:0.0}</div>
                     <br />
                     <button className='btn-green' onClick={AddToChips} >Add Chips</button>
                 </div>
