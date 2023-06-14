@@ -41,7 +41,7 @@ function GameListing(props) {
             }
         }
         test();
-    }, [socket]);
+    }, []);
 
     async function playGameStart(item) {
         try {
@@ -65,11 +65,12 @@ function GameListing(props) {
 
     async function playGame(item) {
         try {
-            console.log(item.id, item.amount)
+
 
             if (item.amount <= user.wallet.bal) {
-                console.log(user.wallet.bal)
-                console.log(openChallenges)
+                console.log("Item------->", item)
+                console.log("openChallenges ------->", openChallenges)
+                console.log("Play Game ----->", ({ id: item.id, challenger: { id: item.challenger.id, name: item.challenger }, contender: { id: user.id, name: user.name }, amount: item.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null }))
                 // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
             }
 
@@ -129,58 +130,79 @@ function GameListing(props) {
         navigate('/deposit', { replace: true });
     }
 
-    const ChallegeListItem = ({ item, currentUser }) => (<>
+    const ChallegeListItem = ({ item, currentUser }) => (
+        <>
+            {(item.challenger.id === currentUser) ?
+                <>
 
-        {(item.challenger.id === currentUser) ?
-            <> <div className='userListTop'><div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>  <div><img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div></div>
-                <div className='userListTop userlistEnd'>  <div>Connecting...</div> <button className='btn-play-samll' onClick={() => { playGameStart(item) }}> Start  </button> <button className='btn-play-samll btn-play-samll-red' onClick={() => { playGameReject(item) }}> Reject  </button> </div></> :
 
-            <> <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> <div className='green-text'>₹ {item?.amount}</div>
-                <Popup trigger={<div className='widthBtn100'><button className='btn-play' onClick={() => { playGame(item) }}> Play </button></div>} modal>
-                    {close => (<div className="modal">
-                        <div className="content text-center">
-                            <br /><br />
-                            {(item.amount <= user.wallet.bal) ? <h2>Please copy room code</h2> :
-                                <h2>Low Balance for this challege. </h2>
-                            }
-                            <br /><br /><br />
-                            {(item.amount <= user.wallet.bal) ? <input
-                                className="input-white"
-                                placeholder='Copy room code'
-                                value={item.roomCode}
-                               /> : ''} 
+
+                    <div className='userListTop'>
+                        <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div>
+                        <div className='green-text'>₹ {item?.amount}</div>
+                        { }
+                        <div className='widthBtn100 userlistEnd'> Waiting... <img className='profile-small' src='../images/loading-buffering.gif' /> </div>
+                        {/* <div><img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> */}
+                    </div>
+
+                    {/* <div className='userListTop userlistEnd'>
+                        <div>Connecting...</div> <button className='btn-play-samll' onClick={() => { playGameStart(item) }}> Start  </button>
+                        <button className='btn-play-samll btn-play-samll-red' onClick={() => { playGameReject(item) }}> Reject  </button>
+                    </div> */}
+                </> :
+
+                <>
+                    <div><img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div>
+                    <div className='green-text'>₹ {item?.amount}</div>
+
+                    <Popup trigger={<div className='widthBtn100'><button className='btn-play' onClick={() => { playGame(item) }}> Play </button></div>} modal>
+                        {close => (<div className="modal">
+                            <div className="content text-center">
                                 <br /><br />
-                        </div>
-                        <div className="actions">
-                            <button
-                                className="button btn-green error"
-                                onClick={() => {
-                                    console.log('modal closed ');
-                                    close();
-                                }} >
-                                Close
-                            </button>
-
-                            {(item.amount <= user.wallet.bal) ? <button
-                                className="button btn-green ml5"
-                                onClick={() => {
-                                    console.log('Copy Room Code ');
-
-                                }}>
-                               Copy Room Code
-                            </button> : ''} 
-
-                            {(item.amount <= user.wallet.bal) ? '' :
+                                {(item.amount <= user.wallet.bal) ? <h2>Please copy room code</h2> :
+                                    <h2>Low Balance for this challege. </h2>
+                                }
+                                <br /><br /><br />
+                                {(item.amount <= user.wallet.bal) ? <input
+                                    className="input-white"
+                                    placeholder='Copy room code'
+                                    value={item.roomCode}
+                                /> : ''}
+                                <br /><br />
+                            </div>
+                            <div className="actions">
                                 <button
-                                    className="button btn-green ml5" 
-                                    onClick={AddToMoney}>
-                                    Add Money
-                                </button>}
-                            <br /><br />
-                        </div>
-                    </div>)}
-                </Popup></>}
-    </>)
+                                    className="button btn-green error"
+                                    onClick={() => {
+                                        console.log('modal closed ');
+                                        close();
+                                    }} >
+                                    Close
+                                </button>
+
+                                {(item.amount <= user.wallet.bal) ? <button
+                                    className="button btn-green ml5"
+                                    onClick={() => {
+                                        console.log('Copy Room Code ');
+
+                                    }}>
+                                    Copy Room Code
+                                </button> : ''}
+
+                                {(item.amount <= user.wallet.bal) ? '' :
+                                    <button
+                                        className="button btn-green ml5"
+                                        onClick={AddToMoney}>
+                                        Add Money
+                                    </button>}
+                                <br /><br />
+                            </div>
+                        </div>)}
+                    </Popup>
+                </>
+            }
+        </>
+    )
     return (
         <>
             <Header />
