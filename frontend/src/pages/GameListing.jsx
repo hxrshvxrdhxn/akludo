@@ -16,15 +16,16 @@ function GameListing(props) {
     const [runningChallenges, setRunningChallenges] = useState([]);
     const [challenge, setChallenge] = useState({ challenger: "", amount: 0, contender: "", status: '', roomCode: "", game: "" });
     const [currentUser, setCurrentUser] = useState([]);
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState({});
+    const [show, setShow] = useState(false);
     const [wallet, setWallet] = useState();
     useEffect(() => {
         async function test() {
             try {
                 let user = await UserService.getUser();
-                // const wallt = await WalletService.getWallet();
-                // const wallet = wallt[0].bal
-                // setWallet(wallet);
+                const wallt = await WalletService.getWallet();
+                const wallet = wallt[0].bal
+                setWallet(wallet);
                 console.log("wallet===========>", wallet)
                 if (user && user.id) {
                     setCurrentUser(user.id)
@@ -71,25 +72,22 @@ function GameListing(props) {
     async function playGame(item) {
         try {
 
-            let wallet1 = props.wallet === 0 ? 0 : props.wallet || wallet
-
-            console.log("props.wallet------->", props.wallet)
-            console.log("walletBal Upper------->", wallet1)
-
-            if (item?.amount <= wallet1) {
-
-                let wallet = wallet1 - item?.amount
-                props.dispatch({ type: 'ADD_WALLET', wallet });
-                console.log("Item------->", item)
-                console.log("openChallenges ------->", openChallenges)
-                const wallt = await WalletService.updateBalanceOrLedger({id:item?.id, bal: item?.amount,ledger:item.ledger?item.ledger:''});
-                console.log(wallt,"wallt---------??????")
-                setWallet(wallt);
-
-                console.log("Play Game ----->", ({ id: item?.id, challenger: { id: item?.challenger?.id, name: item?.challenger }, contender: { id: user?.id, name: user?.name }, amount: item?.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null }))
-                // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
-                // console.log(data)
+           
+            if (user?.wallet?.bal>=item?.amount){
+                let challenge = await ChallengeService.update({ id: item?.id || null, contender: user.id || null });
+                console.log(challenge);
             }
+
+            // let wallet = props.wallet === 0 ? 0 : props.wallet || wallet
+
+            // console.log("props.wallet------->", props.wallet)
+            // console.log("walletBal Upper------->", wallet)
+
+            // if (item?.amount <= wallet) {
+            //     props.dispatch({ type: 'ADD_WALLET', wallet });
+            //     console.log("Item------->", item)
+            //     console.log("openChallenges ------->", openChallenges)
+            // }
 
         } catch (c) {
             toast.error(c.message.split(':')[1]);
@@ -156,15 +154,16 @@ function GameListing(props) {
                     <div className='userListTop'>
                         <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div>
                         <div className='green-text'>₹ {item?.amount}</div>
-                        { }
+                        { !show?(
                         <div className='widthBtn100 userlistEnd'> Waiting... <img className='profile-small' src='../images/loading-buffering.gif' /> </div>
-                        {/* <div><img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> */}
-                    </div>
-
-                    {/* <div className='userListTop userlistEnd'>
+                        ):
+                        (<div className='userListTop userlistEnd'>
                         <div>Connecting...</div> <button className='btn-play-samll' onClick={() => { playGameStart(item) }}> Start  </button>
                         <button className='btn-play-samll btn-play-samll-red' onClick={() => { playGameReject(item) }}> Reject  </button>
-                    </div> */}
+                        </div>)
+                        }
+                    {/* <div><img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> */}
+                    </div>
                 </> :
 
                 <>
@@ -173,9 +172,9 @@ function GameListing(props) {
 
                     <Popup trigger={<div className='widthBtn100'><button className='btn-play' onClick={() => { playGame(item) }}> Play </button></div>} modal>
                         {close => (<div className="modal">
-                            <div className="content text-center">
+                            <div className="content text-center">true
                                 <br /><br />
-                                {(item?.amount <= wallet) ? <h2>Please copy room code</h2> :
+                                {(item?.amount <= user?.wallet?.bal) ? <h2>Please copy room code</h2> :
                                     <h2>Low Balance for this challege. </h2>
                                 }
                                 <br /><br /><br />

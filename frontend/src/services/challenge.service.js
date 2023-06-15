@@ -154,13 +154,16 @@ export default class ChallengeService extends ApiCoreService{
         }
     }
 
-    static async updateStatus(id,status){
+    static async update(updatedObj){
+      let id=updatedObj.id||null,
+      status=updatedObj.status||null,
+      contender=updatedObj.contender||null;
       try {
-        return await this.graphCall('mutationWithAuth.update.updateChallenge', `
+       return await this.graphCall('mutationWithAuth.update.updateChallenge',`
         mutation{
           mutationWithAuth(token:"auto"){
             update{
-              updateChallenge(id:"${id}" status:${status}){
+              updateChallenge(id:"${id}" ${status?'status:'+status:''}, ${contender?'contender:"'+contender+'"':''} ){
                 id
                 amount
                 game {
