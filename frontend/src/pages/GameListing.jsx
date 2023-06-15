@@ -17,10 +17,15 @@ function GameListing(props) {
     const [challenge, setChallenge] = useState({ challenger: "", amount: 0, contender: "", status: '', roomCode: "", game: "" });
     const [currentUser, setCurrentUser] = useState([]);
     const [user, setUser] = useState([]);
+    const [wallet, setWallet] = useState();
     useEffect(() => {
         async function test() {
             try {
                 let user = await UserService.getUser();
+                // const wallt = await WalletService.getWallet();
+                // const wallet = wallt[0].bal
+                // setWallet(wallet);
+                console.log("wallet===========>", wallet)
                 if (user && user.id) {
                     setCurrentUser(user.id)
                     setUser(user)
@@ -66,14 +71,25 @@ function GameListing(props) {
     async function playGame(item) {
         try {
 
+            let wallet1 = props.wallet === 0 ? 0 : props.wallet || wallet
 
-            if (item.amount <= user.wallet.bal) {
+            console.log("props.wallet------->", props.wallet)
+            console.log("walletBal Upper------->", wallet1)
+
+            if (item?.amount <= wallet1) {
+
+                let wallet = wallet1 - item?.amount
+                props.dispatch({ type: 'ADD_WALLET', wallet });
                 console.log("Item------->", item)
                 console.log("openChallenges ------->", openChallenges)
-                console.log("Play Game ----->", ({ id: item.id, challenger: { id: item.challenger.id, name: item.challenger }, contender: { id: user.id, name: user.name }, amount: item.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null }))
-                // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
-            }
+                const wallt = await WalletService.updateBalanceOrLedger({id:item?.id, bal: item?.amount,ledger:item.ledger?item.ledger:''});
+                console.log(wallt,"wallt---------??????")
+                setWallet(wallt);
 
+                console.log("Play Game ----->", ({ id: item?.id, challenger: { id: item?.challenger?.id, name: item?.challenger }, contender: { id: user?.id, name: user?.name }, amount: item?.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null }))
+                // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
+                // console.log(data)
+            }
 
         } catch (c) {
             toast.error(c.message.split(':')[1]);
@@ -132,7 +148,7 @@ function GameListing(props) {
 
     const ChallegeListItem = ({ item, currentUser }) => (
         <>
-            {(item.challenger.id === currentUser) ?
+            {(item?.challenger?.id === currentUser) ?
                 <>
 
 
@@ -159,11 +175,11 @@ function GameListing(props) {
                         {close => (<div className="modal">
                             <div className="content text-center">
                                 <br /><br />
-                                {(item.amount <= user.wallet.bal) ? <h2>Please copy room code</h2> :
+                                {(item?.amount <= wallet) ? <h2>Please copy room code</h2> :
                                     <h2>Low Balance for this challege. </h2>
                                 }
                                 <br /><br /><br />
-                                {(item.amount <= user.wallet.bal) ? <input
+                                {(item?.amount <= wallet) ? <input
                                     className="input-white"
                                     placeholder='Copy room code'
                                     value={item.roomCode}
@@ -180,7 +196,7 @@ function GameListing(props) {
                                     Close
                                 </button>
 
-                                {(item.amount <= user.wallet.bal) ? <button
+                                {(item?.amount <= wallet) ? <button
                                     className="button btn-green ml5"
                                     onClick={() => {
                                         console.log('Copy Room Code ');
@@ -189,7 +205,7 @@ function GameListing(props) {
                                     Copy Room Code
                                 </button> : ''}
 
-                                {(item.amount <= user.wallet.bal) ? '' :
+                                {(item?.amount <= wallet) ? '' :
                                     <button
                                         className="button btn-green ml5"
                                         onClick={AddToMoney}>
@@ -226,7 +242,7 @@ function GameListing(props) {
                 <div className=''>
                     <ul className='challenge-list'>
 
-                        {openChallenges && !!openChallenges.length ? openChallenges?.slice(0).reverse().filter((currentUser) => currentUser.challenger.id !== currentUser).map((item, i) => {
+                        {openChallenges && !!openChallenges?.length ? openChallenges?.slice(0).reverse().filter((currentUser) => currentUser?.challenger?.id !== currentUser).map((item, i) => {
                             return (<li key={i}>
                                 <ChallegeListItem item={item} currentUser={currentUser} />
                             </li>)
@@ -243,7 +259,7 @@ function GameListing(props) {
                 </div>
                 <div className=''>
                     <ul className='challenge-list running'>
-                        {(runningChallenges && !!runningChallenges.length) ? runningChallenges?.map((item) => {
+                        {(runningChallenges && !!runningChallenges?.length) ? runningChallenges?.map((item) => {
                             return (<li key={item?.id}>
                                 <div className='direction'><img className='profile-small' src='../images/profile.png' alt={item?.contender?.name} /> {item?.contender?.name}</div> <div className='green-text direction'><img src='../images/vs.png' alt='vice-versa' /> ₹ {item?.amount}</div>  <div className='direction'> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} />  {item?.challenger?.name}</div>
                             </li>)
