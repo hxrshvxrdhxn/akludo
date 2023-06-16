@@ -31,7 +31,7 @@ function WithdrawChip(props) {
     const submitAddMoney = async (e) => {
         e.preventDefault();
         try {
-           let resp=await WalletService.updateBalanceOrLedger() 
+           let resp=await WalletService.updateBalanceOrLedger(); 
         } catch (c) {
             console.log(c.message);
         }

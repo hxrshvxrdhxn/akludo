@@ -1,10 +1,4 @@
-// const CONSTANTS = require('../util/Constants');
-// const AuthResponseDTO = require('../util/beans/AuthResponseDTO');
-// const AuthResponseValidator = require('../validations/AuthResponseValidator');
-// const AuthResponseHook = require('../hooks/AuthResponseHook');
-// const AuthResponseInterceptor = require('../interceptors/AuthResponseInterceptor');
-// const RBACPermissionService = require('./RBACPermissionService');
-const sdk = require("api")("@cashfreedocs-new/v3#3pbsh2zlhrk1eey");
+//const sdk = require("api")("@cashfreedocs-new/v3#3pbsh2zlhrk1eey");
 
 /**
  * This service provide logical operations over
