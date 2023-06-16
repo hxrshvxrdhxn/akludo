@@ -42,8 +42,8 @@ function Burger() {
 
                 <ul id="menu">
                     <li><div className='topBurger'><h2>Hey, {username}</h2></div></li>
-                    <li><a href="/">Win to cash</a></li>
-                    <li><a href="/deposit">Wallet</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/chips">Wallet</a></li>
                     <li> <a href="/game-history">Game History</a></li>
                     <li> <a href="/transaction-history">Transaction History</a></li>
                     <li><a href='/refer'>Refer & Earn</a></li>
