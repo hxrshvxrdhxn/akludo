@@ -32,9 +32,8 @@ function Header() {
                     <span></span>
                     <ul id="menu">
                         <li><div className='topBurger'><h2>Hey,</h2></div></li>
-                        <li><a href="/">Win to cash</a></li>
+                        <li><a href="/">Home</a></li>
                         <li> <a href="/about">About Us</a></li>
-                        <li> <a href="/refund-policy">Refund policy</a></li>
                         <li> <a href="/terms-condition">Terms & Condition</a></li>
                         <li> <a href="/privacy-policy">Privacy policy</a></li>
                         <li> <a href="/refund-policy">Refund policy</a></li>

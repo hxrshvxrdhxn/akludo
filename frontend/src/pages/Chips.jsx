@@ -3,24 +3,23 @@ import Header from '../components/Header'
 import { connect } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import UserService from '../services/user.service';
-import { toast,ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
-function Chips() {
+function Chips(props) {
+    const [User, SetUser] = useState({ wallet: props.wallet });
 
-    const [User,SetUser]=useState({});
-
-    useEffect(()=>{
-        (async function (){
-            try{
-                const user=await UserService.getUser();
-                console.log(user);
+    useEffect(() => {
+        (async function () {
+            try {
+                const user = await UserService.getUser();
+                console.log("user -------> ", user);
+                console.log("props.wallet-------------->", props.wallet || user.wallet.bal);
                 SetUser(user);
-            }catch(c){
-                console.log(c);
+            } catch (c) {
                 toast.error(c.message);
             }
         })();
-    },[])
+    }, [])
     const navigate = useNavigate();
 
     const AddToChips = () => {
@@ -34,16 +33,16 @@ function Chips() {
     return (
         <>
             <Header />
-            <ToastContainer/>
+            <ToastContainer />
             <div className='card'>
                 <div className='head-card'>
                     <h3>Winning Chips</h3>
                 </div>
                 <div className='body text-center text-para'>
-                    <p>These chips can be withdrawn from bank, or UPI,<br/> Minimum withdrawable chips must be 95 or greater</p>
+                    <p>These chips can be withdrawn from bank, or UPI, Minimum withdrawable chips must be 95 or greater</p>
                     <br />
                     <strong className='mt20'>Chips</strong>
-                    <div className='mt10'>{User?.wallet?.earning+User?.referral?.earning||0.0}</div>
+                    <div className='mt10'>{User?.wallet?.earning + User?.referral?.earning || 0.0}</div>
                     <br />
                     <button className='btn-green' onClick={WithdrawToChips} >Withdraw Chips</button>
                 </div>
@@ -57,7 +56,7 @@ function Chips() {
                         only use for play games.</p>
                     <br />
                     <strong className='mt20'>Chips</strong>
-                    <div className='mt10'>{User?.wallet?.bal-User.wallet?.earning||0.0}</div>
+                    <div className='mt10'>{props?.wallet || User?.wallet?.bal}</div>
                     <br />
                     <button className='btn-green' onClick={AddToChips} >Add Chips</button>
                 </div>
@@ -69,7 +68,7 @@ function Chips() {
 
 const mapStateToProps = (state) => {
     return {
-        phone: state.phone
+        wallet: state.wallet
     };
 }
 
