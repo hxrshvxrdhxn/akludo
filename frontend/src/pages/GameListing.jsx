@@ -23,10 +23,10 @@ function GameListing(props) {
         async function test() {
             try {
                 let user = await UserService.getUser();
-                const wallt = await WalletService.getWallet();
-                const wallet = wallt[0].bal
-                setWallet(wallet);
-                console.log("wallet===========>", wallet)
+                // const wallt = await WalletService.getWallet();
+                // const wallet = wallt[0].bal
+                setWallet(user?.wallet);
+                console.log("wallet============>", user?.wallet)
                 if (user && user.id) {
                     setCurrentUser(user.id)
                     setUser(user)
@@ -34,12 +34,12 @@ function GameListing(props) {
                     console.log('challenger id', userid)
                     setChallenge((challenge) => ({ ...challenge, ...userid }));
                 }
-                let runChallenge = await ChallengeService.listChallengeByStatus('STARTED');
+                let runChallenge = await ChallengeService.listChallengeByStatus(['STARTED']);
                 setRunningChallenges(runChallenge);
-                let openChallenge = await ChallengeService.listChallengeByStatus('CREATED');
+                let openChallenge = await ChallengeService.listChallengeByStatus(['CREATED','PENDING']);
                 setOpenChallenges(openChallenge);
-                console.log("runChallenge==========>", runChallenge)
-                console.log("openChallenge============>", openChallenge)
+                console.log("runChallenge=============>", runChallenge);
+                console.log("openChallenge============>", openChallenge);
             } catch (c) {
                 console.log(c);
                 toast.error(c.message);
@@ -53,7 +53,9 @@ function GameListing(props) {
         try {
             console.log(challenge.amount)
             // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
-
+            //on game start change the status from pending to started
+            let resStatus=await ChallengeService.update({id:item?.id||null, status:"STARTED"});
+            console.log(resStatus);
         } catch (c) {
             toast.error(c.message.split(':')[1]);
         }
@@ -62,8 +64,9 @@ function GameListing(props) {
     async function playGameReject(item) {
         try {
             console.log(currentUser)
-            // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
-
+            //on reject change challenge status from pending to rejeted and change the contender to nil ===to do
+            let resStatus=await ChallengeService.update({id:item?.id||null, status:"CREATED"});
+            console.log(resStatus);
         } catch (c) {
             toast.error(c.message.split(':')[1]);
         }
@@ -74,7 +77,7 @@ function GameListing(props) {
 
            
             if (user?.wallet?.bal>=item?.amount){
-                let challenge = await ChallengeService.update({ id: item?.id || null, contender: user.id || null });
+                let challenge = await ChallengeService.update({ id: item?.id || null, contender: user.id || null, status: "PENDING"  });
                 console.log(challenge);
             }
 
@@ -115,20 +118,18 @@ function GameListing(props) {
                 toast.error('Please enter amount should be Greater then ₹50');
                 return false
             } else {
-                await ChallengeService.createChallenge(challenge);
+                let newchall=await ChallengeService.createChallenge(challenge);
+                console.log("new ==",newchall);
                 let user = await UserService.getUser();
                 if (user && user.id) {
                     const wallt = await WalletService.getWallet();
-                    const wallet = wallt[0].bal
-                    const userid = { contender: user.id }
-                    console.log('challege id', userid)
+                    const wallet = wallt[0].bal;
                     //setChallenge((challenge) => ({ ...challenge, ...userid }));
-                    console.log("challenge:--->", challenge)
-                    console.log("before openChallenges :---->", { id: challenge.id, challenger: { id: challenge.challenger.id, name: challenge.challenger }, contender: { id: user.id, name: challenge.contender.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null })
-                    openChallenges.push({ id: challenge.id, challenger: { id: challenge.challenger.id, name: challenge.challenger }, contender: { id: user.id, name: challenge.contender.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
+                    console.log("before openChallenges :---->", { id: newchall?.id, challenger: { id: challenge.challenger, name:newchall?.challenger?.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null })
+                    openChallenges.push({ id: newchall?.id, challenger: { id: challenge.challenger, name:newchall?.challenger?.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
                     props.dispatch({ type: 'CHALLENGE_OPEN', openChallenges });
                     console.log("after openChallenges Umar------>", openChallenges)
-                    let openChallenge = await ChallengeService.listChallengeByStatus('CREATED');
+                    let openChallenge = await ChallengeService.listChallengeByStatus(['CREATED','PENDING']);
                     setOpenChallenges(openChallenge);
                     props.dispatch({ type: 'ADD_WALLET', wallet });
                     e.target.reset();
@@ -148,19 +149,16 @@ function GameListing(props) {
         <>
             {(item?.challenger?.id === currentUser) ?
                 <>
-
-
-
                     <div className='userListTop'>
                         <div> <img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div>
                         <div className='green-text'>₹ {item?.amount}</div>
-                        { !show?(
-                        <div className='widthBtn100 userlistEnd'> Waiting... <img className='profile-small' src='../images/loading-buffering.gif' /> </div>
-                        ):
-                        (<div className='userListTop userlistEnd'>
+                        { item?.status==='PENDING' ?  (
+                        <div className='userListTop userlistEnd'>
                         <div>Connecting...</div> <button className='btn-play-samll' onClick={() => { playGameStart(item) }}> Start  </button>
                         <button className='btn-play-samll btn-play-samll-red' onClick={() => { playGameReject(item) }}> Reject  </button>
-                        </div>)
+                        </div>):(
+                        <div className='widthBtn100 userlistEnd'> Waiting... <img className='profile-small' src='../images/loading-buffering.gif' /> </div>
+                        )
                         }
                     {/* <div><img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div> */}
                     </div>
@@ -169,7 +167,7 @@ function GameListing(props) {
                 <>
                     <div><img className='profile-small' src='../images/profile.png' alt={item?.challenger?.name} /> {item?.challenger?.name}</div>
                     <div className='green-text'>₹ {item?.amount}</div>
-
+                    { item?.status!='PENDING' ?  (
                     <Popup trigger={<div className='widthBtn100'><button className='btn-play' onClick={() => { playGame(item) }}> Play </button></div>} modal>
                         {close => (<div className="modal">
                             <div className="content text-center">true
@@ -213,7 +211,11 @@ function GameListing(props) {
                                 <br /><br />
                             </div>
                         </div>)}
-                    </Popup>
+                    </Popup>):
+                    (
+                        <div className='widthBtn100 userlistEnd'> Waiting... <img className='profile-small' src='../images/loading-buffering.gif' /> </div>
+                    )
+                    }
                 </>
             }
         </>
@@ -241,8 +243,9 @@ function GameListing(props) {
                 <div className=''>
                     <ul className='challenge-list'>
 
-                        {openChallenges && !!openChallenges?.length ? openChallenges?.slice(0).reverse().filter((currentUser) => currentUser?.challenger?.id !== currentUser).map((item, i) => {
-                            return (<li key={i}>
+                        {openChallenges && !!openChallenges?.length ? openChallenges?.slice(0).reverse().map((item, i) => {
+                            return (
+                            <li key={i}>
                                 <ChallegeListItem item={item} currentUser={currentUser} />
                             </li>)
                         }) : <div className='text-center white-bg padding20'>Hooray, no Challenge here!</div>}
