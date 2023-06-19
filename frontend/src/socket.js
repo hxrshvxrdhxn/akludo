@@ -32,9 +32,7 @@ socket.on("challenge", (challenge) => {
     console.log("Got a new update....", challenge)
     const payload = JSON.parse(challenge);
     console.log("Payload a new update....", payload)
-
-    //set show true  for that particular challenge if user matches challenger and state of challenge is pending  
-
+    
     //console.log("Payload a new push ....", ({ id: challenge.id, challenger: { id: challenge.challenger.id, name: challenge.challenger }, contender: { id: user.id, name: challenge.contender.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null }))
 
     //openChallenges.push({ id: challenge.id, challenger: { id: challenge.challenger.id, name: challenge.challenger }, contender: { id: user.id, name: challenge.contender.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
