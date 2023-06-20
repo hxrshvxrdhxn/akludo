@@ -40,7 +40,7 @@ socket.on("challenge", (challenge) => {
     // {"type":"challenge","data":{"_id":"64886b8350c75ab6abcb5464","challenger":"646c62a0461c0c490f5cb57d","amount":50,"game":"64413054d74babfdb353e6b0","roomCode":"213","status":"CREATED","meta":"64886b8350c75ab6abcb5462","createdAt":1686662019531,"updatedAt":1686662019531,"createdBy":"646c62a0461c0c490f5cb57d","updatedBy":"646c62a0461c0c490f5cb57d","__v":0}}
     //payload.push({ id: challenge.id, challenger: { id:challenge.id, name: challenge.name }, contender: { id: '643ce3a3f1aa6f9140a5bbf0', name: 'Umarpahat' }, amount: 200, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
     //challenge.push(challenge)
-    //props.dispatch({ type: 'CHALLENGE_OPEN', payload });
+    //props.dispatch({ type: 'CHALLENGE_OPEN', payload.data });
     //console.log("After Got a new update....", challenge)
     // dispatch(updateChatLog(payload));
 })

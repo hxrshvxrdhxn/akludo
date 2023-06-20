@@ -79,7 +79,7 @@ const App = (props) => {
 
 						<div className="row">
 							<div className="col-md-12" style={{ textAlign: 'center' }}>
-								<img src="/images/white-logo.jpg" alt="HEALTHEMATICS"
+								<img src="/images/logo.png" alt="akludo"
 									 style={{ width: '80%', padding: '10%' }}/>
 							</div>
 						</div>

@@ -24,8 +24,8 @@ class Game extends MongoDbModel {
             image: {
                 storage: /*EnumFileStorage: S3, LOCAL, REMOTE_URL*/ String,
                 uri: String,
-                name: String,
-                mime: String,
+                filename: String,
+                mimetype: String,
                 size: Float,
                 sizeUnit: /*EnumSizeUnit: B, KB, MB, GB, TB*/ String
             },

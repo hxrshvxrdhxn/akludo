@@ -22,12 +22,12 @@ class StoredFileResolver {
 
 
     async name() {
-        return this.data.name;
+        return this.data.filename;
     }
 
 
     async mime() {
-        return this.data.mime;
+        return this.data.mimetype;
     }
 
 

@@ -1,8 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { Link } from 'react-router-dom'
+import GameService from '../services/game.service';
 
 function Home() {
+    const [games,setGames]=useState([]);
+
+
+    //to do create a  slug field for redirection --------------------------====
+    useEffect(()=>{
+        (async function fetchGames(){
+            try{
+                let game=await GameService.listAllGames();
+                console.log(game);
+                setGames(game)
+            }catch(c){
+                console.log(c);
+            }
+        })();
+    },[]);
+
     return (
         <>
             <Header />
@@ -13,10 +30,33 @@ function Home() {
                 </div>
             </div>
             <div className="home-card">
-                <div className="home-card-item">
+                {games&&games.length?
+                games.map((game)=>{
+                   if(game?.status=='AVAILABLE'){
+                   return (
+                    <div className="home-card-item">
+                    <a href='/ludo-classic'><img src={`http://localhost:8080/uploads/${game?.image?.name}`} alt={game?.name} /></a>
+                    </div>
+                    )
+                   }else{
+                    return(
+                    <div className="home-card-item comingsoon">
+                        <div className='tag'>Coming Soon</div>
+                        <img src={`http://localhost:8080/uploads/${game?.image?.name}`} alt={game?.name} />
+                    </div>
+                    )
+                   }
+                })
+                :
+                (<div className="home-card-item">
+                <a href='/ludo-classic'><img src='../images/classic-ludo.png' alt='Classic Ludo' /></a>
+                </div>)
+                }
+                
+                {/* <div className="home-card-item">
                     <a href='/ludo-classic'><img src='../images/classic-ludo.png' alt='Classic Ludo' /></a>
-                </div>
-                <div className="home-card-item comingsoon">
+                </div>*/}
+                {/* <div className="home-card-item comingsoon">
                     <div className='tag'>Coming Soon</div>
                     <img src='../images/ludo-super-start.png' alt='Classic Ludo' />
                 </div>
@@ -27,7 +67,7 @@ function Home() {
                 <div className="home-card-item comingsoon">
                     <div className='tag'>Coming Soon</div>
                     <img src='../images/ludo-plus.png' alt='Classic Ludo' />
-                </div>
+                </div>  */}
             </div>
         </>
     )
