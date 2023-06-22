@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Header from '../components/Header'
 import ChallengeService from '../services/challenge.service';
 import { connect } from 'react-redux';
@@ -7,7 +7,7 @@ import UserService from '../services/user.service';
 import { socket } from '../socket';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import WalletService from '../services/wallet.service';
 
 function GameListing(props) {
@@ -19,6 +19,7 @@ function GameListing(props) {
     const [user, setUser] = useState({});
     const [show, setShow] = useState(false);
     const [wallet, setWallet] = useState();
+
     useEffect(() => {
         async function test() {
             try {
@@ -74,28 +75,16 @@ function GameListing(props) {
 
     async function playGame(item) {
         try {
-
-
             if (user?.wallet?.bal >= item?.amount) {
                 let challenge = await ChallengeService.update({ id: item?.id || null, contender: user.id || null, status: "PENDING" });
-                console.log(challenge);
+                console.log("challenge update on--------->", challenge);
             }
-
-            // let wallet = props.wallet === 0 ? 0 : props.wallet || wallet
-
-            // console.log("props.wallet------->", props.wallet)
-            // console.log("walletBal Upper------->", wallet)
-
-            // if (item?.amount <= wallet) {
-            //     props.dispatch({ type: 'ADD_WALLET', wallet });
-            //     console.log("Item------->", item)
-            //     console.log("openChallenges ------->", openChallenges)
-            // }
 
         } catch (c) {
             toast.error(c.message.split(':')[1]);
         }
     }
+
     const handlerAmount = (e) => {
         setChallenge({ ...challenge, [e.target.name]: parseInt(e.target.value) })
     }
@@ -124,7 +113,6 @@ function GameListing(props) {
                 if (user && user.id) {
                     const wallt = await WalletService.getWallet();
                     const wallet = wallt[0].bal;
-                    //setChallenge((challenge) => ({ ...challenge, ...userid }));
                     console.log("before openChallenges :---->", { id: newchall?.id, challenger: { id: challenge.challenger, name: newchall?.challenger?.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null })
                     openChallenges.push({ id: newchall?.id, challenger: { id: challenge.challenger, name: newchall?.challenger?.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
                     props.dispatch({ type: 'CHALLENGE_OPEN', openChallenges });
@@ -172,9 +160,12 @@ function GameListing(props) {
                                 <br /><br />
                                 {(item?.amount <= user.wallet.bal) ? <input
                                     className="input-white"
+                                    id='roomcode'
+                                    name='roomcode'
                                     placeholder='Copy room code'
                                     value={item.roomCode}
                                 /> : ''}
+
                                 <br /><br />
                             </div>
                             <div className="actions">
@@ -186,26 +177,25 @@ function GameListing(props) {
                                     }} >
                                     Close
                                 </button>
+                                <button className="button btn-green ml5" onClick={() => {
+                                    navigator.clipboard.writeText(item.roomCode);
+                                }}>Copy</button>
 
-                                {(item?.amount <= user.wallet.bal) ? <button
-                                    className="button btn-green ml5"
-                                    onClick={() => {
-                                        console.log('Copy Room Code ');
-
-                                    }}>
-                                    Copy Room Code
-                                </button> : ''}
-
-                                {(item?.amount <= user.wallet.bal) ? '' :
-                                    <button
-                                        className="button btn-green ml5"
-                                        onClick={AddToMoney}>
-                                        Add Money
-                                    </button>}
                                 <br /><br />
                             </div>
                         </div>)}
-                    </Popup> : <button className="button btn-green error">Low Balance</button>}</>) :
+                    </Popup> : <Popup
+                        trigger={<button className="btn-play-samll btn-play-samll-red"> Low Balance </button>}
+                        position="top right"
+                        on={['click']}
+                        arrow={'center center'}
+                    >
+                        <span className='font13'>
+                            Your wallet chips less then this challenge. Could add chips in your wallet.
+                            <br />
+                            <button className="button btn-green mt10" onClick={AddToMoney}>Add Chips </button>
+                        </span>
+                    </Popup>}</>) :
                         (
                             <div className='widthBtn100 userlistEnd'> Waiting... <img className='profile-small' src='../images/loading-buffering.gif' /> </div>
                         )
