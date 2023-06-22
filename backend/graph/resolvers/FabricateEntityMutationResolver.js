@@ -28,6 +28,8 @@ const RoleService = require('../../services/RoleService');
 const ResourceService = require('../../services/ResourceService');
 const UpdateHistoryService = require('../../services/UpdateHistoryService');
 const ConfigService = require('../../services/ConfigService');
+const WithdrawalRequestDTO = require('../../util/beans/WithdrawalRequestDTO');
+const WithdrawalRequestService = require('../../services/WithdrawalRequestService');
 
 /**
  * Resolve Name Node
@@ -52,6 +54,7 @@ class FabricateEntityMutationResolver {
         this.ResourceResolver = require('./ResourceResolver');
         this.UpdateHistoryResolver = require('./UpdateHistoryResolver');
         this.ConfigResolver = require('./ConfigResolver');
+        this.WithdrawalRequestResolver = require('./WithdrawalRequestResolver');
     }
 
     async createAuthResponse({success, token}) {
@@ -118,8 +121,8 @@ class FabricateEntityMutationResolver {
     }
 
 
-    async createWallet({user, bal, earning, ledger, createdAt, updatedAt, createdBy, updatedBy}) {
-        const dto = new WalletDTO({user, bal, earning, ledger, createdAt, updatedAt, createdBy, updatedBy});
+    async createWallet({user, bal, earning, ledger, status, createdAt, updatedAt, createdBy, updatedBy}) {
+        const dto = new WalletDTO({user, bal, earning, ledger, status, createdAt, updatedAt, createdBy, updatedBy});
         const doc = await WalletService.create(dto, this._user);
         return doc ? new this.WalletResolver(doc, this._user) : null;
     }
@@ -222,6 +225,12 @@ class FabricateEntityMutationResolver {
         return doc ? new this.GameResolver(doc, this._user) : null;
     }
 
+    async createWithdrawalRequest({user, status, amount, ledger, bankTransaction, rejectReason, createdAt, updatedAt, createdBy, updatedBy}) {
+        const dto = new WithdrawalRequestDTO({user, status, amount, ledger, bankTransaction, rejectReason, createdAt, updatedAt, createdBy, updatedBy});
+        //console.log("this is dto",dto)
+        const doc = await WithdrawalRequestService.create(dto, this._user);
+        return doc ? new this.GameResolver(doc, this._user) : null;
+    }
 
     async createRole({
                          name,

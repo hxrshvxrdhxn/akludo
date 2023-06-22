@@ -1,6 +1,6 @@
 const Bean = require('./Bean');
 
-class WalletDTO extends Bean {
+class WithdrawalRequestDTO extends Bean {
 
     constructor(...args) {
         super(...args);
@@ -31,20 +31,20 @@ class WalletDTO extends Bean {
         this._payload.user = user;
     }
 
-    get bal() {
+    get amount() {
         return this._payload.bal;
     }
 
-    set bal(bal) {
+    set amount(bal) {
         this._payload.bal = bal;
     }
 
-    get earning(){
-        return this._payload.earning;
+    get status(){
+        return this._payload.status;
     }
 
-    set earning(earning){
-        this._payload.earning = earning;
+    set status(status){
+        this._payload.status = status;
     }
 
     get ledger() {
@@ -55,12 +55,20 @@ class WalletDTO extends Bean {
         this._payload.ledger = ledger;
     }
 
-    get status() {
-        return this._payload.status;
+    get bankTransaction() {
+        return this._payload.bankTransaction;
     }
 
-    set status(status) {
-        this._payload.status = status;
+    set bankTransaction(bankTransaction) {
+        this._payload.bankTransaction = bankTransaction;
+    }
+
+    get rejectReason() {
+        return this._payload.rejectReason;
+    }
+
+    set rejectReason(rejectReason) {
+        this._payload.rejectReason = rejectReason;
     }
 
     get createdAt() {
@@ -97,5 +105,4 @@ class WalletDTO extends Bean {
 
 }
 
-exports = module.exports = WalletDTO;
-
+exports = module.exports = WithdrawalRequestDTO;

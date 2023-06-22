@@ -106,8 +106,8 @@ class UpdateEntityMutationResolver {
 
 
 
-    async updateWallet({id, user, bal, earning, ledger, createdAt, updatedAt, createdBy, updatedBy}, {data}) {
-        const dto = new WalletDTO({user, bal, earning, ledger, createdAt, updatedAt, createdBy, updatedBy});
+    async updateWallet({id, user, bal, earning, ledger, status, createdAt, updatedAt, createdBy, updatedBy}, {data}) {
+        const dto = new WalletDTO({user, bal, earning, ledger, status, createdAt, updatedAt, createdBy, updatedBy});
         const result = await WalletService.update(id, dto, this._user); //{updateResult, updatedDbObj}
         console.log(result);
         if (result && result.updateResult) {

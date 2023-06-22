@@ -16,7 +16,7 @@ Wallet.add({
     bal: {type: Types.Number, initial: true},
     earning: {type:Types.Number, intial: true},
     ledger: {type: Types.Relationship, ref: 'Ledger', initial: true, required: false, index: false, many: true},
-    isEnabled: {type: Types.Boolean}
+    status: {type: Types.Select, options: 'ACTIVE, FREEZED'}
 });
 
 /**
