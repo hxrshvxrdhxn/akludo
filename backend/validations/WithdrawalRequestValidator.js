@@ -1,6 +1,6 @@
 const Validator = require('./Validator');
 
-class WalletValidator extends Validator {
+class WithdrawalRequestValidator extends Validator {
 
     constructor(...args) {
         super(...args);
@@ -20,7 +20,7 @@ class WalletValidator extends Validator {
     }
 
 
-    bal(bal) {
+    amount(amount) {
         return false; // return string containing error message to define error, else send any false value.
     }
 
@@ -29,11 +29,18 @@ class WalletValidator extends Validator {
         if(!ledger){
             return false;
         }
-        return ledger.map((entityId, idx) => _db.Wallet.convertToObjectId(entityId) ? false : 'Invalid ID passed for Wallet->ledger[' + idx + ']. Please pass a valid Object id.').filter(e => !!e).join(',').trim();
+        return _db.Wallet.convertToObjectId(ledger) ? false : 'Invalid ID passed for BankTransaction->ledger. Please pass a valid Object id.';
     }
 
     status(status){
         return false;
+    }
+
+    bankTransaction(bankTransaction){
+        if(!bankTransaction){
+            return false
+        }
+        return _db.BankTransaction.convertToObjectId(bankTransaction) ? false : 'Invalid ID passed for BankTransaction->user. Please pass a valid Object id.';
     }
 
     createdAt(createdAt) {
@@ -66,5 +73,5 @@ class WalletValidator extends Validator {
 
 }
 
-exports = module.exports = WalletValidator;
+exports = module.exports = WithdrawalRequestValidator;
 

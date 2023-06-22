@@ -1,11 +1,11 @@
 const UserService = require('../../services/UserService');
 const LedgerService = require('../../services/LedgerService');
-
+const BankTransactionService = require('../../services/BankTransactionService');
 /*
 * Resolver for type Wallet
 */
 
-class WalletResolver {
+class WithdrawalRequestResolver {
 
     constructor(data, user) {
         if (!data) throw new Error('Data is required in resolver');
@@ -14,6 +14,7 @@ class WalletResolver {
         // Inline imports to avoid cyclic dependency issue
         this.UserResolver = require('./UserResolver');
         this.LedgerResolver = require('./LedgerResolver');
+        this.BankTransactionResolver = require('./BankTransactionResolver');
     }
 
     async id() {
@@ -27,24 +28,26 @@ class WalletResolver {
     }
 
 
-    async bal() {
-        return this.data.bal;
-    }
-
-    async earning(){
-        return this.data.earning || 0;
+    async amount() {
+        return this.data.amount;
     }
 
     async ledger() {
-        const docs = [];
-        for (let idx = 0; idx < (this.data.ledger || []).length; idx++) {
-            docs.push(await LedgerService.findOne(this.data.ledger[idx], this._user));
-        }
-        return docs.map(doc => new this.LedgerResolver(doc, this._user));
+        const found = await LedgerService.findOne(this.data.ledger, this._user);
+        return found ? new this.LedgerResolver(found, this._user) : null;
+    }
+
+    async bankTransaction() {
+        const found = await BankTransactionService.findOne(this.data.bankTransaction, this._user);
+        return found ? new this.BankTransactionResolver(found, this._user) : null;
     }
 
     async status(){
         return this.data.status;
+    }
+
+    async rejectReason(){
+        return this.data.rejectReason;
     }
 
     async createdAt() {
@@ -71,5 +74,5 @@ class WalletResolver {
 
 }
 
-exports = module.exports = WalletResolver;
+exports = module.exports = WithdrawalRequestResolver;
 

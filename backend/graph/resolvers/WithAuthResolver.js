@@ -13,6 +13,7 @@ const UpdateHistoryService = require('../../services/UpdateHistoryService');
 const ConfigService = require('../../services/ConfigService');
 const ReferralService = require('../../services/ReferralService');
 const OrderService = require('../../services/paymentgateway/OrderService');
+const WithdrawalRequestService = require('../../services/WithdrawalRequestService');
 
 
 /**
@@ -39,6 +40,7 @@ class WithAuthResolver {
         this.UpdateHistoryResolver = require('./UpdateHistoryResolver');
         this.ConfigResolver = require('./ConfigResolver');
         this.OrderResolver = require('./OrderResolver');
+        this.WithdrawalRequestResolver = require('./WithdrawalRequestResolver');
     }
 
     async _fullUser() {
@@ -301,6 +303,21 @@ class WithAuthResolver {
         //return null;
     }
 
+    async listWithdrawalRequest({criteria, limit, offset}, {data}) {
+        const listResp = await WithdrawalRequestService.list(this._parseCriteria(criteria), limit, offset, await this._fullUser());
+        //{docs, total, limit, offset}
+        data[`listWithdrawalRequestTotal`] = data.total = listResp.total;
+        data[`listWithdrawalRequestLimit`] = data.limit = listResp.limit;
+        data[`listWithdrawalRequestOffset`] = data.offset = listResp.offset;
+        const user = await this._fullUser();
+        return listResp.docs.map(doc => new this.WithdrawalRequestResolver(doc, user));
+    }
+
+    async WithdrawalRequest({id}) {
+        const user = await this._fullUser();
+        const doc = await WithdrawalRequestService.findOne(id, user);
+        return doc ? new this.WithdrawalRequestResolver(doc, user) : null;
+    }
 
 }
 

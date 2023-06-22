@@ -6,7 +6,7 @@ const MongoDbModel = require('../../bootloader/mongo');
 const Float = Number;
 const Int = Number;
 
-class Wallet extends MongoDbModel {
+class WithdrawalRequest extends MongoDbModel {
 
     /*Define which database to connect to*/
     static get connection() {
@@ -21,10 +21,11 @@ class Wallet extends MongoDbModel {
     static get Schema() {
         return mongoose => ({
             user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-            bal: Float,
-            earning:Float,
-            status: /*EnumWalletStatus ACTIVE, FREEZED */ String,
-            ledger: [{type: mongoose.Schema.Types.ObjectId, ref: 'Ledger'}],
+            amount: Float,
+            status: /*EnumUserStatus:  INTIATED, PROCESSING, COMPLETED, REJECTED, ACTIVE, */ String,
+            bankTransaction: {type: mongoose.Schema.Types.ObjectId, ref: 'BankTransaction'},
+            ledger: {type: mongoose.Schema.Types.ObjectId, ref: 'Ledger'},
+            rejectReason: String,
             createdAt: Number,
             updatedAt: Number,
             createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
@@ -37,5 +38,5 @@ class Wallet extends MongoDbModel {
     }
 }
 
-exports = module.exports = Wallet;
+exports = module.exports = WithdrawalRequest;
 

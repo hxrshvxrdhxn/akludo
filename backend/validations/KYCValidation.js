@@ -26,7 +26,7 @@ class KYCValidator extends Validator {
 
     user(user) {
         if (user) {
-            return _db.KYC.convertToObjectId(user) ? false : 'Invalid ID passed for Wallet->user. Please pass a valid Object id.';
+            return _db.KYC.convertToObjectId(user) ? false : 'Invalid ID passed for kyc->user. Please pass a valid Object id.';
         } else {
             return false;
         }

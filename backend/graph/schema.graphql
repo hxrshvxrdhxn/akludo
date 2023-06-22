@@ -126,10 +126,23 @@ enum EnumCurrencyType {
   OTHER
 }
 
-enum EnumOrderStatus{
-    ACTIVE
-    PAID
-    EXPIRED
+enum EnumOrderStatus {
+  ACTIVE
+  PAID
+  EXPIRED
+}
+
+enum EnumWalletStatus {
+  ACTIVE
+  FREEZED
+}
+
+enum EnumWithrawalStatus {
+  INTIATED
+  PROCESSING
+  COMPLETED
+  REJECTED
+  ACTIVE
 }
 
 "Defines the language available in system"
@@ -413,6 +426,21 @@ type Wallet {
   bal: Float
   earning: Float
   ledger: [Ledger]
+  status: EnumWalletStatus 
+  createdAt: String
+  updatedAt: String
+  createdBy: User
+  updatedBy: User
+}
+
+type WithdrawalRequest {
+  id: String
+  user: User
+  status: EnumWithrawalStatus
+  amount: Float
+  ledger: Ledger
+  bankTransaction: BankTransaction
+  rejectReason: String
   createdAt: String
   updatedAt: String
   createdBy: User
@@ -534,6 +562,13 @@ type WithAuth {
   listReferral(criteria: String, limit: Int, offset: Int): [Referral]
   getReferral(id: String!): Referral
 
+  listWithdrawalRequest(
+    criteria: String
+    limit: Int
+    offset: Int
+  ): [WithdrawalRequest]
+  getWithdrawalRequest(id: String!): WithdrawalRequest
+
   getOrder(id: String): Order
 }
 
@@ -594,6 +629,7 @@ type UpdateEntityMutation {
     bal: Float
     earning: Float
     ledger: [String]
+    status: String
     createdAt: String
     updatedAt: String
     createdBy: String
@@ -773,6 +809,7 @@ type FabricateEntityMutation {
     bal: Float
     earning: Float
     ledger: [String]
+    status: String
     createdAt: String
     updatedAt: String
     createdBy: String
@@ -880,6 +917,18 @@ type FabricateEntityMutation {
     createdAt: String
     createdBy: String
   ): Referral
+  createWithdrawalRequest(
+    user: String
+    status: EnumWithrawalStatus
+    amount: Float
+    ledger: String
+    bankTransaction: String
+    rejectReason: String
+    createdAt: String
+    updatedAt: String
+    createdBy: String
+    updatedBy: String
+  ): WithdrawalRequest
 }
 
 type Query {

@@ -8,7 +8,9 @@ function Home() {
 
 
     //to do create a  slug field for redirection --------------------------====
+    //to do when pushing to test change urls----------------p========
     useEffect(()=>{
+       // console.log(process.env.REACT_APP_DEVELOPMENT_URL_ADMIN);
         (async function fetchGames(){
             try{
                 let game=await GameService.listAllGames();
