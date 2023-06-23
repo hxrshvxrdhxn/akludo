@@ -33,7 +33,11 @@ class WalletValidator extends Validator {
     }
 
     status(status){
-        return false;
+        if(status==='FREEZED'){
+            return 'Your Wallet is Freezed Please contact Admin'
+        }else{
+            return false;
+        }
     }
 
     createdAt(createdAt) {

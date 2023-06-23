@@ -181,6 +181,7 @@ class FabricateEntityMutationResolver {
             createdBy,
             updatedBy
         });
+        console.log("this is Dto for create bt", dto);    
         const doc = await BankTransactionService.create(dto, this._user);
         return doc ? new this.BankTransactionResolver(doc, this._user) : null;
     }
