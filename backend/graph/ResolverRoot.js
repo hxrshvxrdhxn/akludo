@@ -60,6 +60,7 @@ exports = module.exports = class ResolverRoot {
         const user = await _db.User.findOne({'phones.number': username});
         if (!user) throw new Error('Invalid user or password!');
         if (user.naiveAuthPass !== password) throw new Error('Invalid user or password!');
+        if (user.status !== 'ENABLED') throw new Error('User Disabled please contact admin');
         req.loginUser({
             _id: user._id,
             id: user._id,

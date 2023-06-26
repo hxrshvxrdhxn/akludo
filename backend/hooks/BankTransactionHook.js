@@ -1,7 +1,9 @@
 const LedgerService = require('../services/LedgerService');
 const UserService = require('../services/UserService');
+const WithdrawalRequestService = require('../services/WithdrawalRequestService');
 const OrderService = require('../services/paymentgateway/OrderService');
 const LedgerDTO = require('../util/beans/LedgerDTO');
+const WithdrawalRequestDTO = require('../util/beans/WithdrawalRequestDTO');
 const Hook = require('./base/Hook');
 
 /**
@@ -17,19 +19,19 @@ class BankTransactionHook extends Hook {
 
     async onBankTransactionCreate(newObj) {
         // called when BankTransaction is created.
-       // jab transaction create hoti tab hum ledger create krte hai aur uss ledger ko wallet m store krte  hai corresponding 
+        //jab transaction create hoti tab hum ledger create krte hai aur uss ledger ko wallet m store krte  hai corresponding 
         //sort the  data
         let status='PENDING';
-        // now call the cashfree order api 
-         //create a dto for ledger and then service to call ledger create for 
+        //create a dto for ledger and then service to call ledger create for
+        let user = await _db.User.findOne({_id:newObj.createdBy});
+        console.log("this is user",user); 
         let objDto={fromUser:newObj.createdBy,amount:newObj.amount,txType:newObj.txType,linkedBankTransaction:newObj._id}
         const dto = new LedgerDTO(objDto);
-        const doc = await LedgerService.create(dto, user);
-        console.log(doc);
+        let ledger = await LedgerService.create(dto, user);
+        console.log("this is ledger",ledger);
         
         try{
-            let user = await _db.User.findOne({_id:newObj.createdBy});
-            console.log(user);
+           
             // to check if transaction type is top up then create a order 
             if(newObj.txType==='TOP_UP'){
                 let orderData= await OrderService.createOrder(user,newObj) 
@@ -38,14 +40,19 @@ class BankTransactionHook extends Hook {
             //if transaction type is withdrawal then check for if then amount can be withdrawn and the debit it using cashfree refund
             if(newObj.txType==='WITHDRAW'){
                 // recheck if the amount is less than earning in wallet and is greater then 95 and less than a specific limit suppose 10000
-                console.log(user?.wallet?.earning,newObj.amount);
+                console.log("this is withdraw:-",user?.wallet,newObj.amount);
 
                 //after this check if the kyc is done for the user or not-----
-                console.log(user?.kyc?.isKYCApproved)
+                console.log("this is kyc appproved",user?.kyc)
 
 
-                //after this call the debit api of cashfree ------
-                
+                //after this create a withdrawal request------
+                const obj={
+                    user:user._id, status:'INTIATED', amount:newObj.amount , ledger:ledger._id, bankTransaction:newObj._id
+                };
+                const dto=new WithdrawalRequestDTO(obj);
+                const wr = await WithdrawalRequestService.create(dto, user);
+                console.log(wr);
 
             }
             //if transcation type is hold then it means its in state either it will be credited or debited after game
