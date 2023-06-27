@@ -23,8 +23,7 @@ export default class GameService extends ApiCoreService {
             }
             `,{});
         }catch(c){
-            console.log(c);
-            throw new Error('Unable to list games'+c);
+            throw new Error(c);
         }
     }
 }
