@@ -46,8 +46,11 @@ class ChallengeInterceptor {
     static async afterChallengeCreate(id, createdChallenge, user) {
         // manipulate and return the object you want to return back in API.
         // generate the room code and save in the object.
+        log.trace('after create challenge');
         if (!createdChallenge.roomCode) {
+        log.trace('after create challenge, inside create block');
             createdChallenge.roomCode = await RoomCodeService.generateRoomCode();
+            log.trace('api resp', createdChallenge.roomCode);
             await _db.Challenge.update({_id: createdChallenge._id || id}, {$set: {roomCode: createdChallenge.roomCode}});
         }
         return createdChallenge;

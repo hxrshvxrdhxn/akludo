@@ -4,7 +4,6 @@ import ChallengeService from '../services/challenge.service';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import UserService from '../services/user.service';
-import { socket } from '../socket';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useNavigate } from 'react-router-dom';
@@ -49,14 +48,22 @@ function GameListing(props) {
         }
         test();
     }, []);
+    function closePopup(e) {
+        console.log("closePopup")
+        if (e) {
+            e.preventDefault();
+            console.log("closePopup")
+        }
 
+        // ...
+    }
     async function playGameStart(item) {
         try {
-            console.log(challenge.amount)
+            console.log("challenge.amount :-->", challenge.amount, "currentUser:-->", currentUser)
             // let data = await ChallengeService.updateStatus(item.id ? item.id : "", "PENDING");
             //on game start change the status from pending to started
-            let resStatus = await ChallengeService.update({ id: item?.id || null, status: "STARTED" });
-            console.log(resStatus);
+            let responceStatus = await ChallengeService.update({ id: item?.id || null, status: "STARTED" });
+            console.log("Start------------->", responceStatus);
         } catch (c) {
             toast.error(c.message.split(':')[1]);
         }
@@ -67,7 +74,7 @@ function GameListing(props) {
             console.log(currentUser)
             //on reject change challenge status from pending to rejeted and change the contender to nil ===to do
             let resStatus = await ChallengeService.update({ id: item?.id || null, status: "CREATED" });
-            console.log(resStatus);
+            console.log("playGameReject------------->", resStatus);
         } catch (c) {
             toast.error(c.message.split(':')[1]);
         }
@@ -77,7 +84,7 @@ function GameListing(props) {
         try {
             if (user?.wallet?.bal >= item?.amount) {
                 let challenge = await ChallengeService.update({ id: item?.id || null, contender: user.id || null, status: "PENDING" });
-                console.log("challenge update on--------->", challenge);
+                console.log("playGame --------->", challenge);
             }
 
         } catch (c) {
@@ -113,8 +120,8 @@ function GameListing(props) {
                 if (user && user.id) {
                     const wallt = await WalletService.getWallet();
                     const wallet = wallt[0].bal;
-                    console.log("before openChallenges :---->", { id: newchall?.id, challenger: { id: challenge.challenger, name: newchall?.challenger?.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null })
-                    openChallenges.push({ id: newchall?.id, challenger: { id: challenge.challenger, name: newchall?.challenger?.name }, amount: challenge.amount, roomCode: "213", status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
+                    console.log("before openChallenges :---->", { id: newchall?.id, challenger: { id: challenge.challenger, name: newchall?.challenger?.name }, amount: challenge.amount, status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null })
+                    openChallenges.push({ id: newchall?.id, challenger: { id: challenge.challenger, name: newchall?.challenger?.name }, amount: challenge.amount, status: "CREATED", game: { id: '64413054d74babfdb353e6b0', name: 'Ludo-Test' }, winner: null });
                     props.dispatch({ type: 'CHALLENGE_OPEN', openChallenges });
                     console.log("after openChallenges Umar------>", openChallenges)
                     let openChallenge = await ChallengeService.listChallengeByStatus(['CREATED', 'PENDING']);
@@ -145,7 +152,35 @@ function GameListing(props) {
                     {item?.status === 'PENDING' ? (
                         <>
                             <div className='userListTop userlistEnd'>
-                                <div>Connecting...</div> <button className='btn-play-samll' onClick={() => { playGameStart(item) }}> Start  </button>
+                                <div>Connecting...</div>
+                                <Popup
+                                    trigger={<button onClick={(e) => closePopup(e)}>Umar </button>}
+                                                                                                                                                                               open={true}
+                                >ZaASASASA</Popup>
+                                <Popup trigger={<button onClick={closePopup} className='btn-play-samll'> Start</button>} modal>
+                                    {close => (<div className="modal">
+                                        <div className="content text-center">
+                                            <br /><br />
+                                            {(item?.amount <= user.wallet.bal) ? <input
+                                                className="input-white"
+                                                id='roomcode'
+                                                name='roomcode'
+                                                placeholder='Copy room code'
+                                                value={item.roomCode}
+                                            /> : ''}
+
+                                            <br /><br />
+                                        </div>
+                                        <div className="actions">
+                                            <button className="button btn-green ml5" onClick={() => {
+                                                navigator.clipboard.writeText(item.roomCode);
+                                                close();
+                                            }}>Copy Room Code & Game start</button>
+
+                                            <br /><br />
+                                        </div>
+                                    </div>)}
+                                </Popup>
                                 <button className='btn-play-samll btn-play-samll-red' onClick={() => { playGameReject(item) }}> Reject  </button>
                             </div></>) : ''
                     }
@@ -169,17 +204,10 @@ function GameListing(props) {
                                 <br /><br />
                             </div>
                             <div className="actions">
-                                <button
-                                    className="button btn-green error"
-                                    onClick={() => {
-                                        console.log('modal closed ');
-                                        close();
-                                    }} >
-                                    Close
-                                </button>
                                 <button className="button btn-green ml5" onClick={() => {
                                     navigator.clipboard.writeText(item.roomCode);
-                                }}>Copy</button>
+                                    close();
+                                }}>Copy Room Code & Game start</button>
 
                                 <br /><br />
                             </div>
