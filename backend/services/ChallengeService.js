@@ -87,6 +87,7 @@ class ChallengeService {
         // save
         const dbObj = new _db.Challenge(obj);
         const saveResp = await dbObj.save();
+        await ChallengeInterceptor.afterChallengeCreate(dbObj._id, dbObj, user);
         ChallengeHook.trigger('onChallengeCreate', saveResp);
         return saveResp;
     }

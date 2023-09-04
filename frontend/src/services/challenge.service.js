@@ -131,7 +131,7 @@ export default class ChallengeService extends ApiCoreService{
             mutation{
                 mutationWithAuth(token:"auto"){
                   fabricate{
-                    createChallenge(challenger:"${challenge.challenger}" amount:${challenge.amount} status:CREATED roomCode:"213" game:"64413054d74babfdb353e6b0" ){
+                    createChallenge(challenger:"${challenge.challenger}" amount:${challenge.amount} status:CREATED  game:"64413054d74babfdb353e6b0" ){
                       id
                       challenger{
                         id

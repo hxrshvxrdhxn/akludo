@@ -1,10 +1,7 @@
 /**
  * Very simple test case Runner
  * */
-const S3Service = require('../services/S3Service');
-const requestP = require('request-promise');
-const crypto = require('crypto');
-
+const RoomCodeService = require('../services/RoomCodeService');
 
 new class Test {
 
@@ -27,6 +24,10 @@ new class Test {
 
     destroyApp() {
         process.exit(0);
+    }
+
+    async roomcode() {
+        console.log(await RoomCodeService.generateRoomCode());
     }
 
 
