@@ -11,12 +11,17 @@ class RoomCodeService {
         try {
             let resp = await requestP({
                 method: 'get',
-                url: 'http://apnaludo.in.net/v2/crops'
+                url: 'https://ludo-king-api-room-code.p.rapidapi.com/roomCode/',
+                headers: {
+                  'X-RapidAPI-Key': _config.rapid_api_key,
+                  'X-RapidAPI-Host': 'ludo-king-api-room-code.p.rapidapi.com'
+                }
             });
             try {
                 resp = JSON.parse(resp);
             } catch (c) {
                 // ignore
+                console.log("unable to get response")
             }
             return resp.roomcode;
         } catch (c) {

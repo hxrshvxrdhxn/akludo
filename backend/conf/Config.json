@@ -18,6 +18,7 @@
         "domain": ""
       }
     },
+    "rapid_api_key":"742eb31307msh95c9b2df19f34e5p1236abjsnfb3da1dde042",
     "ENABLE_CRON":1,
     "s3": {
       "region": "",
